@@ -68,3 +68,23 @@
   2. **Updated Master Index:** Appended approved milestone line to `/Users/weightless/MUSTA_DEVELOPMENT/00_MASTER_INDEX.md`.
   3. **TikTok vs. Learning Timer Research:** Evaluated native iOS Screen Time / Android Family Link (both available 100% in Thai) and "Learn to Earn" app-lock mechanisms for the mother.
   4. **Roadmap Transition:** Scheduled App 3 (Thai Alphabet & Seda's Name Tracing) as the next immediate sprint.
+
+
+---
+
+## Session 2026-10-24 (Part 3): Canonical Stroke Overhaul, Flashing Start Cues & Thai Voice Coaching
+* **Vector Architecture Rebuild:**
+  * Identified and resolved skeleton tracer termination on loops and T-junctions that left 43/44 consonants amputated.
+  * Extracted 100% complete multi-stroke vector geometry across all 44 Thai consonants and 19 vowels/tone marks.
+  * Re-anchored starting coordinates to authentic Thai Ministry of Education penmanship rules ("เขียนหัวก่อน" - write the circular head first; bottom-left leg for headless ก and ธ; bottom circular head for ร and ว).
+* **Pulsating Visual Start Cues:**
+  * Added floating pulsing start beacon `#startCuePill` anchored directly to `rawStrokes[0][0]`.
+  * Alternates between 🎯, 👆, ✏️, and 🖍️ from letter to letter (`currentIndex % 4`).
+  * Auto-hides on touch or after 3.0-second delay; reappears if canvas is cleared.
+* **Pedagogical Thai Voice Coaching:**
+  * Embedded spoken coaching for all 44 consonants via `SpeechSynthesis` (`th-TH`).
+  * Standard consonants: *"เริ่มเขียนจากหัวกลมก่อนนะคะ คนเก่ง"*.
+  * Headless ก and ธ: *"เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ คนเก่ง"*.
+  * 5 Two-stroke consonants (ญ, ฐ, ศ, ส, ษ): multi-step spoken instructions explaining upper body and foot/tail/crossbar order.
+* **To-Do List Maintenance:**
+  * Added future enhancement task to `TODO.md` for adding start cues and audio coaching to Numbers Widget (`widget_numbers.html` / `index.html`).
