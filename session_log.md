@@ -35,3 +35,10 @@
   * Created `walkthrough.md` detailing the 3-tier family sharing chain (Grandmother -> Mother -> Child), browser security, and "Add to Home Screen" instructions.
   * Injected an in-app `ℹ️` Parent Guide modal directly into the header of `widget_numbers.html` and `index.html`.
   * Generated `👁️_walkthrough.html` standing view companion.
+
+* **GitHub Pages Production Deployment (`imgt511/kids`):**
+  * Created public GitHub repository `imgt511/kids` and pushed initial commit.
+  * Configured GitHub Pages on `main` branch. Verified live HTTP 200 status.
+  * Live URL for 5yo Number Tracing: `https://imgt511.github.io/kids/`
+  * Live URL for 7yo Addition (On Hold): `https://imgt511.github.io/kids/widget_addition.html`
+  * Updated `walkthrough.md` with the permanent live link.
