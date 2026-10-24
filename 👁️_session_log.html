@@ -418,6 +418,45 @@
 <li>Configured GitHub Pages on <code>main</code> branch. Verified live HTTP 200 status.</li>
 <li>Live URL for 5yo Number Tracing: <code>https://imgt511.github.io/kids/</code></li>
 <li>Live URL for 7yo Addition (On Hold): <code>https://imgt511.github.io/kids/widget_addition.html</code></li>
+</ul>
+<h2>2026-10-24 (Part 3) — App 3: Thai Alphabet & Granddaughters' Name Tracing Studio</h2>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity (Gemini 3.8 Flash High & Critic Subagent on Pro)</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>Addressed Linguistic Inquiries & Pedagogical Scope:</strong></li>
+</ol>
+<ul>
+<li>Confirmed Thai alphabet does not mimic English (44 consonants, 32 vowel forms, tone classes vs 26 Latin letters). Approved dedicated 100% pure Thai learning track.</li>
+<li>Settled name roster: prioritized <strong>Sayda</strong> (เซด้า) over Seda (เซดา), locked <strong>Dada</strong> (ดาด้า), Mom <strong>Beam</strong> (บีม), and Grandmother <strong>Jeab</strong> (เจี๊ยบ).</li>
+</ul>
+<ol>
+<li><strong>Adversarial Pre-Flight Audit (Critic Subagent on Pro):</strong></li>
+</ol>
+<ul>
+<li>Identified mobile browser user-gesture gates on <code>SpeechRecognition</code> and <code>AudioContext</code> during orientation events.</li>
+<li>Implemented 7 concrete safeguards: glowing Tap-to-Talk medallion, 2-strike offline avatar fallback, phonetic fuzzy child voice matcher, TTS-to-mic sequential buffer (350ms), orientation debouncing (150ms), and 2-second hold gate for Mom's settings cog.</li>
+</ul>
+<ol>
+<li><strong>Extracted 63 Authentic Thai Vector Centerlines (<code>Ayuthaya.ttf</code>):</strong></li>
+</ol>
+<ul>
+<li>Built pure Python Zhang-Suen morphological thinning and directional graph tracer.</li>
+<li>Extracted monoline medial spines for all 44 consonants (ก to ฮ) and 19 vowels/tone marks into a compact 56 KB library (<code>TRACE_PATHS</code>).</li>
+</ul>
+<ol>
+<li><strong>Built Full Standalone App (<code>widget_alphabet.html</code>):</strong></li>
+</ol>
+<ul>
+<li><strong>Portrait Mode:</strong> 44 Thai consonants explorer (ก ไก่ to ฮ นกฮูก), pronunciation audio, single-letter dual-layer tracing arena (12px fine rainbow overpass -> 30/36px solid black underpass), and quick-jump drawer.</li>
+<li><strong>Landscape Mode:</strong> Granddaughter Name Studio with voice greeting (<em>"ชื่อเล่นอะไรคะ?"</em>), polite Thai retry prompt (<em>"พูดดังๆ อีกทีนะคะ คนเก่ง"</em>), and dynamic multi-letter layout.</li>
+<li><strong>Mom's Settings Cog (⚙️):</strong> 2-second hold gate to toggle between Repeat Mode (default) and Auto-Advance Mode.</li>
+</ul>
+<ol>
+<li><strong>Cross-App Navigation:</strong> Linked Numbers App (<code>index.html</code>) and Alphabet App (<code>widget_alphabet.html</code>) via header buttons (<code>🔢</code> / <code>🔤</code>).</li>
+</ol>
+<ul>
 <li>Updated <code>walkthrough.md</code> with the permanent live link.</li>
 </ul>
 <h2>2026-10-24 (Part 3) — Production Release, Master Index, & Alphabet Roadmap</h2>
@@ -431,6 +470,25 @@
 <li><strong>TikTok vs. Learning Timer Research:</strong> Evaluated native iOS Screen Time / Android Family Link (both available 100% in Thai) and "Learn to Earn" app-lock mechanisms for the mother.</li>
 <li><strong>Roadmap Transition:</strong> Scheduled App 3 (Thai Alphabet & Seda's Name Tracing) as the next immediate sprint.</li>
 </ol>
+<hr>
+<h2>Session 2026-10-24 (Part 3): Canonical Stroke Overhaul, Flashing Start Cues & Thai Voice Coaching</h2>
+<ul>
+<li><strong>Vector Architecture Rebuild:</strong></li>
+<li>Identified and resolved skeleton tracer termination on loops and T-junctions that left 43/44 consonants amputated.</li>
+<li>Extracted 100% complete multi-stroke vector geometry across all 44 Thai consonants and 19 vowels/tone marks.</li>
+<li>Re-anchored starting coordinates to authentic Thai Ministry of Education penmanship rules ("เขียนหัวก่อน" - write the circular head first; bottom-left leg for headless ก and ธ; bottom circular head for ร and ว).</li>
+<li><strong>Pulsating Visual Start Cues:</strong></li>
+<li>Added floating pulsing start beacon <code>#startCuePill</code> anchored directly to <code>rawStrokes[0][0]</code>.</li>
+<li>Alternates between 🎯, 👆, ✏️, and 🖍️ from letter to letter (<code>currentIndex % 4</code>).</li>
+<li>Auto-hides on touch or after 3.0-second delay; reappears if canvas is cleared.</li>
+<li><strong>Pedagogical Thai Voice Coaching:</strong></li>
+<li>Embedded spoken coaching for all 44 consonants via <code>SpeechSynthesis</code> (<code>th-TH</code>).</li>
+<li>Standard consonants: <em>"เริ่มเขียนจากหัวกลมก่อนนะคะ คนเก่ง"</em>.</li>
+<li>Headless ก and ธ: <em>"เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ คนเก่ง"</em>.</li>
+<li>5 Two-stroke consonants (ญ, ฐ, ศ, ส, ษ): multi-step spoken instructions explaining upper body and foot/tail/crossbar order.</li>
+<li><strong>To-Do List Maintenance:</strong></li>
+<li>Added future enhancement task to <code>TODO.md</code> for adding start cues and audio coaching to Numbers Widget (<code>widget_numbers.html</code> / <code>index.html</code>).</li>
+</ul>
   </div>
 
   <script>
