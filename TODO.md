@@ -1,15 +1,23 @@
 # Project To-Do List: Granddaughters Learning Widgets
 
-## 📝 App 3: Thai Alphabet & Name Tracing Studio — NEXT SPRINT (Active Focus)
-* [ ] **Personal Name Tracing (Seda's Name):**
-  * Finger-trace canvas specifically for Seda's Thai name/nickname.
-  * Starting-point dot guides with rainbow stroke reveal.
-  * Spoken audio prompt: *"มาหัดเขียนชื่อตัวเองกันเถอะ!"* ("Let's practice writing your name!").
-* [ ] **Thai Consonants (ก-ฮ) Studio:**
-  * 44 Thai consonants with traditional mnemonic illustrations (ก ไก่, ข ไข่).
-  * Centerline stroke tracking with circle-head start indicator.
-* [ ] **English Alphabet (A-Z) Studio:**
-  * Uppercase and lowercase pairs with bilingual phonics.
+## 📝 App 3: Thai Alphabet & Name Tracing Studio — COMPLETED & READY FOR REVIEW
+* [x] **Personal Name Tracing (Granddaughters' Name Studio):**
+  * [x] Automatic sideways orientation listener with debouncing.
+  * [x] Tap-to-Talk glowing medallion granting browser audio activation token.
+  * [x] Web Speech API (`th-TH`) listening for spoken nicknames.
+  * [x] Polite Thai retry nudge on silence: *"พูดดังๆ อีกทีนะคะ คนเก่ง"*.
+  * [x] Phonetic fuzzy matching for Sayda (**เซด้า** / **เซดา**), Dada (**ดาด้า**), Mom Beam (**บีม**), Grandma Jeab (**เจี๊ยบ**).
+  * [x] Dynamic open-name generation for any spoken Thai word.
+  * [x] Two-strike offline fallback to avatar cards (🌸 เซด้า / 🌟 ดาด้า).
+  * [x] Multi-letter side-by-side rainbow-to-black canvas tracing arena.
+* [x] **Thai Consonants (ก-ฮ) Studio:**
+  * [x] 44 Thai consonants with traditional mnemonic illustrations (ก ไก่, ข ไข่, ฃ ขวด...).
+  * [x] Authentic monoline schoolbook centerline spines extracted from Apple's `Ayuthaya.ttf`.
+  * [x] Direction-locked wavefront tracking (Layer 1 bold black 36px underpass, Layer 2 fine rainbow 12px overpass).
+  * [x] Confetti explosion and victory chimes upon letter completion.
+* [x] **Mom's Settings Cog (⚙️):**
+  * [x] 2-second hold gate to prevent accidental child tapping.
+  * [x] Toggle: Repeat mode (relaxed practice) vs Auto-Advance (bump to next letter).
 
 ---
 
@@ -19,7 +27,7 @@
 * [x] Authentic vector centerline paths with rainbow guide.
 * [x] Direction-locked wavefront tracking across loop crossings.
 * [x] Built-in `ℹ️` Parent Guide modal with "Add to Home Screen" instructions.
-* [x] Sent to grandmother via LINE.
+* [x] Cross-app navigation link (`🔤`) to Thai Alphabet App.
 
 ---
 
@@ -29,9 +37,3 @@
 * [x] 3-option choice buttons with Thai & Arabic numerals.
 * [x] Celebration fanfare, ting sound, and confetti.
 * [ ] (On Hold) Expand addition range up to 20 when older daughter is ready.
-
----
-
-## ⏱️ Research & Tools: TikTok Screen Time Timer
-* [x] Documented built-in native Thai controls: Apple Screen Time (iOS) & Google Family Link (Android).
-* [x] Documented "Learn to Earn" phone timer concepts (earning TikTok minutes through learning apps).

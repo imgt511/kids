@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>walkthrough</title>
+  <style>
+
+    :root {
+      --bg: #090d12;
+      --card-bg: #121820;
+      --card-hover: #18222d;
+      --border: #263342;
+      --text: #f0f6fc;
+      --muted: #8b9bb0;
+      --accent: #3fb950; /* Retro Phosphor Green */
+      --accent-glow: rgba(63, 185, 80, 0.35);
+      --yellow: #d29922;
+      --purple: #bc8cff;
+      --red: #f85149;
+      --blue: #58a6ff;
+      --font-scale: 1.2;
+    }
+
+    body.distance-11ft {
+      --font-scale: 1.45;
+    }
+
+    body.distance-7ft {
+      --font-scale: 1.2;
+    }
+
+    body.distance-4ft {
+      --font-scale: 1.0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: calc(28px * var(--font-scale)) calc(36px * var(--font-scale));
+      line-height: 1.6;
+      font-size: calc(18px * var(--font-scale));
+      min-height: 100vh;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1150px) {
+      body { padding: 16px 20px; }
+      .meta-bar { grid-template-columns: repeat(2, 1fr) !important; }
+      .split-grid { grid-template-columns: 1fr !important; }
+    }
+
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-group h1 {
+      font-size: calc(28px * var(--font-scale));
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .title-group p {
+      font-size: calc(15px * var(--font-scale));
+      color: var(--muted);
+      font-family: monospace;
+      margin-top: 4px;
+    }
+
+    .controls-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: var(--card-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+      padding: 10px 18px;
+      font-size: calc(14px * var(--font-scale));
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn.active, .btn:hover {
+      background-color: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .btn-action {
+      color: var(--accent);
+    }
+
+    .meta-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .meta-box {
+      background-color: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+
+    .meta-box span {
+      display: block;
+      font-size: calc(13px * var(--font-scale));
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-box strong {
+      font-size: calc(22px * var(--font-scale));
+      color: #fff;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: calc(24px * var(--font-scale));
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: calc(22px * var(--font-scale));
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .card p, .card div {
+      font-size: calc(18px * var(--font-scale));
+      color: #e6edf3;
+      line-height: 1.6;
+    }
+
+    /* Markdown General Rendering */
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+      font-weight: 800;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: calc(28px * var(--font-scale)); color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+    h2 { font-size: calc(24px * var(--font-scale)); color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    h3 { font-size: calc(20px * var(--font-scale)); color: #fff; }
+    h4 { font-size: calc(18px * var(--font-scale)); color: var(--purple); }
+
+    p {
+      margin-bottom: 16px;
+      color: #e6edf3;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    ul, ol {
+      margin-left: 28px;
+      margin-bottom: 18px;
+      color: #e6edf3;
+    }
+
+    li {
+      margin-bottom: 10px;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    li.task-item {
+      list-style: none;
+      margin-left: -20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    li.task-item:hover {
+      background: var(--card-hover);
+    }
+
+    li.task-item input[type="checkbox"] {
+      width: calc(22px * var(--font-scale));
+      height: calc(22px * var(--font-scale));
+      margin-top: 4px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    hr {
+      border: 0;
+      border-top: 2px solid var(--border);
+      margin: 28px 0;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--accent);
+      background: rgba(63, 185, 80, 0.08);
+      padding: 12px 20px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      color: #e6edf3;
+      font-style: italic;
+    }
+
+    pre {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) #161b22;
+    }
+
+    pre code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: calc(16px * var(--font-scale));
+      color: var(--accent);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: #21262d;
+      color: var(--purple);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: calc(16px * var(--font-scale));
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      text-align: left;
+      font-size: calc(17px * var(--font-scale));
+    }
+
+    th {
+      background: #21262d;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .badge-ok {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: rgba(63, 185, 80, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: calc(16px * var(--font-scale));
+    }
+
+    .issues-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .issue-item {
+      padding: 12px 16px;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      color: #f85149;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    .legacy-raw-box {
+      background: #0d1117;
+      border: 1px dashed var(--yellow);
+      padding: 16px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: calc(15px * var(--font-scale));
+      color: var(--yellow);
+      white-space: pre-wrap;
+      margin-top: 12px;
+    }
+
+  </style>
+</head>
+<body class="distance-11ft">
+
+  <header>
+    <div class="title-group">
+      <h1>walkthrough</h1>
+      <p>Source: walkthrough.md</p>
+    </div>
+    <div class="controls-group">
+      <button class="btn dist-btn" onclick="setDistance('4ft', this)">4 ft Close</button>
+      <button class="btn dist-btn" onclick="setDistance('7ft', this)">7.6 ft Sitting</button>
+      <button class="btn dist-btn active" onclick="setDistance('11ft', this)">11 ft Standing</button>
+      <a href="walkthrough.md" class="btn btn-action" target="_blank">📄 View Source .md</a>
+    </div>
+  </header>
+
+  <div class="card">
+    <h1>LINE Sharing, Safety & Family Walkthrough Guide</h1>
+<p>This guide explains how to safely send the <strong>Granddaughters Learning Widget</strong> to your girlfriend via LINE, how she can share it with her daughter, and how to pin it directly to the child's phone screen like a real app.</p>
+<hr>
+<h2>1. Why a Web Link is Best for LINE (vs. Sending a File)</h2>
+<p>| Method | How it Works in LINE | When You Update a Sound File |</p>
+<p>| :--- | :--- | :--- |</p>
+<p>| <strong>Option A: Web Link (Recommended)</strong> | Send a single link. They tap once, and it opens instantly in Safari/Chrome. | <strong>Instant auto-refresh.</strong> You update the link on the web, and next time they tap it, the new sound plays automatically. No resending needed. |</p>
+<p>| <strong>Option B: Send HTML File</strong> | Send <code>index.html</code> as a file attachment. | <strong>Manual resend.</strong> You must send the file again to the grandmother, who must forward it to the daughter, who must re-save it on the kid's phone. |</p>
+<blockquote>[!TIP]<br>LINE's built-in file viewer can sometimes block web audio or touch gestures on raw <code>.html</code> files. A <strong>clean HTTPS web link</strong> works flawlessly on every iPhone and Android device.</blockquote>
+<hr>
+<h2>2. Security & Tamper-Proofing (Zero Risk)</h2>
+<ol>
+<li><strong>Nobody Can Edit or Break the Code:</strong></li>
+</ol>
+<ul>
+<li>Web apps run in a secure, sandboxed browser environment.</li>
+<li>Neither the grandmother, the mother, nor the child can accidentally edit, delete, or change the code. It is 100% read-only.</li>
+</ul>
+<ol>
+<li><strong>Safe for Kids:</strong></li>
+</ol>
+<ul>
+<li>No user accounts, no passwords, no ads, no trackers, and no external cookies.</li>
+<li>Star points are saved strictly to the phone's local storage (<code>localStorage</code>).</li>
+</ul>
+<ol>
+<li><strong>Offline Ready:</strong></li>
+</ol>
+<ul>
+<li>Once loaded, all sounds and vector drawings are embedded inside the app. It does not stream heavy data over cellular networks.</li>
+</ul>
+<hr>
+<h2>3. The 3-Step Sharing Chain (Grandmother → Mother → Granddaughter)</h2>
+<pre><code>[ You (Pattaya) ]
+       │  (Send link via LINE)
+       ▼
+[ Girlfriend (Seda&#x27;s Grandmother) ] ── Taps link to test on her phone
+       │  (Forwards link in family LINE chat)
+       ▼
+[ Daughter (Seda&#x27;s Mother) ] ── Opens link on the kid&#x27;s phone
+       │  (Taps &quot;Add to Home Screen&quot;)
+       ▼
+[ Granddaughter&#x27;s Phone Screen ] ── App icon sits on the home screen ready to tap anytime!</code></pre>
+<hr>
+<h2>4. How to Pin to the Phone Screen ("Add to Home Screen")</h2>
+<p>No app store download needed. It installs in 5 seconds directly from the browser:</p>
+<h3>On iPhone (Apple Safari):</h3>
+<ol>
+<li>Open the link in <strong>Safari</strong>.</li>
+<li>Tap the <strong>Share button</strong> at the bottom (the square with an arrow pointing up ⬆️).</li>
+<li>Scroll down and tap <strong>"Add to Home Screen"</strong> (<code>เพิ่มไปยังหน้าจอโฮม</code>).</li>
+<li>Tap <strong>Add</strong> in the top right corner. An app icon will appear right on the home screen!</li>
+</ol>
+<h3>On Android (Google Chrome):</h3>
+<ol>
+<li>Open the link in <strong>Chrome</strong>.</li>
+<li>Tap the <strong>Three Dots menu</strong> in the top right (⋮).</li>
+<li>Tap <strong>"Add to Home screen"</strong> (<code>เพิ่มลงในหน้าจอหลัก</code>).</li>
+<li>Tap <strong>Install</strong> or <strong>Add</strong>.</li>
+</ol>
+<hr>
+<h2>5. Ready-to-Copy Thai LINE Message for Your Girlfriend</h2>
+<p>Copy and paste this message directly into LINE when you send her the link:</p>
+<pre><code>ที่รักจ๋า ลองเปิดลิงก์นี้ดูหน่อยนะจ๊ะ เป็นเว็บเกมฝึกนับเลขและวาดตัวเลข ๑-๑๐ ที่เค้าทำให้หลานสาวเล่น ปลอดภัย 100% ไม่มีโฆษณา ไม่ต้องโหลดแอป 
+
+👉 https://imgt511.github.io/kids/
+
+วิธีเล่น:
+1. แตะผลไม้เพื่อหัดนับเลข
+2. แตะการ์ดตัวเลขเพื่อฟังเสียงพูดไทย-อังกฤษ
+3. แตะรูปขาตั้งวาดภาพเพื่อใช้นิ้วลากระบายสีตัวเลข
+
+ถ้าชอบ ฝากส่งต่อให้ลูกสาวเปิดบนมือถือของหลาน แล้วกด &quot;เพิ่มไปยังหน้าจอโฮม&quot; (Add to Home Screen) ไว้ให้เด็กๆ กดเล่นได้ตลอดเวลาเลยนะจ๊ะ ❤️</code></pre>
+<hr>
+<h2>6. How Updates Work</h2>
+<ul>
+<li>If you change a sound, add new music, or add numbers 11–20:</li>
+<li>You simply update the web file.</li>
+<li>When anyone opens the app or pulls down to refresh the screen, the new music and sounds update automatically!</li>
+</ul>
+  </div>
+
+  <script>
+
+    function setDistance(mode, btn, updateUrl = true) {
+      document.body.className = 'distance-' + mode;
+      document.querySelectorAll('.controls-group .dist-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        document.querySelectorAll('.controls-group .dist-btn').forEach(b => {
+          if (b.innerText.toLowerCase().includes(mode.replace('ft', ''))) b.classList.add('active');
+        });
+      }
+      localStorage.setItem('user_view_distance', mode);
+
+      if (updateUrl && window.history && window.history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set('dist', mode);
+        window.history.replaceState({}, '', url);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      let targetDist = params.get('dist') || params.get('distance') || params.get('view') || localStorage.getItem('user_view_distance') || '11ft';
+      if (targetDist.startsWith('4')) targetDist = '4ft';
+      else if (targetDist.startsWith('7')) targetDist = '7ft';
+      else if (targetDist.startsWith('11')) targetDist = '11ft';
+
+      setDistance(targetDist, null, false);
+    });
+
+  </script>
+</body>
+</html>

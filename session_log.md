@@ -41,6 +41,24 @@
   * Configured GitHub Pages on `main` branch. Verified live HTTP 200 status.
   * Live URL for 5yo Number Tracing: `https://imgt511.github.io/kids/`
   * Live URL for 7yo Addition (On Hold): `https://imgt511.github.io/kids/widget_addition.html`
+
+## 2026-10-24 (Part 3) — App 3: Thai Alphabet & Granddaughters' Name Tracing Studio
+* **Tool Used:** Antigravity (Gemini 3.8 Flash High & Critic Subagent on Pro)
+* **Accomplished:**
+  1. **Addressed Linguistic Inquiries & Pedagogical Scope:**
+     * Confirmed Thai alphabet does not mimic English (44 consonants, 32 vowel forms, tone classes vs 26 Latin letters). Approved dedicated 100% pure Thai learning track.
+     * Settled name roster: prioritized **Sayda** (เซด้า) over Seda (เซดา), locked **Dada** (ดาด้า), Mom **Beam** (บีม), and Grandmother **Jeab** (เจี๊ยบ).
+  2. **Adversarial Pre-Flight Audit (Critic Subagent on Pro):**
+     * Identified mobile browser user-gesture gates on `SpeechRecognition` and `AudioContext` during orientation events.
+     * Implemented 7 concrete safeguards: glowing Tap-to-Talk medallion, 2-strike offline avatar fallback, phonetic fuzzy child voice matcher, TTS-to-mic sequential buffer (350ms), orientation debouncing (150ms), and 2-second hold gate for Mom's settings cog.
+  3. **Extracted 63 Authentic Thai Vector Centerlines (`Ayuthaya.ttf`):**
+     * Built pure Python Zhang-Suen morphological thinning and directional graph tracer.
+     * Extracted monoline medial spines for all 44 consonants (ก to ฮ) and 19 vowels/tone marks into a compact 56 KB library (`TRACE_PATHS`).
+  4. **Built Full Standalone App (`widget_alphabet.html`):**
+     * **Portrait Mode:** 44 Thai consonants explorer (ก ไก่ to ฮ นกฮูก), pronunciation audio, single-letter dual-layer tracing arena (12px fine rainbow overpass -> 30/36px solid black underpass), and quick-jump drawer.
+     * **Landscape Mode:** Granddaughter Name Studio with voice greeting (*"ชื่อเล่นอะไรคะ?"*), polite Thai retry prompt (*"พูดดังๆ อีกทีนะคะ คนเก่ง"*), and dynamic multi-letter layout.
+     * **Mom's Settings Cog (⚙️):** 2-second hold gate to toggle between Repeat Mode (default) and Auto-Advance Mode.
+  5. **Cross-App Navigation:** Linked Numbers App (`index.html`) and Alphabet App (`widget_alphabet.html`) via header buttons (`🔢` / `🔤`).
   * Updated `walkthrough.md` with the permanent live link.
 
 ## 2026-10-24 (Part 3) — Production Release, Master Index, & Alphabet Roadmap

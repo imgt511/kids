@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>session_log</title>
+  <style>
+
+    :root {
+      --bg: #090d12;
+      --card-bg: #121820;
+      --card-hover: #18222d;
+      --border: #263342;
+      --text: #f0f6fc;
+      --muted: #8b9bb0;
+      --accent: #3fb950; /* Retro Phosphor Green */
+      --accent-glow: rgba(63, 185, 80, 0.35);
+      --yellow: #d29922;
+      --purple: #bc8cff;
+      --red: #f85149;
+      --blue: #58a6ff;
+      --font-scale: 1.2;
+    }
+
+    body.distance-11ft {
+      --font-scale: 1.45;
+    }
+
+    body.distance-7ft {
+      --font-scale: 1.2;
+    }
+
+    body.distance-4ft {
+      --font-scale: 1.0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: calc(28px * var(--font-scale)) calc(36px * var(--font-scale));
+      line-height: 1.6;
+      font-size: calc(18px * var(--font-scale));
+      min-height: 100vh;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1150px) {
+      body { padding: 16px 20px; }
+      .meta-bar { grid-template-columns: repeat(2, 1fr) !important; }
+      .split-grid { grid-template-columns: 1fr !important; }
+    }
+
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-group h1 {
+      font-size: calc(28px * var(--font-scale));
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .title-group p {
+      font-size: calc(15px * var(--font-scale));
+      color: var(--muted);
+      font-family: monospace;
+      margin-top: 4px;
+    }
+
+    .controls-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: var(--card-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+      padding: 10px 18px;
+      font-size: calc(14px * var(--font-scale));
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn.active, .btn:hover {
+      background-color: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .btn-action {
+      color: var(--accent);
+    }
+
+    .meta-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .meta-box {
+      background-color: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+
+    .meta-box span {
+      display: block;
+      font-size: calc(13px * var(--font-scale));
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-box strong {
+      font-size: calc(22px * var(--font-scale));
+      color: #fff;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: calc(24px * var(--font-scale));
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: calc(22px * var(--font-scale));
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .card p, .card div {
+      font-size: calc(18px * var(--font-scale));
+      color: #e6edf3;
+      line-height: 1.6;
+    }
+
+    /* Markdown General Rendering */
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+      font-weight: 800;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: calc(28px * var(--font-scale)); color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+    h2 { font-size: calc(24px * var(--font-scale)); color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    h3 { font-size: calc(20px * var(--font-scale)); color: #fff; }
+    h4 { font-size: calc(18px * var(--font-scale)); color: var(--purple); }
+
+    p {
+      margin-bottom: 16px;
+      color: #e6edf3;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    ul, ol {
+      margin-left: 28px;
+      margin-bottom: 18px;
+      color: #e6edf3;
+    }
+
+    li {
+      margin-bottom: 10px;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    li.task-item {
+      list-style: none;
+      margin-left: -20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    li.task-item:hover {
+      background: var(--card-hover);
+    }
+
+    li.task-item input[type="checkbox"] {
+      width: calc(22px * var(--font-scale));
+      height: calc(22px * var(--font-scale));
+      margin-top: 4px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    hr {
+      border: 0;
+      border-top: 2px solid var(--border);
+      margin: 28px 0;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--accent);
+      background: rgba(63, 185, 80, 0.08);
+      padding: 12px 20px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      color: #e6edf3;
+      font-style: italic;
+    }
+
+    pre {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) #161b22;
+    }
+
+    pre code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: calc(16px * var(--font-scale));
+      color: var(--accent);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: #21262d;
+      color: var(--purple);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: calc(16px * var(--font-scale));
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      text-align: left;
+      font-size: calc(17px * var(--font-scale));
+    }
+
+    th {
+      background: #21262d;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .badge-ok {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: rgba(63, 185, 80, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: calc(16px * var(--font-scale));
+    }
+
+    .issues-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .issue-item {
+      padding: 12px 16px;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      color: #f85149;
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    .legacy-raw-box {
+      background: #0d1117;
+      border: 1px dashed var(--yellow);
+      padding: 16px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: calc(15px * var(--font-scale));
+      color: var(--yellow);
+      white-space: pre-wrap;
+      margin-top: 12px;
+    }
+
+  </style>
+</head>
+<body class="distance-11ft">
+
+  <header>
+    <div class="title-group">
+      <h1>session_log</h1>
+      <p>Source: session_log.md</p>
+    </div>
+    <div class="controls-group">
+      <button class="btn dist-btn" onclick="setDistance('4ft', this)">4 ft Close</button>
+      <button class="btn dist-btn" onclick="setDistance('7ft', this)">7.6 ft Sitting</button>
+      <button class="btn dist-btn active" onclick="setDistance('11ft', this)">11 ft Standing</button>
+      <a href="session_log.md" class="btn btn-action" target="_blank">📄 View Source .md</a>
+    </div>
+  </header>
+
+  <div class="card">
+    <h1>Session Log: Granddaughters Learning Widgets</h1>
+<h2>2026-10-24 — Authentic Centerline Vector Tracing & Intersection Layering</h2>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity (Gemini 3.8 Flash & Gemini 4 Argon)</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>Locating Lost Session & Workspace Clarification:</strong> Identified that the previous day's session was attached to <code>Granddaughters<em>Learning</em>Widgets</code> rather than the active scratch workspace <code>jolly-volta</code>. Restored context without requiring workspace restart.</li>
+<li><strong>Discarded Double-Dotted Font Stencil:</strong> Completely replaced font <code>&lt;text&gt;</code> outline and canvas clipping mask (which suffered from iOS Safari Thai baseline misalignment and closed loop blobs) with true mathematical centerline spines.</li>
+<li><strong>Visual Verification of Thai Schoolbook Numerals:</strong> Extracted medial axes from <code>Ayuthaya</code> (monoline looped Thai font) and <code>Arial Rounded Bold</code>, visually verifying all 20 numerals (<code>๑–๑๐</code> and <code>1–10</code>) via proof sheets.</li>
+<li><strong>Self-Contained Vector Data (<code>TRACE<em>PATHS</code>):</strong> Embedded all 20 vector centerline paths directly into <code>index.html</code> and <code>widget</em>numbers.html</code> (~48 KB), guaranteeing 100% identical rendering across any iPhone or Android phone without font dependencies.</li>
+<li><strong>Fine Rainbow Guide → Bold Black Reveal Engine:</strong> Designed fine rainbow centerline (<code>12px</code>) along the spine that turns into a bold black numeral (<code>36px</code>) right behind the child's finger pad. Handled double-digit <code>10</code> (<code>๑๐</code> and <code>10</code>) with automatic side-by-side scaling.</li>
+<li><strong>Resolved Loop-de-Loop Intersection Forking:</strong></li>
+</ol>
+<ul>
+<li>Re-stitched all skeleton curves using tangent vectors so continuous curves sail smoothly through T-junctions.</li>
+<li>Implemented direction-locked wavefront tracking so the fill only advances along the connected curve in the direction of finger movement (locking out cross-branches at loop crossings).</li>
+<li>Added Overpass / Underpass visual layering: filled black lines render on the lower layer, keeping untraced rainbow guides visible across crossings until the child traces that direction.</li>
+<li><strong>Next Steps:</strong></li>
+<li>Complete user tactile tweaks on phone.</li>
+<li>Consider splitting the Arithmetic challenge into a separate standalone widget or adding clear visual icon differentiation on the start screen.</li>
+</ul>
+<h2>2026-10-24 (Part 2) — App Separation & Numeral Stacking Architecture</h2>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity (Gemini 3.8 Flash)</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>Separated Math Addition into Standalone App (<code>widget_addition.html</code>):</strong></li>
+</ol>
+<ul>
+<li>Extracted fruit-based addition logic, equation generator, option choices, celebratory fanfare, and confetti into a dedicated standalone file.</li>
+<li>Placed on hold with clear in-app badge for the 7-year-old.</li>
+</ul>
+<ol>
+<li><strong>Streamlined Number Tracing Studio (<code>widget_numbers.html</code> & <code>index.html</code>):</strong></li>
+</ol>
+<ul>
+<li>Removed mode switcher pills, math sections, and math logic.</li>
+<li>Clean, uncluttered UI dedicated 100% to 5-year-old counting, twin bilingual cards, and vector centerline finger tracing.</li>
+</ul>
+<ol>
+<li><strong>Addressed Numeral Stacking Question (1 to 100):</strong></li>
+</ol>
+<ul>
+<li>Confirmed both Western/Arabic (0-9) and Thai (๐-๙) numerals use base-10 positional stacking side-by-side, identical to the American system, requiring no extra characters beyond 0 through 9.</li>
+</ul>
+<ol>
+<li><strong>Updated Project State & Standing HTML Views:</strong> Refreshed <code>CONTRACT.prose.md</code>, <code>PROJECT_STATUS.md</code>, <code>TODO.md</code>, and regenerated standing HTML companions.</li>
+</ol>
+<ul>
+<li><strong>Refinement:</strong> Removed the temporary audio tester bar from the top of all widgets per user request. Kept the synthesizer and human audio routines intact for celebration fanfares and praise playback.</li>
+</ul>
+<ul>
+<li><strong>LINE Sharing & Parent Guide Deployment:</strong></li>
+<li>Created <code>walkthrough.md</code> detailing the 3-tier family sharing chain (Grandmother -> Mother -> Child), browser security, and "Add to Home Screen" instructions.</li>
+<li>Injected an in-app <code>ℹ️</code> Parent Guide modal directly into the header of <code>widget_numbers.html</code> and <code>index.html</code>.</li>
+<li>Generated <code>👁️_walkthrough.html</code> standing view companion.</li>
+</ul>
+<ul>
+<li><strong>GitHub Pages Production Deployment (<code>imgt511/kids</code>):</strong></li>
+<li>Created public GitHub repository <code>imgt511/kids</code> and pushed initial commit.</li>
+<li>Configured GitHub Pages on <code>main</code> branch. Verified live HTTP 200 status.</li>
+<li>Live URL for 5yo Number Tracing: <code>https://imgt511.github.io/kids/</code></li>
+<li>Live URL for 7yo Addition (On Hold): <code>https://imgt511.github.io/kids/widget_addition.html</code></li>
+<li>Updated <code>walkthrough.md</code> with the permanent live link.</li>
+</ul>
+<h2>2026-10-24 (Part 3) — Production Release, Master Index, & Alphabet Roadmap</h2>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity (Gemini 3.8 Flash)</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>LINE Delivery Completed:</strong> User successfully sent live link <code>https://imgt511.github.io/kids/</code> with Thai onboarding copy to grandmother.</li>
+<li><strong>Updated Master Index:</strong> Appended approved milestone line to <code>/Users/weightless/MUSTA<em>DEVELOPMENT/00</em>MASTER_INDEX.md</code>.</li>
+<li><strong>TikTok vs. Learning Timer Research:</strong> Evaluated native iOS Screen Time / Android Family Link (both available 100% in Thai) and "Learn to Earn" app-lock mechanisms for the mother.</li>
+<li><strong>Roadmap Transition:</strong> Scheduled App 3 (Thai Alphabet & Seda's Name Tracing) as the next immediate sprint.</li>
+</ol>
+  </div>
+
+  <script>
+
+    function setDistance(mode, btn, updateUrl = true) {
+      document.body.className = 'distance-' + mode;
+      document.querySelectorAll('.controls-group .dist-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        document.querySelectorAll('.controls-group .dist-btn').forEach(b => {
+          if (b.innerText.toLowerCase().includes(mode.replace('ft', ''))) b.classList.add('active');
+        });
+      }
+      localStorage.setItem('user_view_distance', mode);
+
+      if (updateUrl && window.history && window.history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set('dist', mode);
+        window.history.replaceState({}, '', url);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      let targetDist = params.get('dist') || params.get('distance') || params.get('view') || localStorage.getItem('user_view_distance') || '11ft';
+      if (targetDist.startsWith('4')) targetDist = '4ft';
+      else if (targetDist.startsWith('7')) targetDist = '7ft';
+      else if (targetDist.startsWith('11')) targetDist = '11ft';
+
+      setDistance(targetDist, null, false);
+    });
+
+  </script>
+</body>
+</html>
