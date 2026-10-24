@@ -3,32 +3,27 @@
   "created": "2026-10-23",
   "lastUpdated": "2026-10-24",
   "status": "active",
-  "currentMilestone": "v1.2.0-standalone-app-split",
+  "currentMilestone": "v1.3.0-alphabet-and-name-tracing-prep",
+  "liveProductionUrl": "https://imgt511.github.io/kids/",
   "targetAges": [
     5,
     7
   ],
-  "learningTracks": [
-    "Thai numerals and script foundation",
-    "English language bridge and arithmetic",
-    "Bilingual speech synthesis"
-  ],
   "apps": {
     "numbers_tracing": {
-      "file": "widget_numbers.html",
-      "launcher": "index.html",
-      "status": "active",
-      "target": "5-year-old (tactile 1-10 counting & vector tracing)"
+      "file": "index.html",
+      "status": "live",
+      "url": "https://imgt511.github.io/kids/"
     },
     "math_addition": {
       "file": "widget_addition.html",
       "status": "on_hold",
-      "target": "7-year-old (addition challenge up to 10/20)"
+      "url": "https://imgt511.github.io/kids/widget_addition.html"
     },
-    "alphabet_spelling": {
-      "status": "on_hold",
-      "target": "Name tracing, Thai ก-ฮ, English A-Z"
+    "alphabet_name_tracing": {
+      "file": "widget_alphabet.html",
+      "status": "next_sprint",
+      "focus": "Seda name spelling & Thai ก-ฮ"
     }
-  },
-  "hardwareTarget": "Budget Android and iOS mobile devices (100% offline, standalone HTML5)"
+  }
 }

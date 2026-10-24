@@ -2,6 +2,6 @@
 
 Last session: 2026-10-24
 Tool used: Antigravity
-Status: Deployed to GitHub Pages (`imgt511/kids`). Live production HTTPS URL is active: `https://imgt511.github.io/kids/`. Both `index.html` (5yo number drawing) and `widget_addition.html` (7yo math challenge) are live and served from Bangkok edge cache.
-Next step: Send live link to grandmother on LINE for phone testing; add future widgets (alphabet, spelling) into the same umbrella domain.
+Status: Live app deployed to GitHub Pages (`https://imgt511.github.io/kids/`) and sent to grandmother via LINE. Researched phone timer & parental control mechanics to balance TikTok with educational apps. Prepared next sprint for Thai Alphabet and personal name spelling.
+Next step: Build App 3: Thai Alphabet & Personal Name Tracing Studio (Seda's name spelling & finger stroke guide).
 Open issues: None.
