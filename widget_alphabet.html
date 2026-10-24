@@ -1249,14 +1249,15 @@
     }
 
     function lockInitialTouch(x, y) {
+      hideStartCue();
       let best = null;
-      let bestDistSq = 42 * 42;
+      let bestDistSq = 65 * 65;
       for (let sIdx = 0; sIdx < activeStrokes.length; sIdx++) {
         const segs = activeStrokes[sIdx];
         for (let i = 0; i < segs.length; i++) {
           const s = segs[i];
           const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
-          const penalty = s.filled ? 120 : 0;
+          const penalty = s.filled ? 140 : 0;
           if (dSq + penalty < bestDistSq) {
             bestDistSq = dSq + penalty;
             best = { sIdx, segIdx: i };
@@ -1268,16 +1269,19 @@
     }
 
     function advanceWavefront(x, y) {
-      if (!currentCursor) return;
+      if (!currentCursor) {
+        lockInitialTouch(x, y);
+        if (!currentCursor) return;
+      }
       const segs = activeStrokes[currentCursor.sIdx];
       let cur = currentCursor.segIdx;
 
-      for (let step = 0; step < 4; step++) {
+      for (let step = 0; step < 8; step++) {
         let moved = false;
         if (cur + 1 < segs.length) {
           const nxt = segs[cur + 1];
           const dNext = Math.hypot(nxt.mx - x, nxt.my - y);
-          if (dNext < 50) {
+          if (dNext < 65) {
             nxt.filled = true;
             cur = cur + 1;
             moved = true;
@@ -1286,7 +1290,7 @@
         if (!moved && cur - 1 >= 0) {
           const prv = segs[cur - 1];
           const dPrev = Math.hypot(prv.mx - x, prv.my - y);
-          if (dPrev < 50) {
+          if (dPrev < 65) {
             prv.filled = true;
             cur = cur - 1;
             moved = true;
@@ -1295,6 +1299,27 @@
         if (!moved) break;
       }
       currentCursor.segIdx = cur;
+
+      // Seamless Cross-Stroke & Corner Transition Hop
+      let bestHop = null;
+      let bestHopDistSq = 62 * 62;
+      for (let sIdx = 0; sIdx < activeStrokes.length; sIdx++) {
+        if (sIdx === currentCursor.sIdx) continue;
+        const oSegs = activeStrokes[sIdx];
+        for (let i = 0; i < oSegs.length; i++) {
+          const s = oSegs[i];
+          if (s.filled) continue;
+          const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
+          if (dSq < bestHopDistSq) {
+            bestHopDistSq = dSq;
+            bestHop = { sIdx, segIdx: i };
+          }
+        }
+      }
+      if (bestHop) {
+        currentCursor = bestHop;
+        activeStrokes[bestHop.sIdx][bestHop.segIdx].filled = true;
+      }
     }
 
     function checkTraceCompletion() {
@@ -1800,13 +1825,13 @@
 
     function lockNameTouch(x, y) {
       let best = null;
-      let bestDistSq = 44 * 44;
+      let bestDistSq = 65 * 65;
       for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
         const segs = nameSegments[sIdx];
         for (let i = 0; i < segs.length; i++) {
           const s = segs[i];
           const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
-          const penalty = s.filled ? 100 : 0;
+          const penalty = s.filled ? 140 : 0;
           if (dSq + penalty < bestDistSq) {
             bestDistSq = dSq + penalty;
             best = { sIdx, segIdx: i };
@@ -1818,16 +1843,19 @@
     }
 
     function advanceNameWavefront(x, y) {
-      if (!nameTraceCursor) return;
+      if (!nameTraceCursor) {
+        lockNameTouch(x, y);
+        if (!nameTraceCursor) return;
+      }
       const segs = nameSegments[nameTraceCursor.sIdx];
       let cur = nameTraceCursor.segIdx;
 
-      for (let step = 0; step < 4; step++) {
+      for (let step = 0; step < 8; step++) {
         let moved = false;
         if (cur + 1 < segs.length) {
           const nxt = segs[cur + 1];
           const dNext = Math.hypot(nxt.mx - x, nxt.my - y);
-          if (dNext < 50) {
+          if (dNext < 65) {
             nxt.filled = true;
             cur = cur + 1;
             moved = true;
@@ -1836,7 +1864,7 @@
         if (!moved && cur - 1 >= 0) {
           const prv = segs[cur - 1];
           const dPrev = Math.hypot(prv.mx - x, prv.my - y);
-          if (dPrev < 50) {
+          if (dPrev < 65) {
             prv.filled = true;
             cur = cur - 1;
             moved = true;
@@ -1845,6 +1873,27 @@
         if (!moved) break;
       }
       nameTraceCursor.segIdx = cur;
+
+      // Seamless Cross-Stroke Hop in Landscape
+      let bestHop = null;
+      let bestHopDistSq = 62 * 62;
+      for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
+        if (sIdx === nameTraceCursor.sIdx) continue;
+        const oSegs = nameSegments[sIdx];
+        for (let i = 0; i < oSegs.length; i++) {
+          const s = oSegs[i];
+          if (s.filled) continue;
+          const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
+          if (dSq < bestHopDistSq) {
+            bestHopDistSq = dSq;
+            bestHop = { sIdx, segIdx: i };
+          }
+        }
+      }
+      if (bestHop) {
+        nameTraceCursor = bestHop;
+        nameSegments[bestHop.sIdx][bestHop.segIdx].filled = true;
+      }
     }
 
     function checkNameCompletion() {
