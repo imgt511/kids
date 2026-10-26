@@ -36,9 +36,23 @@
 
 ---
 
-## ➕ App 2: Math Addition Challenge — COMPLETED & ON HOLD
+## ➕ App 2: Math Addition Challenge — ROADMAP & DESIGN REVISIONS
 * [x] Live on GitHub Pages: `https://imgt511.github.io/kids/widget_addition.html`
 * [x] Visual fruit counters with randomized addition questions.
 * [x] 3-option choice buttons with Thai & Arabic numerals.
 * [x] Celebration fanfare, ting sound, and confetti.
+* [ ] **New Addition Challenge Format (Next Sprint Spec):**
+  * [ ] **Progressive Difficulty Start**: Begin gently with `1 + 1` so the child can grasp the concept, then scale up progressively (e.g. `2 + 2`, `3 + 4`).
+  * [ ] **Dual Operand Tile Layout**:
+    * **Tile A**: Displays number with corresponding fruit artwork underneath (e.g., 3 apples under card 3).
+    * **Plus Sign**: `➕` connecting Tile A and Tile B.
+    * **Tile B**: Displays number with corresponding fruit artwork underneath (e.g., 4 apples under card 4).
+    * **Equals Sign & Target Box**: `=` followed by interactive answer target card (`?`).
+  * [ ] **Direct Visual Counting Pedagogy**:
+    * Designed so the child can touch and count the fruit symbols one by one across both cards (1, 2, 3... 4, 5, 6, 7) before answering.
+  * [ ] **Dedicated Numerical Keypad Input**:
+    * Replace / upgrade the 3 choice buttons with a kid-friendly on-screen numerical keypad (0–9 / clear / enter) or an answer button that pulls up the keypad.
+    * Child types their counted answer directly into the target box.
+  * [ ] **Mobile Screen Scaling**:
+    * Responsive sizing (or smooth scroll) to ensure fruit illustrations, equation tiles, and numerical keypad fit naturally on phone glass (iPhone, Pixel 9 Pro, Bison GT).
 * [ ] (On Hold) Expand addition range up to 20 when older daughter is ready.
