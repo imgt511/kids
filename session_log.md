@@ -88,3 +88,19 @@
   * 5 Two-stroke consonants (ญ, ฐ, ศ, ส, ษ): multi-step spoken instructions explaining upper body and foot/tail/crossbar order.
 * **To-Do List Maintenance:**
   * Added future enhancement task to `TODO.md` for adding start cues and audio coaching to Numbers Widget (`widget_numbers.html` / `index.html`).
+
+
+---
+
+## Session 2026-10-26: Central Directory Launchpad & Multi-App Artwork Portal
+* **Root Portal Implementation (`index.html`):**
+  * Converted `index.html` into a dedicated mobile directory launchpad for `https://imgt511.github.io/kids/`.
+  * Designed large, touch-friendly chunky artwork tiles:
+    1. **Numbers Studio** (`widget_numbers.html`): `🔢 ๑ ๒ ๓` / `1 2 3` with coral-peach gradient.
+    2. **Thai Alphabet & Names** (`widget_alphabet.html`): `🔤 ก ข ค` / `🐔 ✍️` with mint-turquoise gradient.
+    3. **Math Addition Challenge** (`widget_addition.html`): `➕ 1+2` / fruit basket with amber-gold gradient.
+    4. **Math Subtraction (Upcoming)**: `➖ 5-2` with purple gradient and spoken Thai reminder.
+    5. **Thai Spelling & Reading (Upcoming)**: `📖 สระ-คำ` with sky-blue gradient.
+  * Added dynamic cross-widget star aggregator (`localStorage` summation) and Web Audio API tactile feedback chimes.
+* **Universal 2-Way Navigation:**
+  * Added `🏠` Home buttons in the top navigation bars of `widget_numbers.html`, `widget_alphabet.html`, and `widget_addition.html` for instant one-tap return to the launchpad.

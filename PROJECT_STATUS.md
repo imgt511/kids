@@ -1,7 +1,7 @@
 # Project Status: Granddaughters Learning Widgets
 
-Last session: 2026-10-25
+Last session: 2026-10-26
 Tool used: Antigravity
-Status: Overhauled full 44 Thai consonants + 19 vowels with 100% complete multi-stroke vector geometry. Added pulsating visual start cues (🎯/👆/✏️/🖍️) and pedagogical Thai voice coaching. Fixed mobile touch sticking by widening touch tolerance (65px, 8 steps) and resolved the dead-end throat spur on letter ก by unifying it into an unbroken single continuous stroke (bottom-left leg -> chicken beak -> arched roof -> bottom-right leg). Updated Master Index.
-Next step: Test on Android and iPhone devices (`https://imgt511.github.io/kids/widget_alphabet.html`).
+Status: Transformed root `imgt511.github.io/kids/` (`index.html`) into a kid-friendly Launchpad & Directory Portal featuring big chunky artwork tiles for Numbers (๑-๑๐ / 1-10), Thai Alphabet & Name Studio (ก-ฮ), Math Addition Challenge, and upcoming tiles for Math Subtraction & Thai Spelling. Added universal 🏠 Home navigation across all widgets (`widget_numbers.html`, `widget_alphabet.html`, `widget_addition.html`) for 2-way seamless navigation. Integrated aggregate star counter and tactile sound feedback.
+Next step: Test directory launchpad and cross-widget navigation on family mobile devices (`https://imgt511.github.io/kids/`).
 Open issues: None.
