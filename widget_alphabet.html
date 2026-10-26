@@ -1207,10 +1207,10 @@
     function renderTraceCanvas() {
       tCtx.clearRect(0, 0, 460, 460);
 
-      // Layer 1 (Underpass): Giant Bold Solid Black (38px)
+      // Layer 1 (Underpass): Refined Solid Black (19px, down 50% to prevent intersection bleed)
       tCtx.save();
       tCtx.strokeStyle = "#111111";
-      tCtx.lineWidth = 38;
+      tCtx.lineWidth = 19;
       tCtx.lineCap = "round";
       tCtx.lineJoin = "round";
       for (const segs of activeStrokes) {
@@ -1232,9 +1232,9 @@
       }
       tCtx.restore();
 
-      // Layer 2 (Overpass): Fine Rainbow Guide (12px)
+      // Layer 2 (Overpass): Fine Rainbow Guide (8px, reduced 33% for visual clarity)
       tCtx.save();
-      tCtx.lineWidth = 12;
+      tCtx.lineWidth = 8;
       tCtx.lineCap = "round";
       tCtx.lineJoin = "round";
       for (const segs of activeStrokes) {
@@ -1782,10 +1782,10 @@
     function renderNameCanvas() {
       nCtx.clearRect(0, 0, nCanvas.width, nCanvas.height);
 
-      // Underpass: Giant Bold Solid Black (36px)
+      // Underpass: Refined Solid Black (18px, down 50%)
       nCtx.save();
       nCtx.strokeStyle = "#111111";
-      nCtx.lineWidth = 36;
+      nCtx.lineWidth = 18;
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
       for (const segs of nameSegments) {
@@ -1807,9 +1807,9 @@
       }
       nCtx.restore();
 
-      // Overpass: Fine Rainbow Guide (12px)
+      // Overpass: Fine Rainbow Guide (8px, reduced 33%)
       nCtx.save();
-      nCtx.lineWidth = 12;
+      nCtx.lineWidth = 8;
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
       for (const segs of nameSegments) {

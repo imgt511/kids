@@ -104,3 +104,13 @@
   * Added dynamic cross-widget star aggregator (`localStorage` summation) and Web Audio API tactile feedback chimes.
 * **Universal 2-Way Navigation:**
   * Added `🏠` Home buttons in the top navigation bars of `widget_numbers.html`, `widget_alphabet.html`, and `widget_addition.html` for instant one-tap return to the launchpad.
+
+
+---
+
+## Session 2026-10-26 (Part 2): Stroke Width Calibration & Intersection Bleed Elimination
+* **Intersection Bleed Elimination:**
+  * Analyzed physical canvas rendering: a 38px line had a 19px outward radius, causing adjacent loop strokes passing within 35px to bleed together and prematurely obscure the uncompleted rainbow guide.
+  * Reduced black fill stroke by 50%: from 38px down to 19px in `widget_alphabet.html` (18px in landscape), and from 36px down to 18px in `widget_numbers.html`.
+  * Reduced rainbow guide stroke by 33%: from 12px down to 8px in both widgets.
+  * Verified tight loops, chicken beak on ก, circular heads, and numerals 8, 9, ๖, ๘ now retain distinct visual separation and crisp tracing feedback.

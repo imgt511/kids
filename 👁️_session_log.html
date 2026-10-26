@@ -508,6 +508,15 @@
 <li><strong>Universal 2-Way Navigation:</strong></li>
 <li>Added <code>🏠</code> Home buttons in the top navigation bars of <code>widget<em>numbers.html</code>, <code>widget</em>alphabet.html</code>, and <code>widget_addition.html</code> for instant one-tap return to the launchpad.</li>
 </ul>
+<hr>
+<h2>Session 2026-10-26 (Part 2): Stroke Width Calibration & Intersection Bleed Elimination</h2>
+<ul>
+<li><strong>Intersection Bleed Elimination:</strong></li>
+<li>Analyzed physical canvas rendering: a 38px line had a 19px outward radius, causing adjacent loop strokes passing within 35px to bleed together and prematurely obscure the uncompleted rainbow guide.</li>
+<li>Reduced black fill stroke by 50%: from 38px down to 19px in <code>widget<em>alphabet.html</code> (18px in landscape), and from 36px down to 18px in <code>widget</em>numbers.html</code>.</li>
+<li>Reduced rainbow guide stroke by 33%: from 12px down to 8px in both widgets.</li>
+<li>Verified tight loops, chicken beak on ก, circular heads, and numerals 8, 9, ๖, ๘ now retain distinct visual separation and crisp tracing feedback.</li>
+</ul>
   </div>
 
   <script>
