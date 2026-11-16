@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thai Voice Audition — Gemini 3.8 Flash TTS</title>
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --orus: #0ea5e9;
+      --charon: #f59e0b;
+      --ok: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      line-height: 1.4;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    .sub { color: var(--muted); font-size: 0.92rem; margin: 0 0 14px; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: transform 0.08s ease, background 0.15s ease;
+    }
+    button:active { transform: scale(0.97); }
+    button.active-orus { background: var(--orus); color: #04131d; border-color: var(--orus); }
+    button.active-charon { background: var(--charon); color: #1c1002; border-color: var(--charon); }
+    button.btn-install { background: #166534; border-color: var(--ok); }
+    button.btn-stop { background: #7f1d1d; border-color: #ef4444; }
+    .status-bar {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+    .progress-wrap {
+      flex: 1 1 220px;
+      height: 10px;
+      background: #0b1220;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--ok);
+      transition: width 0.15s ease;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 22px 0 10px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 { margin: 0; font-size: 1.15rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .card.playing {
+      border-color: var(--ok);
+      background: #132a22;
+    }
+    .card.missing { opacity: 0.42; }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      align-self: center;
+      background: #0b1220;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .card.ready .badge {
+      color: #86efac;
+      border-color: #166534;
+      background: #052e16;
+    }
+    .glyph { font-size: 2.3rem; font-weight: 700; line-height: 1.1; }
+    .label { font-size: 0.9rem; font-weight: 600; }
+    .sublabel { font-size: 0.78rem; color: var(--muted); }
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .card-actions button {
+      flex: 1;
+      padding: 7px 6px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Thai Voice Audition — Gemini 3.8 Flash TTS</h1>
+      <p class="sub">
+        All 10 Thai numbers and all 44 consonants. Male teacher coaching with start-loop instructions.
+      </p>
+      <div class="controls">
+        <button id="btnOrus" class="active-orus" onclick="setVoice('orus')">Voice: Orus (Firm Coach)</button>
+        <button id="btnCharon" onclick="setVoice('charon')">Voice: Charon (Deep Elder)</button>
+        <button class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline (108 Clips)</button>
+        <button class="btn-stop" onclick="stopPlayback()">Stop Audio</button>
+      </div>
+      <div class="status-bar">
+        <span id="statusText">Ready. Tap any card or Play All.</span>
+        <div class="progress-wrap"><div id="progressFill" class="progress-fill"></div></div>
+        <span id="cacheInfo"></span>
+      </div>
+    </header>
+
+    <div class="section-head">
+      <h2>Numbers (1 – 10)</h2>
+      <button onclick="playSequence('numbers')">Play All Numbers (1–10)</button>
+    </div>
+    <div id="numbersGrid" class="grid"></div>
+
+    <div class="section-head">
+      <h2>Thai Consonants (ก – ฮ)</h2>
+      <button onclick="playSequence('alphabet')">Play All Consonants (44)</button>
+    </div>
+    <div id="alphabetGrid" class="grid"></div>
+  </div>
+
+  <script>
+    const NUMBERS = [
+      { id: "num_01", glyph: "๑", th: "หนึ่ง", en: "1 — Nueng" },
+      { id: "num_02", glyph: "๒", th: "สอง", en: "2 — Song" },
+      { id: "num_03", glyph: "๓", th: "สาม", en: "3 — Sam" },
+      { id: "num_04", glyph: "๔", th: "สี่", en: "4 — Si" },
+      { id: "num_05", glyph: "๕", th: "ห้า", en: "5 — Ha" },
+      { id: "num_06", glyph: "๖", th: "หก", en: "6 — Hok" },
+      { id: "num_07", glyph: "๗", th: "เจ็ด", en: "7 — Jet" },
+      { id: "num_08", glyph: "๘", th: "แปด", en: "8 — Paet" },
+      { id: "num_09", glyph: "๙", th: "เก้า", en: "9 — Kao" },
+      { id: "num_10", glyph: "๑๐", th: "สิบ", en: "10 — Sip" }
+    ];
+
+    const CONSONANTS = [
+      ["ก","ไก่","Gor Gai"],["ข","ไข่","Khor Khai"],["ฃ","ขวด","Khor Khuat"],["ค","ควาย","Khor Khwai"],
+      ["ฅ","คน","Khor Khon"],["ฆ","ระฆัง","Khor Ra-khang"],["ง","งู","Ngor Ngu"],["จ","จาน","Jor Jan"],
+      ["ฉ","ฉิ่ง","Chor Ching"],["ช","ช้าง","Chor Chang"],["ซ","โซ่","Sor So"],["ฌ","เฌอ","Chor Choe"],
+      ["ญ","หญิง","Yor Ying"],["ฎ","ชฎา","Dor Cha-da"],["ฏ","ปฏัก","Tor Pa-tak"],["ฐ","ฐาน","Thor Than"],
+      ["ฑ","มณโฑ","Thor Mon-tho"],["ฒ","ผู้เฒ่า","Thor Phu-thao"],["ณ","เณร","Nor Nen"],["ด","เด็ก","Dor Dek"],
+      ["ต","เต่า","Tor Tao"],["ถ","ถุง","Thor Thung"],["ท","ทหาร","Thor Tha-han"],["ธ","ธง","Thor Thong"],
+      ["น","หนู","Nor Nu"],["บ","ใบไม้","Bor Bai-mai"],["ป","ปลา","Por Pla"],["ผ","ผึ้ง","Phor Phueng"],
+      ["ฝ","ฝา","For Fa"],["พ","พาน","Phor Phan"],["ฟ","ฟัน","For Fan"],["ภ","สำเภา","Phor Sam-phao"],
+      ["ม","ม้า","Mor Ma"],["ย","ยักษ์","Yor Yak"],["ร","เรือ","Ror Ruea"],["ล","ลิง","Lor Ling"],
+      ["ว","แหวน","Wor Waen"],["ศ","ศาลา","Sor Sa-la"],["ษ","ฤๅษี","Sor Rue-si"],["ส","เสือ","Sor Suea"],
+      ["ห","หีบ","Hor Hip"],["ฬ","จุฬา","Lor Chu-la"],["อ","อ่าง","Or Ang"],["ฮ","นกฮูก","Hor Nok-huk"]
+    ].map((item, i) => ({
+      id: "alpha_" + String(i + 1).padStart(2, "0"),
+      glyph: item[0],
+      th: item[0] + " " + item[1],
+      en: item[2]
+    }));
+
+    let activeVoice = "orus";
+    let currentAudio = null;
+    let queueCancelled = false;
+    let activeCardEl = null;
+
+    function setVoice(voice) {
+      activeVoice = voice;
+      document.getElementById("btnOrus").className = voice === "orus" ? "active-orus" : "";
+      document.getElementById("btnCharon").className = voice === "charon" ? "active-charon" : "";
+      document.getElementById("statusText").innerText = "Active voice: " + voice.toUpperCase();
+      refreshAvailability();
+    }
+
+    function stopPlayback() {
+      queueCancelled = true;
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+      if (activeCardEl) {
+        activeCardEl.classList.remove("playing");
+        activeCardEl = null;
+      }
+      document.getElementById("statusText").innerText = "Stopped.";
+    }
+
+    function playClip(voice, id, cardEl) {
+      return new Promise((resolve) => {
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        }
+        if (activeCardEl) activeCardEl.classList.remove("playing");
+        if (cardEl) {
+          cardEl.classList.add("playing");
+          activeCardEl = cardEl;
+        }
+        const url = "./audio/" + voice + "/" + id + ".m4a";
+        document.getElementById("statusText").innerText = "Playing " + voice.toUpperCase() + ": " + id;
+        const audio = new Audio(url);
+        currentAudio = audio;
+        audio.onended = () => {
+          if (cardEl) cardEl.classList.remove("playing");
+          resolve();
+        };
+        audio.onerror = () => {
+          if (cardEl) cardEl.classList.remove("playing");
+          document.getElementById("statusText").innerText = "Missing clip: " + url;
+          resolve();
+        };
+        audio.play().catch(() => resolve());
+      });
+    }
+
+    async function compareAB(id, cardEl) {
+      stopPlayback();
+      queueCancelled = false;
+      await playClip("orus", id, cardEl);
+      if (queueCancelled) return;
+      await new Promise((r) => setTimeout(r, 350));
+      if (queueCancelled) return;
+      await playClip("charon", id, cardEl);
+    }
+
+    async function playSequence(kind) {
+      stopPlayback();
+      queueCancelled = false;
+      const list = kind === "numbers" ? NUMBERS : CONSONANTS;
+      for (const item of list) {
+        if (queueCancelled) break;
+        const card = document.getElementById("card_" + item.id);
+        if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        await playClip(activeVoice, item.id, card);
+        if (queueCancelled) break;
+        await new Promise((r) => setTimeout(r, 250));
+      }
+      if (!queueCancelled) {
+        document.getElementById("statusText").innerText = "Finished " + kind + " (" + activeVoice.toUpperCase() + ").";
+      }
+    }
+
+    function renderGrid(containerId, items) {
+      const wrap = document.getElementById(containerId);
+      items.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.id = "card_" + item.id;
+        card.innerHTML = `
+          <div class="glyph">${item.glyph}</div>
+          <div class="label">${item.th}</div>
+          <div class="sublabel">${item.en}</div>
+          <span class="badge" id="badge_${item.id}">Checking...</span>
+          <div class="card-actions">
+            <button onclick="stopPlayback(); playClip(activeVoice, '${item.id}', document.getElementById('card_${item.id}'))">Play</button>
+            <button onclick="compareAB('${item.id}', document.getElementById('card_${item.id}'))">A/B</button>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    async function installAllOffline() {
+      const urls = [];
+      for (const v of ["orus", "charon"]) {
+        NUMBERS.forEach((n) => urls.push("./audio/" + v + "/" + n.id + ".m4a"));
+        CONSONANTS.forEach((c) => urls.push("./audio/" + v + "/" + c.id + ".m4a"));
+      }
+      const fill = document.getElementById("progressFill");
+      const status = document.getElementById("statusText");
+      const info = document.getElementById("cacheInfo");
+
+      if (location.protocol === "file:") {
+        fill.style.width = "100%";
+        status.innerText = "Local folder mode active. All 108 clips load from disk.";
+        info.innerText = "108 / 108 local";
+        return;
+      }
+
+      if (!("caches" in window)) {
+        status.innerText = "Browser Cache API unavailable.";
+        return;
+      }
+
+      const cache = await caches.open("thai-voice-audition-v1");
+      let done = 0;
+      let totalBytes = 0;
+      for (const u of urls) {
+        const resp = await fetch(u);
+        if (resp.ok) {
+          const blob = await resp.clone().blob();
+          totalBytes += blob.size;
+          await cache.put(u, resp);
+        }
+        done++;
+        fill.style.width = Math.round((done / urls.length) * 100) + "%";
+        info.innerText = done + " / " + urls.length + " (" + (totalBytes / (1024 * 1024)).toFixed(2) + " MB)";
+      }
+      status.innerText = "Offline install complete. Disconnect Wi-Fi and test playback.";
+    }
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+
+    function refreshAvailability() {
+      const all = [...NUMBERS, ...CONSONANTS];
+      all.forEach((item) => {
+        const card = document.getElementById("card_" + item.id);
+        const badge = document.getElementById("badge_" + item.id);
+        if (!card || !badge) return;
+        const probe = new Audio("./audio/" + activeVoice + "/" + item.id + ".m4a");
+        probe.preload = "metadata";
+        probe.onloadedmetadata = () => {
+          card.classList.remove("missing");
+          card.classList.add("ready");
+          badge.innerText = "Ready";
+        };
+        probe.onerror = () => {
+          card.classList.remove("ready");
+          card.classList.add("missing");
+          badge.innerText = "Pending Key";
+        };
+      });
+    }
+
+    renderGrid("numbersGrid", NUMBERS);
+    renderGrid("alphabetGrid", CONSONANTS);
+    refreshAvailability();
+  </script>
+</body>
+</html>

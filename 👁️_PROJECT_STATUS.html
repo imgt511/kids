@@ -6,6 +6,118 @@
   <title>Granddaughters_Learning_Widgets — Project Status</title>
   <style>
 
+    /* Google Chrome Style Theme Tool Tray */
+    .theme-tool-tray {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .tray-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tray-title {
+      font-size: calc(13px * var(--font-scale));
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tray-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .mode-toggle-group {
+      display: inline-flex;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .theme-mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: calc(12px * var(--font-scale));
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .theme-mode-btn:hover {
+      color: var(--text);
+    }
+
+    .theme-mode-btn.active {
+      background: var(--card-bg);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .swatches-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .swatch-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .swatch-item:hover .swatch-circle {
+      transform: scale(1.18);
+    }
+
+    .swatch-circle.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 12px var(--accent-glow);
+      transform: scale(1.15);
+    }
+
+    .swatch-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
     :root {
       --bg: #090d12;
       --card-bg: #121820;
@@ -259,6 +371,11 @@
       color: var(--accent);
     }
 
+    pre.mermaid {
+      text-align: center;
+      padding: 24px;
+    }
+
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       background: #21262d;
@@ -273,7 +390,6 @@
       border-collapse: collapse;
       margin-bottom: 24px;
       overflow-x: auto;
-      display: block;
     }
 
     th, td {
@@ -335,6 +451,181 @@
       margin-top: 12px;
     }
 
+    /* Auto Voice Reader Proclamation Scrolls & Aura */
+    :root {
+      --master-scroll: #f5d38a;
+      --master-glow: rgba(245, 211, 138, 0.55);
+      --sec-scroll: #fcf9ee;
+      --sec-glow: rgba(252, 249, 238, 0.45);
+    }
+
+    .master-scroll-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f1621;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: calc(12px * var(--font-scale)) calc(22px * var(--font-scale));
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .master-scroll-label strong {
+      display: block;
+      color: #fff;
+      font-size: calc(17px * var(--font-scale));
+    }
+
+    .master-scroll-label span {
+      display: block;
+      color: var(--muted);
+      font-size: calc(13px * var(--font-scale));
+      margin-top: 2px;
+    }
+
+    .master-scroll-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .daemon-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0d161f;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: calc(12px * var(--font-scale));
+      font-weight: 700;
+      color: var(--muted);
+      transition: all 0.3s ease;
+    }
+    .daemon-pill.online {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+    .daemon-pill.online .pulse-dot {
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: daemonPulse 1.8s infinite ease-in-out;
+    }
+    @keyframes daemonPulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .btn-master-scroll {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-master-scroll:hover {
+      transform: scale(1.14);
+      filter: drop-shadow(0 0 16px var(--master-glow));
+    }
+    .btn-master-scroll:active {
+      transform: scale(0.96);
+    }
+    .btn-master-scroll.speaking {
+      filter: drop-shadow(0 0 20px rgba(63, 185, 80, 0.85));
+      animation: masterSpeakingPulse 1.4s infinite alternate ease-in-out;
+    }
+    @keyframes masterSpeakingPulse {
+      0% { transform: scale(1.04); }
+      100% { transform: scale(1.16); }
+    }
+
+    .master-scroll-svg {
+      width: calc(54px * var(--font-scale));
+      height: calc(54px * var(--font-scale));
+      display: block;
+    }
+
+    /* Section Mini Scrolls */
+    .heading-with-scroll {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .card-header-row h2 {
+      border-bottom: none !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    .btn-sec-scroll {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .btn-sec-scroll:hover {
+      transform: scale(1.22);
+      filter: drop-shadow(0 0 12px var(--sec-glow));
+    }
+    .btn-sec-scroll:active {
+      transform: scale(0.94);
+    }
+    .btn-sec-scroll.speaking {
+      filter: drop-shadow(0 0 16px var(--master-glow));
+      animation: secSpeakingPulse 1.2s infinite alternate ease-in-out;
+    }
+    @keyframes secSpeakingPulse {
+      0% { transform: scale(1.08); }
+      100% { transform: scale(1.24); }
+    }
+
+    .sec-scroll-svg {
+      width: calc(30px * var(--font-scale));
+      height: calc(30px * var(--font-scale));
+      display: block;
+    }
+
+    /* Active Speech Reading Aura */
+    .active-speech-aura {
+      border-color: var(--master-scroll) !important;
+      box-shadow: 0 0 24px var(--master-glow) !important;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
   </style>
 </head>
 <body class="distance-11ft">
@@ -345,6 +636,7 @@
       <p>Session State Scoreboard • PROJECT_STATUS.md</p>
     </div>
     <div class="controls-group">
+      <button class="btn btn-action" id="customizeToggleBtn" onclick="toggleThemeTray()">🎨 Customize Theme</button>
       <button class="btn dist-btn" onclick="setDistance('4ft', this)">4 ft Close</button>
       <button class="btn dist-btn" onclick="setDistance('7ft', this)">7.6 ft Sitting</button>
       <button class="btn dist-btn active" onclick="setDistance('11ft', this)">11 ft Standing</button>
@@ -352,10 +644,79 @@
     </div>
   </header>
 
+  <!-- Google Chrome Style Theme Tool Tray -->
+  <div class="theme-tool-tray" id="themeToolTray">
+    <div class="tray-header">
+      <div class="tray-title">
+        <span>🎨</span> Customize Appearance & Color Palette
+      </div>
+      <button class="btn" onclick="toggleThemeTray()" style="padding: 4px 10px; font-size: 12px; cursor: pointer;">
+        ▲ Hide Tray
+      </button>
+    </div>
+
+    <div class="tray-controls">
+      <!-- Display Mode Buttons -->
+      <div class="mode-toggle-group">
+        <button class="theme-mode-btn" id="btnModeDark" onclick="setThemeMode('dark')">🌙 Dark</button>
+        <button class="theme-mode-btn" id="btnModeOled" onclick="setThemeMode('oled')">⬛ True OLED</button>
+        <button class="theme-mode-btn" id="btnModeLight" onclick="setThemeMode('light')">☀️ Light</button>
+      </div>
+
+      <!-- 8 Chrome Two-Tone Swatches -->
+      <div class="swatches-bar" id="swatchesBar">
+        <!-- Injected dynamically via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Master Proclamation Scroll Banner -->
+  <div class="master-scroll-wrapper" id="masterScrollWrapper">
+    <div class="master-scroll-label">
+      <strong>Proclamation Master</strong>
+      <span>Click scroll to narrate complete document via Auto Voice Reader</span>
+    </div>
+    <div class="master-scroll-controls">
+      <div class="daemon-pill" id="daemonPill" title="Auto Voice Reader on port 8998">
+        <span class="pulse-dot"></span>
+        <span id="daemonLabel">Auto Voice (8998)</span>
+      </div>
+      <button class="btn-master-scroll" id="btnMasterScroll" title="Click to pronounce entire document" onclick="toggleReadEntireDocument('Granddaughters_Learning_Widgets — Project Status')">
+        <svg class="master-scroll-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldFinialGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff1c4"/>
+      <stop offset="50%" stop-color="#d4a344"/>
+      <stop offset="100%" stop-color="#734e12"/>
+    </linearGradient>
+    <linearGradient id="masterParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff5db"/>
+      <stop offset="50%" stop-color="#f5d38a"/>
+      <stop offset="100%" stop-color="#d19c3d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="14" cy="20" r="7" fill="url(#goldFinialGrad)"/>
+  <circle cx="86" cy="20" r="7" fill="url(#goldFinialGrad)"/>
+  <rect x="14" y="16" width="72" height="8" rx="4" fill="url(#goldFinialGrad)"/>
+  <path d="M20 22 C 20 22, 23 46, 17 76 C 26 84, 74 84, 83 76 C 77 46, 80 22, 80 22 Z" fill="url(#masterParchment)" stroke="#7a5416" stroke-width="2.2"/>
+  <path d="M10 76 C 26 87, 74 87, 90 76 C 90 76, 88 84, 80 85 C 50 87, 20 87, 10 76 Z" fill="url(#goldFinialGrad)" stroke="#5c3c0a" stroke-width="1.5"/>
+  <line x1="30" y1="34" x2="70" y2="34" stroke="#69460f" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="27" y1="43" x2="73" y2="43" stroke="#69460f" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="28" y1="52" x2="72" y2="52" stroke="#69460f" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="32" y1="61" x2="65" y2="61" stroke="#69460f" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="50" cy="72" r="10" fill="#c92a2a" stroke="#7a1010" stroke-width="1.5"/>
+  <circle cx="50" cy="72" r="6" fill="#e03131"/>
+  <polygon points="50,67 52,70 55,70 53,72 54,75 50,73 46,75 47,72 45,70 48,70" fill="#ffec99"/>
+</svg>
+      </button>
+    </div>
+  </div>
+
   <div class="meta-bar">
     <div class="meta-box">
       <span>Last Active Session</span>
-      <strong>2026-10-26</strong>
+      <strong>2026-11-16</strong>
     </div>
     <div class="meta-box">
       <span>Primary Tool</span>
@@ -367,24 +728,102 @@
     </div>
     <div class="meta-box">
       <span>Source Audit Hash</span>
-      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">fd32bed6f213e801...</strong>
+      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">7ed500504158ee2f...</strong>
     </div>
   </div>
 
   <div class="split-grid">
-    <div class="card">
-      <h2>Current Status</h2>
-      <p>Transformed root `imgt511.github.io/kids/` into a central directory portal with artwork tiles and 2-way home navigation. Calibrated stroke geometries: reduced black fill stroke by 50% (38px -&gt; 19px in Alphabet, 36px -&gt; 18px in Numbers) and rainbow guide by 33% (12px -&gt; 8px) across both `widget_alphabet.html` and `widget_numbers.html`, eliminating intersection and loop bleed-over on mobile glass. Documented card-based fruit counting &amp; keypad specification in TODO.md.</p>
+    <div class="card" id="card-status">
+      <div class="card-header-row">
+        <h2>Current Status</h2>
+        <button class="btn-sec-scroll" id="btn-scroll-card-status" title="Pronounce Current Status" onclick="readSection('card-status', 'Current Status')">
+          <svg class="sec-scroll-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="whiteParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f7f3e4"/>
+      <stop offset="100%" stop-color="#e3dcc8"/>
+    </linearGradient>
+    <linearGradient id="silverFinial" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ece1"/>
+      <stop offset="100%" stop-color="#a8a191"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <circle cx="50" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <rect x="10" y="10" width="40" height="4.5" rx="2" fill="url(#silverFinial)"/>
+  <path d="M14 13 C 14 13, 16 28, 12 47 C 18 51, 42 51, 48 47 C 44 28, 46 13, 46 13 Z" fill="url(#whiteParchment)" stroke="#787161" stroke-width="1.6"/>
+  <path d="M8 47 C 18 53, 42 53, 52 47 C 52 47, 50 51, 46 52 C 28 53, 14 53, 8 47 Z" fill="url(#silverFinial)" stroke="#615a4c" stroke-width="1.2"/>
+  <line x1="20" y1="21" x2="40" y2="21" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="18" y1="27" x2="42" y2="27" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="19" y1="33" x2="39" y2="33" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="21" y1="39" x2="35" y2="39" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+        </button>
+      </div>
+      <p>Generated 106/108 Thai clips (`Orus` 54/54, `Charon` 52/54) on `gemini-3.8-flash-tts`, diagnosed and trimmed the ~0.21s Gemini TTS trailing static burst across all 106 clips, and deployed loudness-matched `Charon` Thai 1–10 clips into `widget_numbers.html`.</p>
     </div>
 
-    <div class="card">
-      <h2>Next Action Steps</h2>
-      <p>Test calibrated tracing strokes and directory portal on mobile devices (`https://imgt511.github.io/kids/`).</p>
+    <div class="card" id="card-next">
+      <div class="card-header-row">
+        <h2>Next Action Steps</h2>
+        <button class="btn-sec-scroll" id="btn-scroll-card-next" title="Pronounce Next Action Steps" onclick="readSection('card-next', 'Next Action Steps')">
+          <svg class="sec-scroll-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="whiteParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f7f3e4"/>
+      <stop offset="100%" stop-color="#e3dcc8"/>
+    </linearGradient>
+    <linearGradient id="silverFinial" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ece1"/>
+      <stop offset="100%" stop-color="#a8a191"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <circle cx="50" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <rect x="10" y="10" width="40" height="4.5" rx="2" fill="url(#silverFinial)"/>
+  <path d="M14 13 C 14 13, 16 28, 12 47 C 18 51, 42 51, 48 47 C 44 28, 46 13, 46 13 Z" fill="url(#whiteParchment)" stroke="#787161" stroke-width="1.6"/>
+  <path d="M8 47 C 18 53, 42 53, 52 47 C 52 47, 50 51, 46 52 C 28 53, 14 53, 8 47 Z" fill="url(#silverFinial)" stroke="#615a4c" stroke-width="1.2"/>
+  <line x1="20" y1="21" x2="40" y2="21" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="18" y1="27" x2="42" y2="27" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="19" y1="33" x2="39" y2="33" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="21" y1="39" x2="35" y2="39" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+        </button>
+      </div>
+      <p>After the 100/day `gemini-3.8-flash-tts` quota resets, generate the remaining 57 `Charon` clips (2 missing coaching clips `ษ`/`ฮ`, 44 short card-tap consonant clips, and 11 English clips `One`–`Ten` + `Great job!`), then wire both `widget_alphabet.html` and `widget_numbers.html`.</p>
     </div>
   </div>
 
-  <div class="card">
-    <h2>Active Blockers & Open Issues</h2>
+  <div class="card" id="card-issues">
+    <div class="card-header-row">
+      <h2>Active Blockers & Open Issues</h2>
+      <button class="btn-sec-scroll" id="btn-scroll-card-issues" title="Pronounce Active Blockers & Open Issues" onclick="readSection('card-issues', 'Active Blockers & Open Issues')">
+        <svg class="sec-scroll-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="whiteParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f7f3e4"/>
+      <stop offset="100%" stop-color="#e3dcc8"/>
+    </linearGradient>
+    <linearGradient id="silverFinial" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ece1"/>
+      <stop offset="100%" stop-color="#a8a191"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <circle cx="50" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <rect x="10" y="10" width="40" height="4.5" rx="2" fill="url(#silverFinial)"/>
+  <path d="M14 13 C 14 13, 16 28, 12 47 C 18 51, 42 51, 48 47 C 44 28, 46 13, 46 13 Z" fill="url(#whiteParchment)" stroke="#787161" stroke-width="1.6"/>
+  <path d="M8 47 C 18 53, 42 53, 52 47 C 52 47, 50 51, 46 52 C 28 53, 14 53, 8 47 Z" fill="url(#silverFinial)" stroke="#615a4c" stroke-width="1.2"/>
+  <line x1="20" y1="21" x2="40" y2="21" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="18" y1="27" x2="42" y2="27" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="19" y1="33" x2="39" y2="33" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="21" y1="39" x2="35" y2="39" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+      </button>
+    </div>
     <p style="color: var(--muted);">No open issues or blockers reported.</p>
   </div>
 
@@ -396,6 +835,179 @@
 
 
   <script>
+
+    // ============================================================
+    // GOOGLE CHROME STYLE THEME ENGINE
+    // ============================================================
+    const PALETTES = [
+      {
+        id: "phosphor",
+        name: "Phosphor Green",
+        accent: "#3fb950",
+        secondary: "#86efac",
+        dark:  { bgDeep: "#090d12", bgCard: "#121820", bgHover: "#18222d", border: "#263342", text: "#f0f6fc", dim: "#8b9bb0" },
+        oled:  { bgDeep: "#000000", bgCard: "#09120c", bgHover: "#0e1f14", border: "#163a23", text: "#ffffff", dim: "#86efac" },
+        light: { bgDeep: "#f0fdf4", bgCard: "#ffffff", bgHover: "#dcfce7", border: "#bbf7d0", text: "#14532d", dim: "#16a34a" }
+      },
+      {
+        id: "cobalt",
+        name: "Cobalt Blue",
+        accent: "#3b82f6",
+        secondary: "#93c5fd",
+        dark:  { bgDeep: "#060e1d", bgCard: "#0c1a33", bgHover: "#122444", border: "#1d396d", text: "#eff6ff", dim: "#93c5fd" },
+        oled:  { bgDeep: "#000000", bgCard: "#081224", bgHover: "#0f1f3d", border: "#193361", text: "#ffffff", dim: "#93c5fd" },
+        light: { bgDeep: "#eff6ff", bgCard: "#ffffff", bgHover: "#dbeafe", border: "#bfdbfe", text: "#1e3a8a", dim: "#2563eb" }
+      },
+      {
+        id: "amber",
+        name: "Warm Amber",
+        accent: "#f59e0b",
+        secondary: "#fcd34d",
+        dark:  { bgDeep: "#140e04", bgCard: "#241808", bgHover: "#33230c", border: "#523a15", text: "#fffbeb", dim: "#fcd34d" },
+        oled:  { bgDeep: "#000000", bgCard: "#191004", bgHover: "#261a08", border: "#453010", text: "#ffffff", dim: "#fcd34d" },
+        light: { bgDeep: "#fffbeb", bgCard: "#ffffff", bgHover: "#fef3c7", border: "#fde68a", text: "#78350f", dim: "#d97706" }
+      },
+      {
+        id: "amethyst",
+        name: "Amethyst Purple",
+        accent: "#a855f7",
+        secondary: "#d8b4fe",
+        dark:  { bgDeep: "#0f061b", bgCard: "#1b0c2e", bgHover: "#271241", border: "#431e71", text: "#faf5ff", dim: "#d8b4fe" },
+        oled:  { bgDeep: "#000000", bgCard: "#130722", bgHover: "#200d38", border: "#37185c", text: "#ffffff", dim: "#d8b4fe" },
+        light: { bgDeep: "#faf5ff", bgCard: "#ffffff", bgHover: "#f3e8ff", border: "#e9d5ff", text: "#581c87", dim: "#9333ea" }
+      },
+      {
+        id: "sunset",
+        name: "Sunset Orange",
+        accent: "#f97316",
+        secondary: "#fdba74",
+        dark:  { bgDeep: "#150803", bgCard: "#251007", bgHover: "#36170b", border: "#592613", text: "#fff7ed", dim: "#fdba74" },
+        oled:  { bgDeep: "#000000", bgCard: "#1a0904", bgHover: "#291007", border: "#481e0e", text: "#ffffff", dim: "#fdba74" },
+        light: { bgDeep: "#fff7ed", bgCard: "#ffffff", bgHover: "#ffedd5", border: "#fed7aa", text: "#7c2d12", dim: "#ea580c" }
+      },
+      {
+        id: "crimson",
+        name: "Crimson Red",
+        accent: "#f43f5e",
+        secondary: "#fda4af",
+        dark:  { bgDeep: "#140508", bgCard: "#22090e", bgHover: "#2f0e15", border: "#4e1723", text: "#fff1f2", dim: "#fda4af" },
+        oled:  { bgDeep: "#000000", bgCard: "#19060a", bgHover: "#260a10", border: "#44111d", text: "#ffffff", dim: "#fda4af" },
+        light: { bgDeep: "#fff1f2", bgCard: "#ffffff", bgHover: "#ffe4e6", border: "#fecdd3", text: "#881337", dim: "#9f1239" }
+      },
+      {
+        id: "cyan",
+        name: "Electric Cyan",
+        accent: "#06b6d4",
+        secondary: "#67e8f9",
+        dark:  { bgDeep: "#041116", bgCard: "#091e26", bgHover: "#0e2a36", border: "#174758", text: "#ecfeff", dim: "#67e8f9" },
+        oled:  { bgDeep: "#000000", bgCard: "#06151c", bgHover: "#0b232e", border: "#123c4a", text: "#ffffff", dim: "#67e8f9" },
+        light: { bgDeep: "#ecfeff", bgCard: "#ffffff", bgHover: "#cffafe", border: "#a5f3fc", text: "#164e63", dim: "#0891b2" }
+      },
+      {
+        id: "slate",
+        name: "Graphite Slate",
+        accent: "#94a3b8",
+        secondary: "#cbd5e1",
+        dark:  { bgDeep: "#0b0f14", bgCard: "#141b23", bgHover: "#1e2632", border: "#2e3a4a", text: "#f8fafc", dim: "#94a3b8" },
+        oled:  { bgDeep: "#000000", bgCard: "#0e1217", bgHover: "#171d25", border: "#242b36", text: "#ffffff", dim: "#94a3b8" },
+        light: { bgDeep: "#f8fafc", bgCard: "#ffffff", bgHover: "#f1f5f9", border: "#cbd5e1", text: "#0f172a", dim: "#475569" }
+      }
+    ];
+
+    let currentThemeMode = "dark";
+    let currentPaletteId = "phosphor";
+    let themeTrayVisible = true;
+
+    try {
+      const savedTheme = localStorage.getItem("musta_standing_view_theme");
+      if (savedTheme) {
+        const parsed = JSON.parse(savedTheme);
+        if (parsed.mode) currentThemeMode = parsed.mode;
+        if (parsed.palette) currentPaletteId = parsed.palette;
+        if (parsed.trayVisible !== undefined) themeTrayVisible = parsed.trayVisible;
+      }
+    } catch(e) {}
+
+    function applyTheme() {
+      const root = document.documentElement;
+      const pal = PALETTES.find(p => p.id === currentPaletteId) || PALETTES[0];
+      const modeKey = (currentThemeMode === "oled" || currentThemeMode === "light") ? currentThemeMode : "dark";
+      const cfg = pal[modeKey];
+
+      root.style.setProperty("--bg", cfg.bgDeep);
+      root.style.setProperty("--card-bg", cfg.bgCard);
+      root.style.setProperty("--card-hover", cfg.bgHover);
+      root.style.setProperty("--border", cfg.border);
+      root.style.setProperty("--text", cfg.text);
+      root.style.setProperty("--muted", cfg.dim);
+      root.style.setProperty("--accent", pal.accent);
+      root.style.setProperty("--accent-glow", pal.accent + "55");
+
+      const btnDark = document.getElementById("btnModeDark");
+      const btnOled = document.getElementById("btnModeOled");
+      const btnLight = document.getElementById("btnModeLight");
+      if (btnDark) btnDark.classList.toggle("active", currentThemeMode === "dark");
+      if (btnOled) btnOled.classList.toggle("active", currentThemeMode === "oled");
+      if (btnLight) btnLight.classList.toggle("active", currentThemeMode === "light");
+
+      buildSwatchesBar();
+
+      const tray = document.getElementById("themeToolTray");
+      if (tray) {
+        tray.style.display = themeTrayVisible ? "flex" : "none";
+      }
+
+      try {
+        localStorage.setItem("musta_standing_view_theme", JSON.stringify({
+          mode: currentThemeMode,
+          palette: currentPaletteId,
+          trayVisible: themeTrayVisible
+        }));
+      } catch(e) {}
+    }
+
+    function setThemeMode(mode) {
+      currentThemeMode = mode;
+      applyTheme();
+    }
+
+    function setPalette(palId) {
+      currentPaletteId = palId;
+      applyTheme();
+    }
+
+    function toggleThemeTray() {
+      themeTrayVisible = !themeTrayVisible;
+      const tray = document.getElementById("themeToolTray");
+      if (tray) {
+        tray.style.display = themeTrayVisible ? "flex" : "none";
+      }
+      try {
+        const saved = JSON.parse(localStorage.getItem("musta_standing_view_theme") || "{}");
+        saved.trayVisible = themeTrayVisible;
+        localStorage.setItem("musta_standing_view_theme", JSON.stringify(saved));
+      } catch(e) {}
+    }
+
+    function buildSwatchesBar() {
+      const bar = document.getElementById("swatchesBar");
+      if (!bar) return;
+      const modeKey = (currentThemeMode === "oled" || currentThemeMode === "light") ? currentThemeMode : "dark";
+      bar.innerHTML = PALETTES.map(p => {
+        const bgPreview = p[modeKey].bgCard;
+        const isActive = p.id === currentPaletteId;
+        return `
+          <div class="swatch-item" onclick="setPalette('${p.id}')" title="${p.name}">
+            <div class="swatch-circle ${isActive ? 'active' : ''}" data-id="${p.id}" style="background: linear-gradient(135deg, ${p.accent} 50%, ${bgPreview} 50%);"></div>
+            <span class="swatch-label">${p.name}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme();
+    });
 
     function setDistance(mode, btn, updateUrl = true) {
       document.body.className = 'distance-' + mode;
@@ -427,6 +1039,119 @@
 
       setDistance(targetDist, null, false);
     });
+
+    // ============================================================
+    // AUTO VOICE READER BRIDGE PROTOCOL (Port 8998)
+    // ============================================================
+    const AVR_BRIDGE_URL = "http://127.0.0.1:8998";
+    let avrSpeaking = false;
+    let avrActiveBtnId = null;
+    let avrActiveTargetEl = null;
+
+    async function checkVoiceDaemon() {
+      const pill = document.getElementById("daemonPill");
+      const label = document.getElementById("daemonLabel");
+      if (!pill) return;
+      try {
+        const resp = await fetch(AVR_BRIDGE_URL + "/status", { method: "GET", mode: "cors" });
+        if (resp.ok) {
+          const data = await resp.json();
+          pill.classList.add("online");
+          if (label) label.textContent = `Auto Voice: ${data.voice || "Charon"}`;
+        } else {
+          pill.classList.remove("online");
+        }
+      } catch(e) {
+        pill.classList.remove("online");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      checkVoiceDaemon();
+    });
+
+    async function sendToVoiceDaemon(text, title) {
+      try {
+        await fetch(AVR_BRIDGE_URL + "/read", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({ text: text, title: title, force: true })
+        });
+      } catch (err) {
+        console.log("Auto Voice Reader daemon unavailable at " + AVR_BRIDGE_URL);
+      }
+    }
+
+    function stopAllVoicePlayback() {
+      avrSpeaking = false;
+      document.querySelectorAll(".speaking").forEach(el => el.classList.remove("speaking"));
+      document.querySelectorAll(".active-speech-aura").forEach(el => el.classList.remove("active-speech-aura"));
+      avrActiveBtnId = null;
+      avrActiveTargetEl = null;
+      fetch(AVR_BRIDGE_URL + "/queue/clear", { method: "POST", mode: "cors" }).catch(() => {});
+    }
+
+    async function toggleReadEntireDocument(docTitle) {
+      const btn = document.getElementById("btnMasterScroll");
+      if (avrSpeaking && avrActiveBtnId === "btnMasterScroll") {
+        stopAllVoicePlayback();
+        return;
+      }
+      stopAllVoicePlayback();
+
+      const clone = document.body.cloneNode(true);
+      clone.querySelectorAll("header, .theme-tool-tray, .master-scroll-wrapper, script, style, .btn-sec-scroll, .btn-master-scroll").forEach(n => n.remove());
+      const cleanText = clone.innerText.trim();
+
+      avrSpeaking = true;
+      avrActiveBtnId = "btnMasterScroll";
+      if (btn) btn.classList.add("speaking");
+
+      await sendToVoiceDaemon(cleanText, (docTitle || "Document") + ": Complete Proclamation");
+    }
+
+    function getSectionText(anchorEl) {
+      let parts = [anchorEl.innerText];
+      let sibling = anchorEl.nextElementSibling;
+      while (sibling && !sibling.classList.contains("section-anchor") && !/^H[1-2]$/i.test(sibling.tagName)) {
+        if (sibling.tagName !== "SCRIPT" && sibling.tagName !== "STYLE") {
+          parts.push(sibling.innerText);
+        }
+        sibling = sibling.nextElementSibling;
+      }
+      return parts.join("\n\n").trim();
+    }
+
+    async function readSection(targetId, sectionTitle) {
+      const btnId = "btn-scroll-" + targetId;
+      const targetEl = document.getElementById(targetId);
+      const btn = document.getElementById(btnId);
+
+      if (avrSpeaking && avrActiveBtnId === btnId) {
+        stopAllVoicePlayback();
+        return;
+      }
+      stopAllVoicePlayback();
+
+      let text = "";
+      if (targetEl) {
+        if (targetEl.classList.contains("section-anchor")) {
+          text = getSectionText(targetEl);
+        } else {
+          text = targetEl.innerText.trim();
+        }
+      }
+
+      avrSpeaking = true;
+      avrActiveBtnId = btnId;
+      avrActiveTargetEl = targetEl;
+
+      if (btn) btn.classList.add("speaking");
+      if (targetEl) targetEl.classList.add("active-speech-aura");
+
+      await sendToVoiceDaemon(text, sectionTitle || "Section Proclamation");
+    }
 
   </script>
 </body>
