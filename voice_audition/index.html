@@ -172,7 +172,7 @@
         <a href="../index.html" style="text-decoration:none;"><button type="button">🏠 Hub</button></a>
         <select id="voiceSelect" onchange="setVoice(this.value)" aria-label="Select Voice"></select>
         <button onclick="stopPlayback(); playClip(activeVoice, 'master', null)">Play Master Take</button>
-        <button class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline</button>
+        <button id="btnInstallOffline" class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline</button>
         <button class="btn-stop" onclick="stopPlayback()">Stop Audio</button>
       </div>
       <div class="pick-bar" id="pickBar"></div>
@@ -446,8 +446,10 @@
         return;
       }
 
+      const btn = document.getElementById("btnInstallOffline");
+      if (btn) btn.innerText = "Downloading...";
       status.innerText = "Downloading all voices to phone cache...";
-      const cache = await caches.open("thai-voice-audition-v1");
+      const cache = await caches.open("thai-voice-audition-v2");
       await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
 
       const urls = [];
@@ -484,7 +486,8 @@
         fill.style.width = Math.round((done / urls.length) * 100) + "%";
         info.innerText = cachedCount + " clips cached (" + (totalBytes / (1024 * 1024)).toFixed(2) + " MB)";
       }
-      status.innerText = "All " + cachedCount + " clips cached offline. Safe to turn off Wi-Fi.";
+      if (btn) btn.innerText = "DONE (" + cachedCount + " Cached)";
+      status.innerText = "DONE — " + cachedCount + " clips cached offline. Safe to turn off Wi-Fi.";
     }
 
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
