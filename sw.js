@@ -1,8 +1,9 @@
-const CACHE_NAME = "glw-charon-v1";
+const CACHE_NAME = "glw-charon-v2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./widget_numbers.html",
+  "./widget_numbers_thai.html",
   "./widget_alphabet.html"
 ];
 
