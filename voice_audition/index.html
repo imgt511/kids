@@ -248,6 +248,8 @@
       en: item[2]
     }));
 
+    const PENDING_SET = new Set(["v30_achird", "v30_zubenelgenubi", "v30_vindemiatrix", "v30_sadachbia", "v30_sadaltager", "v30_sulafat"]);
+
     const VOICES = [
       ...[
         ["Zephyr", "F"], ["Puck", "M"], ["Charon", "M"], ["Kore", "F"], ["Fenrir", "M"],
@@ -256,7 +258,11 @@
         ["Erinome", "F"], ["Algenib", "M"], ["Rasalgethi", "M"], ["Laomedeia", "F"], ["Achernar", "F"],
         ["Alnilam", "M"], ["Schedar", "M"], ["Gacrux", "F"], ["Pulcherrima", "F"], ["Achird", "M"],
         ["Zubenelgenubi", "M"], ["Vindemiatrix", "F"], ["Sadachbia", "M"], ["Sadaltager", "M"], ["Sulafat", "F"]
-      ].map(([name, g]) => ({ id: "v30_" + name.toLowerCase(), label: `${name} (${g}) [cheerful]`, cls: "active-voice" })),
+      ].map(([name, g]) => {
+        const id = "v30_" + name.toLowerCase();
+        const tag = PENDING_SET.has(id) ? " [Pending 3PM]" : " [cheerful]";
+        return { id, label: `${name} (${g})${tag}`, cls: "active-voice", pending: PENDING_SET.has(id) };
+      }),
       { id: "leda_raw", label: "Leda (F) (Earlier Neutral / No Norm)", cls: "active-voice" },
       { id: "leda_norm", label: "Leda (F) (Earlier Norm Only)", cls: "active-voice" },
       { id: "leda", label: "Leda (F) (Earlier High-Pass + Norm)", cls: "active-voice" }
@@ -275,6 +281,7 @@
           const opt = document.createElement("option");
           opt.value = v.id;
           opt.text = "Voice: " + v.label;
+          opt.disabled = !!v.pending;
           opt.selected = activeVoice === v.id;
           sel.appendChild(opt);
         });
@@ -301,7 +308,8 @@
           const cb = document.createElement("input");
           cb.type = "checkbox";
           cb.value = v.id;
-          cb.checked = true;
+          cb.checked = !v.pending;
+          cb.disabled = !!v.pending;
           lbl.appendChild(cb);
           lbl.appendChild(document.createTextNode(v.label));
           pickBar.appendChild(lbl);
