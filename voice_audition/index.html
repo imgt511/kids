@@ -169,6 +169,7 @@
         All 10 Thai numbers and all 44 consonants. Male teacher coaching with start-loop instructions.
       </p>
       <div class="controls" id="controlsBar">
+        <a href="../index.html" style="text-decoration:none;"><button type="button">🏠 Hub</button></a>
         <select id="voiceSelect" onchange="setVoice(this.value)" aria-label="Select Voice"></select>
         <button onclick="stopPlayback(); playClip(activeVoice, 'master', null)">Play Master Take</button>
         <button class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline</button>
@@ -283,6 +284,18 @@
         const title = document.createElement("span");
         title.innerText = "Pick voices:";
         pickBar.appendChild(title);
+        const btnAll = document.createElement("button");
+        btnAll.innerText = "Select All";
+        btnAll.style.padding = "5px 10px";
+        btnAll.style.fontSize = "0.8rem";
+        btnAll.onclick = () => setAllPicked(true);
+        pickBar.appendChild(btnAll);
+        const btnNone = document.createElement("button");
+        btnNone.innerText = "Deselect All";
+        btnNone.style.padding = "5px 10px";
+        btnNone.style.fontSize = "0.8rem";
+        btnNone.onclick = () => setAllPicked(false);
+        pickBar.appendChild(btnNone);
         VOICES.forEach((v) => {
           const lbl = document.createElement("label");
           const cb = document.createElement("input");
@@ -294,6 +307,12 @@
           pickBar.appendChild(lbl);
         });
       }
+    }
+
+    function setAllPicked(checked) {
+      document.querySelectorAll("#pickBar input[type=checkbox]").forEach((cb) => {
+        cb.checked = checked;
+      });
     }
 
     function setVoice(voice) {
