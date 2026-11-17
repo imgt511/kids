@@ -41,7 +41,7 @@
       gap: 10px;
       align-items: center;
     }
-    button {
+    button, select {
       cursor: pointer;
       border: 1px solid var(--border);
       background: #0b1220;
@@ -55,8 +55,29 @@
     button:active { transform: scale(0.97); }
     button.active-orus { background: var(--orus); color: #04131d; border-color: var(--orus); }
     button.active-charon { background: var(--charon); color: #1c1002; border-color: var(--charon); }
+    button.active-voice { background: #a855f7; color: #ffffff; border-color: #a855f7; }
     button.btn-install { background: #166534; border-color: var(--ok); }
     button.btn-stop { background: #7f1d1d; border-color: #ef4444; }
+    .pick-bar {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .pick-bar label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #0b1220;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text);
+    }
     .status-bar {
       margin-top: 12px;
       font-size: 0.88rem;
@@ -147,12 +168,13 @@
       <p class="sub">
         All 10 Thai numbers and all 44 consonants. Male teacher coaching with start-loop instructions.
       </p>
-      <div class="controls">
-        <button id="btnOrus" class="active-orus" onclick="setVoice('orus')">Voice: Orus (Firm Coach)</button>
-        <button id="btnCharon" onclick="setVoice('charon')">Voice: Charon (Deep Elder)</button>
-        <button class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline (108 Clips)</button>
+      <div class="controls" id="controlsBar">
+        <select id="voiceSelect" onchange="setVoice(this.value)" aria-label="Select Voice"></select>
+        <button onclick="stopPlayback(); playClip(activeVoice, 'master', null)">Play Master Take</button>
+        <button class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline</button>
         <button class="btn-stop" onclick="stopPlayback()">Stop Audio</button>
       </div>
+      <div class="pick-bar" id="pickBar"></div>
       <div class="status-bar">
         <span id="statusText">Ready. Tap any card or Play All.</span>
         <div class="progress-wrap"><div id="progressFill" class="progress-fill"></div></div>
@@ -161,10 +183,16 @@
     </header>
 
     <div class="section-head">
-      <h2>Numbers (1 – 10)</h2>
-      <button onclick="playSequence('numbers')">Play All Numbers (1–10)</button>
+      <h2>Thai Numbers (๑ – ๑๐)</h2>
+      <button onclick="playSequence('numbers')">Play All Thai (1–10)</button>
     </div>
     <div id="numbersGrid" class="grid"></div>
+
+    <div class="section-head">
+      <h2>English Numbers (1 – 10)</h2>
+      <button onclick="playSequence('en_numbers')">Play All English (1–10)</button>
+    </div>
+    <div id="enNumbersGrid" class="grid"></div>
 
     <div class="section-head">
       <h2>Thai Consonants (ก – ฮ)</h2>
@@ -187,6 +215,19 @@
       { id: "num_10", glyph: "๑๐", th: "สิบ", en: "10 — Sip" }
     ];
 
+    const EN_NUMBERS = [
+      { id: "en_01", glyph: "1", th: "One", en: "English 1" },
+      { id: "en_02", glyph: "2", th: "Two", en: "English 2" },
+      { id: "en_03", glyph: "3", th: "Three", en: "English 3" },
+      { id: "en_04", glyph: "4", th: "Four", en: "English 4" },
+      { id: "en_05", glyph: "5", th: "Five", en: "English 5" },
+      { id: "en_06", glyph: "6", th: "Six", en: "English 6" },
+      { id: "en_07", glyph: "7", th: "Seven", en: "English 7" },
+      { id: "en_08", glyph: "8", th: "Eight", en: "English 8" },
+      { id: "en_09", glyph: "9", th: "Nine", en: "English 9" },
+      { id: "en_10", glyph: "10", th: "Ten", en: "English 10" }
+    ];
+
     const CONSONANTS = [
       ["ก","ไก่","Gor Gai"],["ข","ไข่","Khor Khai"],["ฃ","ขวด","Khor Khuat"],["ค","ควาย","Khor Khwai"],
       ["ฅ","คน","Khor Khon"],["ฆ","ระฆัง","Khor Ra-khang"],["ง","งู","Ngor Ngu"],["จ","จาน","Jor Jan"],
@@ -206,15 +247,58 @@
       en: item[2]
     }));
 
-    let activeVoice = "orus";
+    const VOICES = [
+      ...[
+        ["Zephyr", "F"], ["Puck", "M"], ["Charon", "M"], ["Kore", "F"], ["Fenrir", "M"],
+        ["Leda", "F"], ["Orus", "M"], ["Aoede", "F"], ["Callirrhoe", "F"], ["Autonoe", "F"],
+        ["Enceladus", "M"], ["Iapetus", "M"], ["Umbriel", "M"], ["Algieba", "M"], ["Despina", "F"],
+        ["Erinome", "F"], ["Algenib", "M"], ["Rasalgethi", "M"], ["Laomedeia", "F"], ["Achernar", "F"],
+        ["Alnilam", "M"], ["Schedar", "M"], ["Gacrux", "F"], ["Pulcherrima", "F"], ["Achird", "M"],
+        ["Zubenelgenubi", "M"], ["Vindemiatrix", "F"], ["Sadachbia", "M"], ["Sadaltager", "M"], ["Sulafat", "F"]
+      ].map(([name, g]) => ({ id: "v30_" + name.toLowerCase(), label: `${name} (${g}) [cheerful]`, cls: "active-voice" })),
+      { id: "leda_raw", label: "Leda (F) (Earlier Neutral / No Norm)", cls: "active-voice" },
+      { id: "leda_norm", label: "Leda (F) (Earlier Norm Only)", cls: "active-voice" },
+      { id: "leda", label: "Leda (F) (Earlier High-Pass + Norm)", cls: "active-voice" }
+    ];
+
+    let activeVoice = "v30_zephyr";
     let currentAudio = null;
     let queueCancelled = false;
     let activeCardEl = null;
 
+    function renderVoiceButtons() {
+      const sel = document.getElementById("voiceSelect");
+      if (sel) {
+        sel.innerHTML = "";
+        VOICES.forEach((v) => {
+          const opt = document.createElement("option");
+          opt.value = v.id;
+          opt.text = "Voice: " + v.label;
+          opt.selected = activeVoice === v.id;
+          sel.appendChild(opt);
+        });
+      }
+      const pickBar = document.getElementById("pickBar");
+      if (pickBar && pickBar.children.length === 0) {
+        const title = document.createElement("span");
+        title.innerText = "Pick voices:";
+        pickBar.appendChild(title);
+        VOICES.forEach((v) => {
+          const lbl = document.createElement("label");
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.value = v.id;
+          cb.checked = true;
+          lbl.appendChild(cb);
+          lbl.appendChild(document.createTextNode(v.label));
+          pickBar.appendChild(lbl);
+        });
+      }
+    }
+
     function setVoice(voice) {
       activeVoice = voice;
-      document.getElementById("btnOrus").className = voice === "orus" ? "active-orus" : "";
-      document.getElementById("btnCharon").className = voice === "charon" ? "active-charon" : "";
+      renderVoiceButtons();
       document.getElementById("statusText").innerText = "Active voice: " + voice.toUpperCase();
       refreshAvailability();
     }
@@ -261,20 +345,37 @@
       });
     }
 
-    async function compareAB(id, cardEl) {
+    async function compareVoiceList(voiceIds, id, cardEl, label) {
+      if (voiceIds.length === 0) {
+        document.getElementById("statusText").innerText = "Check at least one voice in Pick voices.";
+        return;
+      }
       stopPlayback();
       queueCancelled = false;
-      await playClip("orus", id, cardEl);
-      if (queueCancelled) return;
-      await new Promise((r) => setTimeout(r, 350));
-      if (queueCancelled) return;
-      await playClip("charon", id, cardEl);
+      for (const vid of voiceIds) {
+        if (queueCancelled) return;
+        await playClip(vid, id, cardEl);
+        if (queueCancelled) return;
+        await new Promise((r) => setTimeout(r, 350));
+      }
+      if (!queueCancelled) {
+        document.getElementById("statusText").innerText = "Finished " + label + " for " + id + ".";
+      }
+    }
+
+    function compareAllVoices(id, cardEl) {
+      return compareVoiceList(VOICES.map((v) => v.id), id, cardEl, "all voices");
+    }
+
+    function comparePickedVoices(id, cardEl) {
+      const picked = Array.from(document.querySelectorAll("#pickBar input[type=checkbox]:checked")).map((cb) => cb.value);
+      return compareVoiceList(picked, id, cardEl, "picked voices");
     }
 
     async function playSequence(kind) {
       stopPlayback();
       queueCancelled = false;
-      const list = kind === "numbers" ? NUMBERS : CONSONANTS;
+      const list = kind === "numbers" ? NUMBERS : (kind === "en_numbers" ? EN_NUMBERS : CONSONANTS);
       for (const item of list) {
         if (queueCancelled) break;
         const card = document.getElementById("card_" + item.id);
@@ -301,7 +402,8 @@
           <span class="badge" id="badge_${item.id}">Checking...</span>
           <div class="card-actions">
             <button onclick="stopPlayback(); playClip(activeVoice, '${item.id}', document.getElementById('card_${item.id}'))">Play</button>
-            <button onclick="compareAB('${item.id}', document.getElementById('card_${item.id}'))">A/B</button>
+            <button onclick="compareAllVoices('${item.id}', document.getElementById('card_${item.id}'))">All</button>
+            <button onclick="comparePickedVoices('${item.id}', document.getElementById('card_${item.id}'))">Pick</button>
           </div>
         `;
         wrap.appendChild(card);
@@ -310,9 +412,10 @@
 
     async function installAllOffline() {
       const urls = [];
-      for (const v of ["orus", "charon"]) {
+      for (const v of VOICES.map((x) => x.id)) {
         NUMBERS.forEach((n) => urls.push("./audio/" + v + "/" + n.id + ".m4a"));
-        CONSONANTS.forEach((c) => urls.push("./audio/" + v + "/" + c.id + ".m4a"));
+        EN_NUMBERS.forEach((e) => urls.push("./audio/" + v + "/" + e.id + ".m4a"));
+        urls.push("./audio/" + v + "/master.m4a");
       }
       const fill = document.getElementById("progressFill");
       const status = document.getElementById("statusText");
@@ -352,7 +455,7 @@
     }
 
     function refreshAvailability() {
-      const all = [...NUMBERS, ...CONSONANTS];
+      const all = [...NUMBERS, ...EN_NUMBERS, ...CONSONANTS];
       all.forEach((item) => {
         const card = document.getElementById("card_" + item.id);
         const badge = document.getElementById("badge_" + item.id);
@@ -372,7 +475,9 @@
       });
     }
 
+    renderVoiceButtons();
     renderGrid("numbersGrid", NUMBERS);
+    renderGrid("enNumbersGrid", EN_NUMBERS);
     renderGrid("alphabetGrid", CONSONANTS);
     refreshAvailability();
   </script>
