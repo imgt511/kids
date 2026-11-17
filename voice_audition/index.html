@@ -430,20 +430,14 @@
     }
 
     async function installAllOffline() {
-      const urls = [];
-      for (const v of VOICES.map((x) => x.id)) {
-        NUMBERS.forEach((n) => urls.push("./audio/" + v + "/" + n.id + ".m4a"));
-        EN_NUMBERS.forEach((e) => urls.push("./audio/" + v + "/" + e.id + ".m4a"));
-        urls.push("./audio/" + v + "/master.m4a");
-      }
       const fill = document.getElementById("progressFill");
       const status = document.getElementById("statusText");
       const info = document.getElementById("cacheInfo");
 
       if (location.protocol === "file:") {
         fill.style.width = "100%";
-        status.innerText = "Local folder mode active. All 108 clips load from disk.";
-        info.innerText = "108 / 108 local";
+        status.innerText = "Local folder mode active. All clips load from disk.";
+        info.innerText = "Local disk";
         return;
       }
 
@@ -452,21 +446,45 @@
         return;
       }
 
+      status.innerText = "Downloading all voices to phone cache...";
       const cache = await caches.open("thai-voice-audition-v1");
-      let done = 0;
-      let totalBytes = 0;
-      for (const u of urls) {
-        const resp = await fetch(u);
-        if (resp.ok) {
-          const blob = await resp.clone().blob();
-          totalBytes += blob.size;
-          await cache.put(u, resp);
-        }
-        done++;
-        fill.style.width = Math.round((done / urls.length) * 100) + "%";
-        info.innerText = done + " / " + urls.length + " (" + (totalBytes / (1024 * 1024)).toFixed(2) + " MB)";
+      await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
+
+      const urls = [];
+      for (const v of VOICES.map((x) => x.id)) {
+        urls.push("./audio/" + v + "/master.m4a");
+        NUMBERS.forEach((n) => urls.push("./audio/" + v + "/" + n.id + ".m4a"));
+        EN_NUMBERS.forEach((e) => urls.push("./audio/" + v + "/" + e.id + ".m4a"));
       }
-      status.innerText = "Offline install complete. Disconnect Wi-Fi and test playback.";
+
+      let done = 0;
+      let cachedCount = 0;
+      let totalBytes = 0;
+      const BATCH = 10;
+
+      for (let i = 0; i < urls.length; i += BATCH) {
+        const chunk = urls.slice(i, i + BATCH);
+        await Promise.all(chunk.map(async (u) => {
+          try {
+            const hit = await cache.match(u);
+            if (hit) {
+              cachedCount++;
+            } else {
+              const resp = await fetch(u);
+              if (resp.ok) {
+                const blob = await resp.clone().blob();
+                totalBytes += blob.size;
+                await cache.put(u, resp);
+                cachedCount++;
+              }
+            }
+          } catch (_) {}
+          done++;
+        }));
+        fill.style.width = Math.round((done / urls.length) * 100) + "%";
+        info.innerText = cachedCount + " clips cached (" + (totalBytes / (1024 * 1024)).toFixed(2) + " MB)";
+      }
+      status.innerText = "All " + cachedCount + " clips cached offline. Safe to turn off Wi-Fi.";
     }
 
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
