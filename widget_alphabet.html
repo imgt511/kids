@@ -821,10 +821,6 @@
 
       <div class="canvas-container">
         <canvas id="traceCanvas" width="460" height="460"></canvas>
-        <div id="startCuePill" class="start-cue-pill hidden">
-          <div class="start-cue-ring"></div>
-          <div id="startCueIcon" class="start-cue-icon">🎯</div>
-        </div>
       </div>
 
       <div class="trace-actions">
@@ -1048,10 +1044,38 @@
       window.speechSynthesis.speak(u);
     }
 
+    let currentCharonAudio = null;
+    function stopCharonAudio() {
+      if (currentCharonAudio) {
+        currentCharonAudio.pause();
+        currentCharonAudio.currentTime = 0;
+        currentCharonAudio = null;
+      }
+    }
+
+    function playCharonClip(filename, onEnded) {
+      if (aCtx.state === "suspended") aCtx.resume();
+      stopCharonAudio();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      const audio = new Audio("./audio_charon/" + filename);
+      currentCharonAudio = audio;
+      audio.onended = () => {
+        if (currentCharonAudio === audio) currentCharonAudio = null;
+        if (onEnded) onEnded();
+      };
+      audio.onerror = () => {
+        if (currentCharonAudio === audio) currentCharonAudio = null;
+        if (onEnded) onEnded();
+      };
+      audio.play().catch(() => { if (onEnded) onEnded(); });
+    }
+
+    function pad2(n) {
+      return String(n).padStart(2, "0");
+    }
+
     function speakCurrentConsonant() {
-      const c = THAI_CONSONANTS[currentIndex];
-      const phrase = c.char + " " + c.name;
-      speakText(phrase);
+      playCharonClip("short_alpha_" + pad2(currentIndex + 1) + ".m4a");
     }
 
     // --- PORTRAIT UI CONTROLS ---
@@ -1133,10 +1157,22 @@
       return c.char + " " + c.name + "... เริ่มเขียนจากหัวกลมก่อนนะคะ คนเก่ง";
     }
 
+    const coachedAlpha = JSON.parse(localStorage.getItem("glw_coached_alpha_v1") || "{}");
+    let wrongStartNotified = false;
+
     function speakTraceCoaching() {
-      const c = THAI_CONSONANTS[currentIndex];
-      const phrase = getCoachingPhrase(c);
-      speakText(phrase);
+      playCharonClip("coach_alpha_" + pad2(currentIndex + 1) + ".m4a");
+    }
+
+    function playAdaptiveEaselEntry() {
+      const char = THAI_CONSONANTS[currentIndex].char;
+      if (!coachedAlpha[char]) {
+        coachedAlpha[char] = true;
+        localStorage.setItem("glw_coached_alpha_v1", JSON.stringify(coachedAlpha));
+        speakTraceCoaching();
+      } else {
+        speakCurrentConsonant();
+      }
     }
 
     const CUE_ICONS = ["🎯", "👆", "✏️", "🖍️"];
@@ -1179,6 +1215,7 @@
       let colorStep = 0;
       traceCompleted = false;
       currentCursor = null;
+      wrongStartNotified = false;
 
       activeStrokes = rawStrokes.map(pts => {
         const segs = [];
@@ -1201,7 +1238,6 @@
         return segs;
       });
       renderTraceCanvas();
-      showStartCue(rawStrokes);
     }
 
     function renderTraceCanvas() {
@@ -1252,7 +1288,7 @@
     }
 
     function lockInitialTouch(x, y) {
-      hideStartCue();
+      const isFreshAttempt = activeStrokes.every(segs => segs.every(s => !s.filled));
       let best = null;
       let bestDistSq = 65 * 65;
       for (let sIdx = 0; sIdx < activeStrokes.length; sIdx++) {
@@ -1266,6 +1302,10 @@
             best = { sIdx, segIdx: i };
           }
         }
+      }
+      if (isFreshAttempt && best && (best.sIdx !== 0 || best.segIdx > 4) && !wrongStartNotified) {
+        wrongStartNotified = true;
+        speakTraceCoaching();
       }
       currentCursor = best;
       if (best) activeStrokes[best.sIdx][best.segIdx].filled = true;
@@ -1416,21 +1456,23 @@
     function openTraceModal() {
       document.getElementById("traceModal").classList.add("open");
       initTraceModel();
-      speakTraceCoaching();
+      playAdaptiveEaselEntry();
     }
 
     function closeTraceModal() {
+      stopCharonAudio();
       document.getElementById("traceModal").classList.remove("open");
     }
 
     function clearTraceCanvas() {
       initTraceModel();
+      speakCurrentConsonant();
     }
 
     function nextConsonantFromModal() {
       nextConsonant();
       initTraceModel();
-      speakTraceCoaching();
+      playAdaptiveEaselEntry();
     }
 
     // --- MOM'S SETTINGS COG WITH 2-SECOND HOLD GATE ---
@@ -2013,6 +2055,22 @@
         confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
         confettiAnim = null;
       }
+    }
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("./sw.js").then(() => {
+        if ("caches" in window) {
+          caches.open("glw-charon-v1").then(cache => {
+            for (let i = 1; i <= 44; i++) {
+              const p = pad2(i);
+              ["short_alpha_" + p + ".m4a", "coach_alpha_" + p + ".m4a"].forEach(f => {
+                const u = "./audio_charon/" + f;
+                cache.match(u).then(hit => { if (!hit) fetch(u).then(r => { if (r.ok) cache.put(u, r); }).catch(() => {}); });
+              });
+            }
+          });
+        }
+      }).catch(() => {});
     }
   </script>
 </body>
