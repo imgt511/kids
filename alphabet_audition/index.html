@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thai Alphabet Audition — Gemini 3.8 Flash TTS</title>
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --border:#334155; --text:#f8fafc; --muted:#94a3b8; --ok:#22c55e; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); padding:16px; }
+    .wrap { max-width:1100px; margin:0 auto; }
+    header { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:18px; }
+    h1 { margin:0 0 6px; font-size:1.35rem; }
+    .sub { color:var(--muted); font-size:0.9rem; margin:0 0 12px; }
+    .controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    select, button { cursor:pointer; border:1px solid var(--border); background:#0b1220; color:var(--text); padding:10px 14px; border-radius:10px; font-size:0.95rem; font-weight:600; }
+    .btn-install { background:#166534; border-color:var(--ok); }
+    .btn-stop { background:#7f1d1d; border-color:#ef4444; }
+    .status { margin-top:10px; font-size:0.88rem; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:10px; }
+    .card { position:relative; background:var(--card); border:2px solid var(--border); border-radius:12px; padding:10px; text-align:center; display:flex; flex-direction:column; gap:5px; }
+    .tile-num { position:absolute; top:6px; right:8px; font-size:0.75rem; font-weight:700; color:var(--muted); }
+    .card.playing { border-color:var(--ok); background:#132a22; }
+    .card.missing { opacity:0.35; }
+    .glyph { font-size:2.2rem; font-weight:700; }
+    .label { font-size:0.9rem; font-weight:600; }
+    .sublabel { font-size:0.76rem; color:var(--muted); }
+    .actions { display:flex; gap:6px; margin-top:4px; }
+    .actions button { flex:1; padding:6px; font-size:0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Thai Alphabet Audition — Gemini 3.8 Flash TTS</h1>
+      <p class="sub">All 44 Thai consonants (ก – ฮ) across all 30 voices. Neutral raw audio (zero normalization, zero high-pass).</p>
+      <div class="controls">
+        <a href="../index.html" style="text-decoration:none;"><button type="button">🏠 Hub</button></a>
+        <select id="voiceSelect" onchange="setVoice(this.value)"></select>
+        <button onclick="playMaster('p1')">Master Part 1 (ก–ถ)</button>
+        <button onclick="playMaster('p2')">Master Part 2 (ท–ฮ)</button>
+        <button onclick="playAllAlphabet()">Play All 44</button>
+        <button id="btnInstallOffline" class="btn-install" onclick="installAllOffline()">Download &amp; Cache Offline</button>
+        <button class="btn-stop" onclick="stopAudio()">Stop</button>
+      </div>
+      <div class="status" id="statusText">Ready.</div>
+    </header>
+    <div id="grid" class="grid"></div>
+  </div>
+  <script>
+    const CONSONANTS = [
+      ["ก","ไก่","Gor Gai"],["ข","ไข่","Khor Khai"],["ฃ","ขวด","Khor Khuat"],["ค","ควาย","Khor Khwai"],
+      ["ฅ","คน","Khor Khon"],["ฆ","ระฆัง","Khor Ra-khang"],["ง","งู","Ngor Ngu"],["จ","จาน","Jor Jan"],
+      ["ฉ","ฉิ่ง","Chor Ching"],["ช","ช้าง","Chor Chang"],["ซ","โซ่","Sor So"],["ฌ","เฌอ","Chor Choe"],
+      ["ญ","หญิง","Yor Ying"],["ฎ","ชฎา","Dor Cha-da"],["ฏ","ปฏัก","Tor Pa-tak"],["ฐ","ฐาน","Thor Than"],
+      ["ฑ","มณโฑ","Thor Mon-tho"],["ฒ","ผู้เฒ่า","Thor Phu-thao"],["ณ","เณร","Nor Nen"],["ด","เด็ก","Dor Dek"],
+      ["ต","เต่า","Tor Tao"],["ถ","ถุง","Thor Thung"],["ท","ทหาร","Thor Tha-han"],["ธ","ธง","Thor Thong"],
+      ["น","หนู","Nor Nu"],["บ","ใบไม้","Bor Bai-mai"],["ป","ปลา","Por Pla"],["ผ","ผึ้ง","Phor Phueng"],
+      ["ฝ","ฝา","For Fa"],["พ","พาน","Phor Phan"],["ฟ","ฟัน","For Fan"],["ภ","สำเภา","Phor Sam-phao"],
+      ["ม","ม้า","Mor Ma"],["ย","ยักษ์","Yor Yak"],["ร","เรือ","Ror Ruea"],["ล","ลิง","Lor Ling"],
+      ["ว","แหวน","Wor Waen"],["ศ","ศาลา","Sor Sa-la"],["ษ","ฤๅษี","Sor Rue-si"],["ส","เสือ","Sor Suea"],
+      ["ห","หีบ","Hor Hip"],["ฬ","จุฬา","Lor Chu-la"],["อ","อ่าง","Or Ang"],["ฮ","นกฮูก","Hor Nok-huk"]
+    ];
+    const VOICES = [
+      ["Zephyr","F"],["Puck","M"],["Charon","M"],["Kore","F"],["Fenrir","M"],
+      ["Leda","F"],["Orus","M"],["Aoede","F"],["Callirrhoe","F"],["Autonoe","F"],
+      ["Enceladus","M"],["Iapetus","M"],["Umbriel","M"],["Algieba","M"],["Despina","F"],
+      ["Erinome","F"],["Algenib","M"],["Rasalgethi","M"],["Laomedeia","F"],["Achernar","F"],
+      ["Alnilam","M"],["Schedar","M"],["Gacrux","F"],["Pulcherrima","F"],["Achird","M"],
+      ["Zubenelgenubi","M"],["Vindemiatrix","F"],["Sadachbia","M"],["Sadaltager","M"],["Sulafat","F"]
+    ];
+    let activeVoice = "zephyr";
+    let curAudio = null;
+    let cancelled = false;
+    let activeCard = null;
+
+    const sel = document.getElementById("voiceSelect");
+    VOICES.forEach(([n, g]) => {
+      const o = document.createElement("option");
+      o.value = n.toLowerCase();
+      o.text = `${n} (${g}) [cheerful]`;
+      sel.appendChild(o);
+    });
+
+    function stopAudio() {
+      cancelled = true;
+      if (curAudio) { curAudio.pause(); curAudio.currentTime = 0; curAudio = null; }
+      if (activeCard) { activeCard.classList.remove("playing"); activeCard = null; }
+    }
+
+    function playFile(file, card) {
+      return new Promise((resolve) => {
+        if (curAudio) { curAudio.pause(); curAudio.currentTime = 0; }
+        if (activeCard) activeCard.classList.remove("playing");
+        if (card) { card.classList.add("playing"); activeCard = card; }
+        const a = new Audio(`./audio/${activeVoice}/${file}`);
+        curAudio = a;
+        document.getElementById("statusText").innerText = `Playing ${activeVoice}: ${file}`;
+        a.onended = () => { if (card) card.classList.remove("playing"); resolve(); };
+        a.onerror = () => { if (card) card.classList.remove("playing"); resolve(); };
+        a.play().catch(() => resolve());
+      });
+    }
+
+    function playMaster(part) { stopAudio(); playFile(`master_${part}.m4a`, null); }
+
+    async function playAllAlphabet() {
+      stopAudio();
+      cancelled = false;
+      for (let i = 1; i <= 44; i++) {
+        if (cancelled) break;
+        const card = document.getElementById(`c_${i}`);
+        if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        await playFile(`alpha_${String(i).padStart(2, "0")}.m4a`, card);
+        if (cancelled) break;
+        await new Promise((r) => setTimeout(r, 220));
+      }
+    }
+
+    function setVoice(v) {
+      activeVoice = v;
+      async function installAllOffline() {
+      const btn = document.getElementById("btnInstallOffline");
+      const status = document.getElementById("statusText");
+      if (location.protocol === "file:") {
+        status.innerText = "Local disk mode active.";
+        return;
+      }
+      if (!("caches" in window)) {
+        status.innerText = "Browser Cache API unavailable.";
+        return;
+      }
+      if (btn) btn.innerText = "Downloading...";
+      status.innerText = "Caching all 30 Alphabet voices offline...";
+      const cache = await caches.open("thai-alphabet-audition-v1");
+      await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
+      const urls = [];
+      VOICES.forEach(([n]) => {
+        const v = n.toLowerCase();
+        urls.push(`./audio/${v}/master_p1.m4a`, `./audio/${v}/master_p2.m4a`);
+        for (let i = 1; i <= 44; i++) urls.push(`./audio/${v}/alpha_${String(i).padStart(2, "0")}.m4a`);
+      });
+      let done = 0, cached = 0;
+      const BATCH = 12;
+      for (let i = 0; i < urls.length; i += BATCH) {
+        const chunk = urls.slice(i, i + BATCH);
+        await Promise.all(chunk.map(async (u) => {
+          try {
+            if (await cache.match(u)) { cached++; }
+            else {
+              const r = await fetch(u);
+              if (r.ok) { await cache.put(u, r); cached++; }
+            }
+          } catch (_) {}
+          done++;
+        }));
+        status.innerText = `Caching ${done} / ${urls.length} (${cached} saved)...`;
+      }
+      if (btn) btn.innerText = `DONE (${cached} Cached)`;
+      status.innerText = `DONE — ${cached} clips cached offline. Safe to turn off Wi-Fi.`;
+    }
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+
+    refreshCards();
+    }
+
+    function refreshCards() {
+      CONSONANTS.forEach((_, idx) => {
+        const i = idx + 1;
+        const card = document.getElementById(`c_${i}`);
+        const probe = new Audio(`./audio/${activeVoice}/alpha_${String(i).padStart(2, "0")}.m4a`);
+        probe.preload = "metadata";
+        probe.onloadedmetadata = () => card.classList.remove("missing");
+        probe.onerror = () => card.classList.add("missing");
+      });
+    }
+
+    const grid = document.getElementById("grid");
+    CONSONANTS.forEach(([ch, word, en], idx) => {
+      const i = idx + 1;
+      const fn = `alpha_${String(i).padStart(2, "0")}.m4a`;
+      const d = document.createElement("div");
+      d.className = "card";
+      d.id = `c_${i}`;
+      d.innerHTML = `<span class="tile-num">#${i}</span><div class="glyph">${ch}</div><div class="label">${ch} ${word}</div><div class="sublabel">${en}</div>
+        <div class="actions"><button onclick="stopAudio(); playFile('${fn}', document.getElementById('c_${i}'))">Play</button></div>`;
+      grid.appendChild(d);
+    });
+    async function installAllOffline() {
+      const btn = document.getElementById("btnInstallOffline");
+      const status = document.getElementById("statusText");
+      if (location.protocol === "file:") {
+        status.innerText = "Local disk mode active.";
+        return;
+      }
+      if (!("caches" in window)) {
+        status.innerText = "Browser Cache API unavailable.";
+        return;
+      }
+      if (btn) btn.innerText = "Downloading...";
+      status.innerText = "Caching all 30 Alphabet voices offline...";
+      const cache = await caches.open("thai-alphabet-audition-v1");
+      await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
+      const urls = [];
+      VOICES.forEach(([n]) => {
+        const v = n.toLowerCase();
+        urls.push(`./audio/${v}/master_p1.m4a`, `./audio/${v}/master_p2.m4a`);
+        for (let i = 1; i <= 44; i++) urls.push(`./audio/${v}/alpha_${String(i).padStart(2, "0")}.m4a`);
+      });
+      let done = 0, cached = 0;
+      const BATCH = 12;
+      for (let i = 0; i < urls.length; i += BATCH) {
+        const chunk = urls.slice(i, i + BATCH);
+        await Promise.all(chunk.map(async (u) => {
+          try {
+            if (await cache.match(u)) { cached++; }
+            else {
+              const r = await fetch(u);
+              if (r.ok) { await cache.put(u, r); cached++; }
+            }
+          } catch (_) {}
+          done++;
+        }));
+        status.innerText = `Caching ${done} / ${urls.length} (${cached} saved)...`;
+      }
+      if (btn) btn.innerText = `DONE (${cached} Cached)`;
+      status.innerText = `DONE — ${cached} clips cached offline. Safe to turn off Wi-Fi.`;
+    }
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+
+    refreshCards();
+  </script>
+</body>
+</html>
