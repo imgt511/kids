@@ -248,8 +248,6 @@
       en: item[2]
     }));
 
-    const PENDING_SET = new Set(["v30_achird", "v30_zubenelgenubi", "v30_vindemiatrix", "v30_sadachbia", "v30_sadaltager", "v30_sulafat"]);
-
     const VOICES = [
       ...[
         ["Zephyr", "F"], ["Puck", "M"], ["Charon", "M"], ["Kore", "F"], ["Fenrir", "M"],
@@ -258,11 +256,7 @@
         ["Erinome", "F"], ["Algenib", "M"], ["Rasalgethi", "M"], ["Laomedeia", "F"], ["Achernar", "F"],
         ["Alnilam", "M"], ["Schedar", "M"], ["Gacrux", "F"], ["Pulcherrima", "F"], ["Achird", "M"],
         ["Zubenelgenubi", "M"], ["Vindemiatrix", "F"], ["Sadachbia", "M"], ["Sadaltager", "M"], ["Sulafat", "F"]
-      ].map(([name, g]) => {
-        const id = "v30_" + name.toLowerCase();
-        const tag = PENDING_SET.has(id) ? " [Pending 3PM]" : " [cheerful]";
-        return { id, label: `${name} (${g})${tag}`, cls: "active-voice", pending: PENDING_SET.has(id) };
-      }),
+      ].map(([name, g]) => ({ id: "v30_" + name.toLowerCase(), label: `${name} (${g}) [cheerful]`, cls: "active-voice", pending: false })),
       { id: "leda_raw", label: "Leda (F) (Earlier Neutral / No Norm)", cls: "active-voice" },
       { id: "leda_norm", label: "Leda (F) (Earlier Norm Only)", cls: "active-voice" },
       { id: "leda", label: "Leda (F) (Earlier High-Pass + Norm)", cls: "active-voice" }
@@ -457,7 +451,7 @@
       const btn = document.getElementById("btnInstallOffline");
       if (btn) btn.innerText = "Downloading...";
       status.innerText = "Downloading all voices to phone cache...";
-      const cache = await caches.open("thai-voice-audition-v2");
+      const cache = await caches.open("thai-voice-audition-v3");
       await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
 
       const urls = [];
