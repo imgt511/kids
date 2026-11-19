@@ -1,4 +1,4 @@
-const CACHE_NAME = "thai-alphabet-audition-v1";
+const CACHE_NAME = "thai-alphabet-audition-v2";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();

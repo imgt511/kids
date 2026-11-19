@@ -133,7 +133,7 @@
       }
       if (btn) btn.innerText = "Downloading...";
       status.innerText = "Caching all 30 Alphabet voices offline...";
-      const cache = await caches.open("thai-alphabet-audition-v1");
+      const cache = await caches.open("thai-alphabet-audition-v2");
       await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
       const urls = [];
       VOICES.forEach(([n]) => {
@@ -203,7 +203,7 @@
       }
       if (btn) btn.innerText = "Downloading...";
       status.innerText = "Caching all 30 Alphabet voices offline...";
-      const cache = await caches.open("thai-alphabet-audition-v1");
+      const cache = await caches.open("thai-alphabet-audition-v2");
       await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
       const urls = [];
       VOICES.forEach(([n]) => {
