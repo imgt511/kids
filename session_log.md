@@ -114,3 +114,18 @@
   * Reduced black fill stroke by 50%: from 38px down to 19px in `widget_alphabet.html` (18px in landscape), and from 36px down to 18px in `widget_numbers.html`.
   * Reduced rainbow guide stroke by 33%: from 12px down to 8px in both widgets.
   * Verified tight loops, chicken beak on ก, circular heads, and numerals 8, 9, ๖, ๘ now retain distinct visual separation and crisp tracing feedback.
+
+
+---
+
+## 2026-11-19 — Executed 3:05 PM Vindemiatrix [p2] Quota Reset Job & Audition PWA Bump
+* **Context & Root Cause Analysis:**
+  * User noticed a chore scheduled for 3:05 PM today had fallen out of the cycle.
+  * Audit revealed: timer `task-698` was re-armed at 09:48 AM, but the user rebooted the Mac Mini at 14:13 (2:13 PM) to fix microphone/sound issues. In-memory timer tasks do not survive a system reboot.
+* **Execution & Resolution:**
+  1. Re-pulled `Vindemiatrix [p2]` (letters 23–44, `CONSONANTS[22:]`) cleanly without `[cheerful]` tag.
+  2. Detected 22 exact segments (36.91s duration); sliced `alpha_23.m4a` through `alpha_44.m4a`.
+  3. Copied all 22 fresh clips and `master_p2.m4a` into `alphabet_audition/audio/vindemiatrix/`.
+  4. Bumped service worker cache name to `thai-alphabet-audition-v2` in `alphabet_audition/sw.js` and `alphabet_audition/index.html`.
+  5. Updated `PROJECT_STATUS.md` and `session_log.md`, rendered HTML companions, and pushed commit `50a98b5` to GitHub `origin/main`.
+  6. All 30 Alphabet audition voices are now 100% complete and clean.
