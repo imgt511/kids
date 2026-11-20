@@ -1,29 +1,46 @@
 {
-  "projectName": "Granddaughters_Learning_Widgets",
-  "created": "2026-10-23",
-  "lastUpdated": "2026-10-24",
-  "status": "active",
-  "currentMilestone": "v1.3.0-alphabet-and-name-tracing-prep",
-  "liveProductionUrl": "https://imgt511.github.io/kids/",
-  "targetAges": [
-    5,
-    7
-  ],
-  "apps": {
-    "numbers_tracing": {
-      "file": "index.html",
-      "status": "live",
-      "url": "https://imgt511.github.io/kids/"
-    },
-    "math_addition": {
-      "file": "widget_addition.html",
-      "status": "on_hold",
-      "url": "https://imgt511.github.io/kids/widget_addition.html"
-    },
-    "alphabet_name_tracing": {
-      "file": "widget_alphabet.html",
-      "status": "next_sprint",
-      "focus": "Seda name spelling & Thai ก-ฮ"
+  "$schema_version": "1.0.0",
+  "project": {
+    "name": "Granddaughters_Learning_Widgets",
+    "path": "/Users/weightless/MUSTA_DEVELOPMENT/Granddaughters_Learning_Widgets",
+    "environment": "macOS (Apple Silicon)"
+  },
+  "lifecycle": {
+    "last_session": "2026-11-20",
+    "status": "active",
+    "active_goal": "Thai Alphabet & Numbers Learning Hub (Dada & Sayda)"
+  },
+  "execution_state": {
+    "current_subtask": "Mobile field-test of Leda Alphabet & Name Studio; next: App 2 Math Addition overhaul",
+    "completed_milestones": [
+      "App 1: Numbers & Vector Tracing (1–10) live on GitHub Pages with Leda voice coaching",
+      "App 2: Math Addition Challenge isolated to standalone widget; card-based fruit counting & keypad spec recorded in TODO.md",
+      "App 3: Thai Alphabet & Granddaughters' Name Tracing Studio with canonical 100% stroke geometry and dynamic glass scaling",
+      "Central Portal: Kids Learning Studio Launchpad at imgt511.github.io/kids/ with artwork tiles & 2-way home navigation",
+      "Numbers Audition: 30-voice PWA with seg01 cheerful filtering live at voice_audition/",
+      "Alphabet Audition: 30-voice PWA v2 with 44/44 clean clips (Vindemiatrix [p2] re-pulled) live at alphabet_audition/",
+      "Voice selection: Selected raw cheerful Leda across Numbers & Alphabet Studio",
+      "Alphabet Studio Audio Integration: Wired 112 Leda audio_leda/ clips (44 consonants, 8 modular coaching cues, 44 stitched coaches, 16 Name Studio clips) + glw-leda-v6 PWA cache into widget_alphabet.html"
+    ],
+    "pending_milestones": [
+      "App 2 Overhaul: Build new progressive 1+1 fruit counting dual-card addition widget with on-screen numerical keypad"
+    ],
+    "world_variables": {
+      "tracked_files": [
+        "index.html",
+        "widget_numbers.html",
+        "widget_alphabet.html",
+        "widget_addition.html",
+        "alphabet_audition/index.html",
+        "voice_audition/index.html"
+      ],
+      "open_blockers": []
     }
-  }
+  },
+  "active_skills": [
+    "state-tracker",
+    "critic",
+    "doc-architect",
+    "history"
+  ]
 }

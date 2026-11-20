@@ -129,3 +129,21 @@
   4. Bumped service worker cache name to `thai-alphabet-audition-v2` in `alphabet_audition/sw.js` and `alphabet_audition/index.html`.
   5. Updated `PROJECT_STATUS.md` and `session_log.md`, rendered HTML companions, and pushed commit `50a98b5` to GitHub `origin/main`.
   6. All 30 Alphabet audition voices are now 100% complete and clean.
+
+---
+
+## 2026-11-20 — Alphabet & Name Studio Switch to Raw Leda Voice (`audio_leda/`)
+* **Tool Used:** Antigravity
+* **Accomplished:**
+  1. **Switched Voice to Raw Leda (`gemini-3.8-flash-tts`, RMS tail-static trim only):**
+     * Generated 8 reusable Thai alphabet coaching cues (`cue_head`, `cue_head_bottom` for `ร`/`ว`, `cue_headless` for `ก`/`ธ`, plus 5 two-stroke cues for `ญ`, `ฐ`, `ศ`, `ษ`, `ส`) using female particle `นะคะ` with no `[cheerful]` tag and no `loudnorm`/`highpass`.
+     * Generated 16 Leda Landscape Name Studio clips (`name_ask`, `name_ask_sister1/2`, `name_retry`, `name_pick`, `greet_*`, `praise_*`, and `name_*` for Sayda, Dada, Beam, Jeab).
+  2. **44-Consonant Flash Audit & Alignment Fix:**
+     * Audited `p1` (`01..22`) via `gemini-3.8-flash` (22/22 verified clean).
+     * Audited `master_p2.m4a` (`23..44`) and caught a duplicate `"ล ลิง"` spoken segment (`seg_14` and `seg_15`) that shifted `alphabet_audition/audio/leda/` clips `37..44` by +1.
+     * Re-aligned `#23..#35` and `#37..#41` from clean `master_p2.m4a` segments, regenerated `#36 ล ลิง`, `#42 ฬ จุฬา`, `#43 อ อ่าง`, and `#44 ฮ นกฮูก` via raw Leda TTS (29 total TTS calls out of 100/day quota), and stitched all 44 single-file `coach_alpha_01..44.m4a` clips in 24 kHz mono PCM (112 verified AAC files total in `audio_leda/`).
+  3. **Widget & PWA Integration (`widget_alphabet.html`, `sw.js`):**
+     * Switched playback from `audio_charon/` to `audio_leda/`, added `playLedaOrFallback` for Landscape Name Studio prompts/greetings/praise, updated `COACHING_PROMPTS` and bumped `glw_coached_alpha_v2`.
+     * Replaced `(best.sIdx !== 0 || best.segIdx > 4)` in `lockInitialTouch` with the 75px start-point distance check matching `widget_numbers.html`.
+     * Unified PWA cache to `glw-leda-v6` across `sw.js` and `widget_alphabet.html`, precaching all 104 runtime audio clips.
+     * Verified `node --check`, zero Charon refs, and 104/104 `ffprobe` audio integrity.

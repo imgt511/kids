@@ -1,4 +1,4 @@
-const CACHE_NAME = "glw-charon-v5";
+const CACHE_NAME = "glw-leda-v6";
 const CORE_ASSETS = [
   "./",
   "./index.html",

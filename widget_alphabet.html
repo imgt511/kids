@@ -1029,6 +1029,7 @@
 
     function speakText(text, onEnded) {
       if (aCtx.state === "suspended") aCtx.resume();
+      stopLedaAudio();
       if (!window.speechSynthesis) {
         if (onEnded) onEnded();
         return;
@@ -1044,30 +1045,47 @@
       window.speechSynthesis.speak(u);
     }
 
-    let currentCharonAudio = null;
-    function stopCharonAudio() {
-      if (currentCharonAudio) {
-        currentCharonAudio.pause();
-        currentCharonAudio.currentTime = 0;
-        currentCharonAudio = null;
+    let currentLedaAudio = null;
+    function stopLedaAudio() {
+      if (currentLedaAudio) {
+        currentLedaAudio.pause();
+        currentLedaAudio.currentTime = 0;
+        currentLedaAudio = null;
       }
     }
 
-    function playCharonClip(filename, onEnded) {
+    function playLedaClip(filename, onEnded, onErrorFallback) {
       if (aCtx.state === "suspended") aCtx.resume();
-      stopCharonAudio();
+      stopLedaAudio();
       if (window.speechSynthesis) window.speechSynthesis.cancel();
-      const audio = new Audio("./audio_charon/" + filename);
-      currentCharonAudio = audio;
-      audio.onended = () => {
-        if (currentCharonAudio === audio) currentCharonAudio = null;
+      const audio = new Audio("./audio_leda/" + filename);
+      currentLedaAudio = audio;
+      let settled = false;
+      const done = () => {
+        if (settled) return;
+        settled = true;
+        if (currentLedaAudio === audio) currentLedaAudio = null;
         if (onEnded) onEnded();
       };
-      audio.onerror = () => {
-        if (currentCharonAudio === audio) currentCharonAudio = null;
-        if (onEnded) onEnded();
+      const fail = () => {
+        if (settled) return;
+        settled = true;
+        if (currentLedaAudio === audio) currentLedaAudio = null;
+        if (onErrorFallback) {
+          onErrorFallback();
+        } else if (onEnded) {
+          onEnded();
+        }
       };
-      audio.play().catch(() => { if (onEnded) onEnded(); });
+      audio.onended = done;
+      audio.onerror = fail;
+      audio.play().catch(fail);
+    }
+
+    function playLedaOrFallback(filename, fallbackText, onEnded) {
+      playLedaClip(filename, onEnded, () => {
+        speakText(fallbackText, onEnded);
+      });
     }
 
     function pad2(n) {
@@ -1075,7 +1093,7 @@
     }
 
     function speakCurrentConsonant() {
-      playCharonClip("short_alpha_" + pad2(currentIndex + 1) + ".m4a");
+      playLedaClip("short_alpha_" + pad2(currentIndex + 1) + ".m4a");
     }
 
     // --- PORTRAIT UI CONTROLS ---
@@ -1140,35 +1158,38 @@
     // Pedagogical Thai Audio Coaching & Pulsing Start Cue
     const COACHING_PROMPTS = {
       // Headless consonants
-      "ก": "ก ไก่... เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ คนเก่ง",
-      "ธ": "ธ ธง... เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ คนเก่ง",
+      "ก": "ก ไก่... ตัวนี้ไม่มีหัวกลม เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ",
+      "ธ": "ธ ธง... ตัวนี้ไม่มีหัวกลม เริ่มลากเส้นจากข้างล่างขึ้นไปนะคะ",
+      // Bottom circular head consonants
+      "ร": "ร เรือ... เริ่มเขียนจากหัวกลมข้างล่างก่อน แล้วลากโค้งขึ้นไปนะคะ",
+      "ว": "ว แหวน... เริ่มเขียนจากหัวกลมข้างล่างก่อน แล้วลากโค้งขึ้นไปนะคะ",
       // 5 Two-stroke consonants
-      "ญ": "ญ หญิง... เขียนตัวข้างบนก่อน แล้วค่อยลากเชิงข้างล่างนะคะ คนเก่ง",
-      "ฐ": "ฐ ฐาน... เขียนตัวข้างบนก่อน แล้วเติมฐานข้างล่างนะคะ คนเก่ง",
-      "ศ": "ศ ศาลา... เขียนเหมือนตัว คอควาย แล้วเติมหางข้างบนนะคะ คนเก่ง",
-      "ส": "ส เสือ... เขียนตัวข้างล่างก่อน แล้วสะบัดหางข้างบนนะคะ คนเก่ง",
-      "ษ": "ษ ฤๅษี... เขียนเหมือนตัว บอใบไม้ แล้วขีดเส้นตรงกลางนะคะ คนเก่ง"
+      "ญ": "ญ หญิง... เริ่มจากหัวกลม เขียนตัวข้างบนก่อน แล้วค่อยลากเชิงข้างล่างนะคะ",
+      "ฐ": "ฐ ฐาน... เริ่มจากหัวกลม เขียนตัวข้างบนก่อน แล้วเติมฐานข้างล่างนะคะ",
+      "ศ": "ศ ศาลา... เริ่มจากหัวกลม เขียนเหมือนตัว คอควาย แล้วเติมหางข้างบนนะคะ",
+      "ส": "ส เสือ... เริ่มจากหัวกลม เขียนตัวข้างล่างก่อน แล้วสะบัดหางข้างบนนะคะ",
+      "ษ": "ษ ฤๅษี... เริ่มจากหัวกลม เขียนเหมือนตัว บอใบไม้ แล้วขีดเส้นตรงกลางนะคะ"
     };
 
     function getCoachingPhrase(c) {
       if (COACHING_PROMPTS[c.char]) {
         return COACHING_PROMPTS[c.char];
       }
-      return c.char + " " + c.name + "... เริ่มเขียนจากหัวกลมก่อนนะคะ คนเก่ง";
+      return c.char + " " + c.name + "... เริ่มเขียนจากหัวกลมก่อน แล้วลากเส้นตามรอยนะคะ";
     }
 
-    const coachedAlpha = JSON.parse(localStorage.getItem("glw_coached_alpha_v1") || "{}");
+    const coachedAlpha = JSON.parse(localStorage.getItem("glw_coached_alpha_v2") || "{}");
     let wrongStartNotified = false;
 
     function speakTraceCoaching() {
-      playCharonClip("coach_alpha_" + pad2(currentIndex + 1) + ".m4a");
+      playLedaClip("coach_alpha_" + pad2(currentIndex + 1) + ".m4a");
     }
 
     function playAdaptiveEaselEntry() {
       const char = THAI_CONSONANTS[currentIndex].char;
       if (!coachedAlpha[char]) {
         coachedAlpha[char] = true;
-        localStorage.setItem("glw_coached_alpha_v1", JSON.stringify(coachedAlpha));
+        localStorage.setItem("glw_coached_alpha_v2", JSON.stringify(coachedAlpha));
         speakTraceCoaching();
       } else {
         speakCurrentConsonant();
@@ -1303,7 +1324,8 @@
           }
         }
       }
-      if (isFreshAttempt && best && (best.sIdx !== 0 || best.segIdx > 4) && !wrongStartNotified) {
+      const p0 = activeStrokes[0] && activeStrokes[0][0];
+      if (isFreshAttempt && p0 && Math.hypot(x - p0.x0, y - p0.y0) > 75 && !wrongStartNotified) {
         wrongStartNotified = true;
         speakTraceCoaching();
       }
@@ -1460,7 +1482,7 @@
     }
 
     function closeTraceModal() {
-      stopCharonAudio();
+      stopLedaAudio();
       document.getElementById("traceModal").classList.remove("open");
     }
 
@@ -1518,12 +1540,20 @@
     }
     setTimeout(refreshSisterButtons, 60);
 
+    const NAME_CLIP_KEY = {
+      "เซด้า": "sayda",
+      "เซดา": "sayda",
+      "ดาด้า": "dada",
+      "บีม": "beam",
+      "เจี๊ยบ": "jeab"
+    };
+
     function handleSisterBtnTap(slotNum) {
       if (slotNum === 1) {
         if (sister1Name) {
           speakGreetingAndLoad(sister1Name, "สวัสดีค่ะน้อง " + sister1Name + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
         } else {
-          speakText("บอกชื่อพี่สาวเลยค่ะ", () => {
+          playLedaOrFallback("name_ask_sister1.m4a", "บอกชื่อพี่สาวเลยค่ะ", () => {
             setTimeout(startSpeechRecognition, 350);
           });
         }
@@ -1531,7 +1561,7 @@
         if (sister2Name) {
           speakGreetingAndLoad(sister2Name, "สวัสดีค่ะน้อง " + sister2Name + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
         } else {
-          speakText("บอกชื่อน้องสาวเลยค่ะ", () => {
+          playLedaOrFallback("name_ask_sister2.m4a", "บอกชื่อน้องสาวเลยค่ะ", () => {
             setTimeout(startSpeechRecognition, 350);
           });
         }
@@ -1625,7 +1655,7 @@
       speechAttempts = 0;
 
       // Speak greeting, then automatically open mic
-      speakText("ชื่อเล่นอะไรคะ?", () => {
+      playLedaOrFallback("name_ask.m4a", "ชื่อเล่นอะไรคะ?", () => {
         setTimeout(() => {
           startSpeechRecognition();
         }, 350);
@@ -1689,7 +1719,7 @@
       if (speechAttempts < 2) {
         // Continuous hands-free loop: Polite Thai nudge, then re-open mic automatically!
         promptText.innerText = "พูดดังๆ อีกทีนะคะ คนเก่ง";
-        speakText("พูดดังๆ อีกทีนะคะ คนเก่ง", () => {
+        playLedaOrFallback("name_retry.m4a", "พูดดังๆ อีกทีนะคะ คนเก่ง", () => {
           setTimeout(() => {
             if (isConversationActive) startSpeechRecognition();
           }, 350);
@@ -1697,7 +1727,7 @@
       } else {
         isConversationActive = false;
         promptText.innerText = "แตะเลือกรูปชื่อของหนูได้เลยค่ะ";
-        speakText("แตะเลือกรูปชื่อของหนูได้เลยค่ะ");
+        playLedaOrFallback("name_pick.m4a", "แตะเลือกรูปชื่อของหนูได้เลยค่ะ");
         showFallbackAvatars();
       }
     }
@@ -1751,7 +1781,12 @@
       document.getElementById("currentNameLabel").innerText = nameStr;
 
       resizeLandscapeCanvas();
-      speakText(phrase);
+      const nameKey = NAME_CLIP_KEY[nameStr];
+      if (nameKey) {
+        playLedaOrFallback("greet_" + nameKey + ".m4a", phrase);
+      } else {
+        speakText(phrase);
+      }
       initNameModel(nameStr);
     }
 
@@ -1765,7 +1800,12 @@
     }
 
     function speakCurrentName() {
-      speakText(currentNameString);
+      const nameKey = NAME_CLIP_KEY[currentNameString];
+      if (nameKey) {
+        playLedaOrFallback("name_" + nameKey + ".m4a", currentNameString);
+      } else {
+        speakText(currentNameString);
+      }
     }
 
     // Multi-Letter Canvas Layout (Stretches to Available Physical Glass)
@@ -1962,7 +2002,14 @@
         document.getElementById("starCount").innerText = stars;
         document.getElementById("landscapeStarCount").innerText = stars;
         localStorage.setItem("boo_boo_stars_alpha", stars);
-        speakText("เก่งมากค่ะน้อง " + currentNameString);
+        const nameKey = NAME_CLIP_KEY[currentNameString];
+        if (nameKey === "sayda" || nameKey === "dada") {
+          playLedaOrFallback("praise_" + nameKey + ".m4a", "เก่งมากค่ะน้อง " + currentNameString);
+        } else if (nameKey) {
+          playLedaOrFallback("praise_generic.m4a", "เก่งมากค่ะ คนเก่ง");
+        } else {
+          speakText("เก่งมากค่ะน้อง " + currentNameString);
+        }
       }
     }
 
@@ -2057,17 +2104,29 @@
       }
     }
 
+    const NAME_STUDIO_CLIPS = [
+      "name_ask.m4a", "name_ask_sister1.m4a", "name_ask_sister2.m4a",
+      "name_retry.m4a", "name_pick.m4a",
+      "greet_sayda.m4a", "greet_dada.m4a", "greet_beam.m4a", "greet_jeab.m4a",
+      "praise_sayda.m4a", "praise_dada.m4a", "praise_generic.m4a",
+      "name_sayda.m4a", "name_dada.m4a", "name_beam.m4a", "name_jeab.m4a"
+    ];
+
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
       navigator.serviceWorker.register("./sw.js").then(() => {
         if ("caches" in window) {
-          caches.open("glw-charon-v1").then(cache => {
+          caches.open("glw-leda-v6").then(cache => {
+            const files = [...NAME_STUDIO_CLIPS];
             for (let i = 1; i <= 44; i++) {
               const p = pad2(i);
-              ["short_alpha_" + p + ".m4a", "coach_alpha_" + p + ".m4a"].forEach(f => {
-                const u = "./audio_charon/" + f;
-                cache.match(u).then(hit => { if (!hit) fetch(u).then(r => { if (r.ok) cache.put(u, r); }).catch(() => {}); });
-              });
+              files.push("short_alpha_" + p + ".m4a", "coach_alpha_" + p + ".m4a");
             }
+            files.forEach(f => {
+              const u = "./audio_leda/" + f;
+              cache.match(u).then(hit => {
+                if (!hit) fetch(u).then(r => { if (r.ok) cache.put(u, r); }).catch(() => {});
+              });
+            });
           });
         }
       }).catch(() => {});

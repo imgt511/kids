@@ -1083,6 +1083,57 @@
 <li>Updated <code>PROJECT<em>STATUS.md</code> and <code>session</em>log.md</code>, rendered HTML companions, and pushed commit <code>50a98b5</code> to GitHub <code>origin/main</code>.</li>
 <li>All 30 Alphabet audition voices are now 100% complete and clean.</li>
 </ol>
+<hr>
+<div class="section-anchor" id="sec-10"><h2 class="heading-with-scroll"><span class="heading-title">2026-11-20 — Alphabet & Name Studio Switch to Raw Leda Voice (<code>audio_leda/</code>)</span> <button class="btn-sec-scroll" id="btn-scroll-sec-10" title="Pronounce this section" onclick="readSection('sec-10', '2026-11-20 — Alphabet &amp; Name Studio Switch to Raw Leda Voice (audio_leda/)')"><svg class="sec-scroll-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="whiteParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f7f3e4"/>
+      <stop offset="100%" stop-color="#e3dcc8"/>
+    </linearGradient>
+    <linearGradient id="silverFinial" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ece1"/>
+      <stop offset="100%" stop-color="#a8a191"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <circle cx="50" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <rect x="10" y="10" width="40" height="4.5" rx="2" fill="url(#silverFinial)"/>
+  <path d="M14 13 C 14 13, 16 28, 12 47 C 18 51, 42 51, 48 47 C 44 28, 46 13, 46 13 Z" fill="url(#whiteParchment)" stroke="#787161" stroke-width="1.6"/>
+  <path d="M8 47 C 18 53, 42 53, 52 47 C 52 47, 50 51, 46 52 C 28 53, 14 53, 8 47 Z" fill="url(#silverFinial)" stroke="#615a4c" stroke-width="1.2"/>
+  <line x1="20" y1="21" x2="40" y2="21" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="18" y1="27" x2="42" y2="27" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="19" y1="33" x2="39" y2="33" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="21" y1="39" x2="35" y2="39" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+</svg></button></h2></div>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>Switched Voice to Raw Leda (<code>gemini-3.8-flash-tts</code>, RMS tail-static trim only):</strong></li>
+</ol>
+<ul>
+<li>Generated 8 reusable Thai alphabet coaching cues (<code>cue<em>head</code>, <code>cue</em>head<em>bottom</code> for <code>ร</code>/<code>ว</code>, <code>cue</em>headless</code> for <code>ก</code>/<code>ธ</code>, plus 5 two-stroke cues for <code>ญ</code>, <code>ฐ</code>, <code>ศ</code>, <code>ษ</code>, <code>ส</code>) using female particle <code>นะคะ</code> with no <code>[cheerful]</code> tag and no <code>loudnorm</code>/<code>highpass</code>.</li>
+<li>Generated 16 Leda Landscape Name Studio clips (<code>name<em>ask</code>, <code>name</em>ask<em>sister1/2</code>, <code>name</em>retry</code>, <code>name<em>pick</code>, <code>greet</em><em></code>, <code>praise<em></em></code>, and <code>name</em>*</code> for Sayda, Dada, Beam, Jeab).</li>
+</ul>
+<ol>
+<li><strong>44-Consonant Flash Audit & Alignment Fix:</strong></li>
+</ol>
+<ul>
+<li>Audited <code>p1</code> (<code>01..22</code>) via <code>gemini-3.8-flash</code> (22/22 verified clean).</li>
+<li>Audited <code>master<em>p2.m4a</code> (<code>23..44</code>) and caught a duplicate <code>&quot;ล ลิง&quot;</code> spoken segment (<code>seg</em>14</code> and <code>seg<em>15</code>) that shifted <code>alphabet</em>audition/audio/leda/</code> clips <code>37..44</code> by +1.</li>
+<li>Re-aligned <code>#23..#35</code> and <code>#37..#41</code> from clean <code>master<em>p2.m4a</code> segments, regenerated <code>#36 ล ลิง</code>, <code>#42 ฬ จุฬา</code>, <code>#43 อ อ่าง</code>, and <code>#44 ฮ นกฮูก</code> via raw Leda TTS (29 total TTS calls out of 100/day quota), and stitched all 44 single-file <code>coach</em>alpha<em>01..44.m4a</code> clips in 24 kHz mono PCM (112 verified AAC files total in <code>audio</em>leda/</code>).</li>
+</ul>
+<ol>
+<li><strong>Widget & PWA Integration (<code>widget_alphabet.html</code>, <code>sw.js</code>):</strong></li>
+</ol>
+<ul>
+<li>Switched playback from <code>audio<em>charon/</code> to <code>audio</em>leda/</code>, added <code>playLedaOrFallback</code> for Landscape Name Studio prompts/greetings/praise, updated <code>COACHING<em>PROMPTS</code> and bumped <code>glw</em>coached<em>alpha</em>v2</code>.</li>
+<li>Replaced <code>(best.sIdx !== 0 || best.segIdx &gt; 4)</code> in <code>lockInitialTouch</code> with the 75px start-point distance check matching <code>widget_numbers.html</code>.</li>
+<li>Unified PWA cache to <code>glw-leda-v6</code> across <code>sw.js</code> and <code>widget_alphabet.html</code>, precaching all 104 runtime audio clips.</li>
+<li>Verified <code>node --check</code>, zero Charon refs, and 104/104 <code>ffprobe</code> audio integrity.</li>
+</ul>
   </div>
 
   <script>
