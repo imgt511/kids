@@ -1233,6 +1233,14 @@
 <li>Updated <code>initNameModel()</code> to group <code>ABOVE<em>MARKS</code> (<code>้</code>, <code>่</code>, <code>๊</code>, <code>๋</code>, <code>ิ</code>, <code>ี</code>, <code>ึ</code>, <code>ื</code>, <code>็</code>, <code>์</code>) and <code>BELOW</em>MARKS</code> (<code>ุ</code>, <code>ู</code>) onto their base consonant at 42% scale (<code>MARK_GAP = 56</code>), so <code>้</code> floats cleanly above <code>ด</code> instead of rendering inline at baseline height.</li>
 <li>Added tighter cross-glyph hop limits (<code>24px</code> vs <code>58px</code> intra-glyph) so tracing <code>ด</code> never prematurely auto-fills <code>้</code>, bumped <code>glw-leda-v8</code> across <code>sw.js</code> and <code>widget<em>alphabet.html</code> with portrait precaching, and verified all checks cleanly via <code>scratch/verify</em>portrait_studio.py</code>.</li>
 </ul>
+<ol>
+<li><strong>50% Tighter Name Tracing Stroke Widths & 1-to-1 Finger Tracking (<code>glw-leda-v9</code>):</strong></li>
+</ol>
+<ul>
+<li>Cut landscape Name Studio visual stroke widths in half (<code>18px -&gt; 9px</code> base underpass, <code>12px -&gt; 6px</code> mark underpass; <code>8px -&gt; 4.5px</code> base rainbow guide, <code>6px -&gt; 3.5px</code> mark guide) to match the ~0.5x multi-letter scale.</li>
+<li>Cut touch-lock and wavefront radii in half (<code>65px -&gt; 24px</code> lock, <code>65px -&gt; 22px</code> advance with strict <code>dNext &lt;= dCur</code> midpoint comparison, and endpoint-only cross-stroke hops at <code>18px</code> intra-glyph / <code>10px</code> inter-glyph) so ink never runs ahead of the finger or lobs across intersecting branches (<code>ด</code>, <code>จ</code>).</li>
+<li>Bumped PWA cache to <code>glw-leda-v9</code> in <code>sw.js</code> and <code>widget_alphabet.html</code>.</li>
+</ul>
   </div>
 
   <script>

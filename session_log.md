@@ -180,3 +180,7 @@
   3. **Authentic Thai Combining-Mark Layout & PWA `glw-leda-v8` (`widget_alphabet.html`, `sw.js`):**
      * Updated `initNameModel()` to group `ABOVE_MARKS` (`้`, `่`, `๊`, `๋`, `ิ`, `ี`, `ึ`, `ื`, `็`, `์`) and `BELOW_MARKS` (`ุ`, `ู`) onto their base consonant at 42% scale (`MARK_GAP = 56`), so `้` floats cleanly above `ด` instead of rendering inline at baseline height.
      * Added tighter cross-glyph hop limits (`24px` vs `58px` intra-glyph) so tracing `ด` never prematurely auto-fills `้`, bumped `glw-leda-v8` across `sw.js` and `widget_alphabet.html` with portrait precaching, and verified all checks cleanly via `scratch/verify_portrait_studio.py`.
+  4. **50% Tighter Name Tracing Stroke Widths & 1-to-1 Finger Tracking (`glw-leda-v9`):**
+     * Cut landscape Name Studio visual stroke widths in half (`18px -> 9px` base underpass, `12px -> 6px` mark underpass; `8px -> 4.5px` base rainbow guide, `6px -> 3.5px` mark guide) to match the ~0.5x multi-letter scale.
+     * Cut touch-lock and wavefront radii in half (`65px -> 24px` lock, `65px -> 22px` advance with strict `dNext <= dCur` midpoint comparison, and endpoint-only cross-stroke hops at `18px` intra-glyph / `10px` inter-glyph) so ink never runs ahead of the finger or lobs across intersecting branches (`ด`, `จ`).
+     * Bumped PWA cache to `glw-leda-v9` in `sw.js` and `widget_alphabet.html`.

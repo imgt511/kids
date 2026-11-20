@@ -1835,12 +1835,12 @@
     function renderNameCanvas() {
       nCtx.clearRect(0, 0, nCanvas.width, nCanvas.height);
 
-      // Underpass: Solid Black (18px base, 12px combining marks)
+      // Underpass: Solid Black (9px base, 6px combining marks — 50% tighter for multi-letter scale)
       nCtx.save();
       nCtx.strokeStyle = "#111111";
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
-      for (const [markFlag, width] of [[false, 18], [true, 12]]) {
+      for (const [markFlag, width] of [[false, 9], [true, 6]]) {
         nCtx.lineWidth = width;
         for (const segs of nameSegments) {
           if (Boolean(segs.isMark) !== markFlag) continue;
@@ -1863,12 +1863,12 @@
       }
       nCtx.restore();
 
-      // Overpass: Rainbow Guide (8px base, 6px combining marks)
+      // Overpass: Rainbow Guide (4.5px base, 3.5px combining marks)
       nCtx.save();
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
       for (const segs of nameSegments) {
-        nCtx.lineWidth = segs.isMark ? 6 : 8;
+        nCtx.lineWidth = segs.isMark ? 3.5 : 4.5;
         for (let i = 0; i < segs.length; i++) {
           const s = segs[i];
           if (s.filled) continue;
@@ -1884,13 +1884,13 @@
 
     function lockNameTouch(x, y) {
       let best = null;
-      let bestDistSq = 65 * 65;
+      let bestDistSq = 24 * 24;
       for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
         const segs = nameSegments[sIdx];
         for (let i = 0; i < segs.length; i++) {
           const s = segs[i];
           const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
-          const penalty = s.filled ? 140 : 0;
+          const penalty = s.filled ? 350 : 0;
           if (dSq + penalty < bestDistSq) {
             bestDistSq = dSq + penalty;
             best = { sIdx, segIdx: i };
@@ -1909,13 +1909,16 @@
       const segs = nameSegments[nameTraceCursor.sIdx];
       let cur = nameTraceCursor.segIdx;
 
-      for (let step = 0; step < 8; step++) {
+      for (let step = 0; step < 6; step++) {
+        const curSeg = segs[cur];
+        const dCur = Math.hypot(curSeg.mx - x, curSeg.my - y);
         let moved = false;
         if (cur + 1 < segs.length) {
           const nxt = segs[cur + 1];
           const dNext = Math.hypot(nxt.mx - x, nxt.my - y);
-          if (dNext < 65) {
+          if (dNext < 22 && dNext <= dCur) {
             nxt.filled = true;
+            if (cur === 1 && !segs[0].filled) segs[0].filled = true;
             cur = cur + 1;
             moved = true;
           }
@@ -1923,8 +1926,9 @@
         if (!moved && cur - 1 >= 0) {
           const prv = segs[cur - 1];
           const dPrev = Math.hypot(prv.mx - x, prv.my - y);
-          if (dPrev < 65) {
+          if (dPrev < 22 && dPrev <= dCur) {
             prv.filled = true;
+            if (cur === segs.length - 2 && !segs[segs.length - 1].filled) segs[segs.length - 1].filled = true;
             cur = cur - 1;
             moved = true;
           }
@@ -1933,13 +1937,30 @@
       }
       nameTraceCursor.segIdx = cur;
 
-      // Cross-Stroke Hop: generous within same glyph (58px), tight across separate glyphs (24px)
+      // Passively fill tiny <=3-segment skeleton spurs within 15px without hijacking the active cursor
+      for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
+        if (sIdx === nameTraceCursor.sIdx) continue;
+        const oSegs = nameSegments[sIdx];
+        if (oSegs.charIdx !== segs.charIdx || oSegs.length > 3) continue;
+        for (let i = 0; i < oSegs.length; i++) {
+          const s = oSegs[i];
+          if (!s.filled && (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y) < 15 * 15) {
+            s.filled = true;
+          }
+        }
+      }
+
+      // Only hop to another main stroke when current stroke has reached an endpoint
+      const hasUnfilledNext = (cur + 1 < segs.length) && !segs[cur + 1].filled;
+      const hasUnfilledPrev = (cur - 1 >= 0) && !segs[cur - 1].filled;
+      if (hasUnfilledNext || hasUnfilledPrev) return;
+
       let bestHop = null;
       let bestHopDistSq = Infinity;
       for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
         if (sIdx === nameTraceCursor.sIdx) continue;
         const oSegs = nameSegments[sIdx];
-        const hopLimit = oSegs.charIdx === segs.charIdx ? 58 : 24;
+        const hopLimit = oSegs.charIdx === segs.charIdx ? 18 : 10;
         const limitSq = hopLimit * hopLimit;
         for (let i = 0; i < oSegs.length; i++) {
           const s = oSegs[i];
@@ -1998,6 +2019,10 @@
       checkNameCompletion();
     }, { passive: false });
 
+    nCanvas.addEventListener("touchend", () => {
+      nameTraceCursor = null;
+    });
+
     nCanvas.addEventListener("mousedown", e => {
       const pos = getCanvasCoords(e, nCanvas);
       lockNameTouch(pos.x, pos.y);
@@ -2009,6 +2034,9 @@
       advanceNameWavefront(pos.x, pos.y);
       renderNameCanvas();
       checkNameCompletion();
+    });
+    nCanvas.addEventListener("mouseup", () => {
+      nameTraceCursor = null;
     });
 
     function clearNameCanvas() {
@@ -2083,7 +2111,7 @@
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
       navigator.serviceWorker.register("./sw.js").then(() => {
         if ("caches" in window) {
-          caches.open("glw-leda-v8").then(cache => {
+          caches.open("glw-leda-v9").then(cache => {
             const urls = ["./img/jayda.jpg", "./img/dada.jpg"];
             NAME_STUDIO_CLIPS.forEach(f => urls.push("./audio_leda/" + f));
             for (let i = 1; i <= 44; i++) {
