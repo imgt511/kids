@@ -459,7 +459,7 @@
       transform: scale(0.95);
     }
 
-    /* LANDSCAPE: FULL-SCREEN NAME STUDIO (1-ROW SLIM HEADER + GIANT CANVAS) */
+    /* LANDSCAPE: FULL-SCREEN NAME STUDIO (TWO-PORTRAIT PICKER -> GIANT CANVAS) */
     #landscapeContainer {
       display: none;
       position: fixed;
@@ -480,7 +480,11 @@
       display: flex;
     }
 
-    /* 1-Row Slim Top Bar (38px) */
+    #landscapeContainer.picker-mode .landscape-top {
+      display: none;
+    }
+
+    /* 1-Row Slim Top Bar (42px) */
     .landscape-top {
       display: flex;
       justify-content: space-between;
@@ -501,13 +505,22 @@
       color: white;
       font-size: 1.1rem;
       font-weight: 900;
-      padding: 4px 14px;
+      padding: 4px 14px 4px 8px;
       border-radius: 18px;
       box-shadow: 0 2px 8px rgba(255, 107, 107, 0.35);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+    }
+
+    .badge-mini-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,0.9);
+      display: block;
     }
 
     .landscape-controls {
@@ -533,58 +546,77 @@
       transform: scale(0.9);
     }
 
-    /* Medallion Tap-to-Talk Screen */
-    .mic-medallion-stage {
+    /* Two-Portrait Sister Picker Stage (Landscape Full Screen) */
+    .portrait-picker-stage {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: auto;
-      text-align: center;
+      justify-content: space-evenly;
+      width: 100%;
+      height: 100%;
+      gap: clamp(18px, 4.5vw, 56px);
+      padding: 14px max(24px, env(safe-area-inset-right)) 14px max(24px, env(safe-area-inset-left));
+      position: relative;
     }
 
-    .glowing-mic-btn {
-      width: 120px;
-      height: 120px;
+    .picker-close-btn {
+      position: absolute;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(14px, env(safe-area-inset-right));
+      z-index: 20;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #845EC2 0%, #FF6B6B 100%);
-      border: none;
-      color: white;
-      font-size: 3.5rem;
+      background: rgba(255,255,255,0.9);
+      border: 2px solid #E2E8F0;
+      font-size: 1.15rem;
+      color: #4A5568;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(132, 94, 194, 0.6);
-      animation: pulseGlow 2s infinite ease-in-out;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    .glowing-mic-btn.listening {
-      animation: listeningWave 0.8s infinite alternate;
-      background: linear-gradient(135deg, #20BF6B 0%, #4ECDC4 100%);
-      box-shadow: 0 0 35px rgba(32, 191, 107, 0.8);
+    .picker-close-btn:active {
+      transform: scale(0.9);
     }
 
-    @keyframes pulseGlow {
-      0% { transform: scale(1); box-shadow: 0 0 20px rgba(132, 94, 194, 0.4); }
-      50% { transform: scale(1.06); box-shadow: 0 0 32px rgba(255, 107, 107, 0.7); }
-      100% { transform: scale(1); box-shadow: 0 0 20px rgba(132, 94, 194, 0.4); }
+    .girl-portrait-btn {
+      width: min(82vh, 43vw);
+      height: min(82vh, 43vw);
+      max-width: 440px;
+      max-height: 440px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.16s ease;
+      touch-action: manipulation;
     }
-
-    @keyframes listeningWave {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.14); }
+    .girl-portrait-btn:active {
+      transform: scale(0.94);
     }
-
-    .mic-prompt-text {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: #2D3436;
+    .girl-portrait-btn.jayda {
+      border: 6px solid #FF8FB1;
+      background: #F8F5EE;
+      box-shadow: 0 12px 30px rgba(255, 107, 155, 0.28), 0 4px 10px rgba(0,0,0,0.08);
     }
-    .mic-sub-text {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #718096;
+    .girl-portrait-btn.dada {
+      border: 6px solid #4ECDC4;
+      background: #F7F7F7;
+      box-shadow: 0 12px 30px rgba(78, 205, 196, 0.28), 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .girl-portrait-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .girl-portrait-btn.dada img {
+      transform: scale(1.03);
     }
 
     /* Name Arena Canvas in Landscape - Fills All Available Glass Height! */
@@ -621,35 +653,6 @@
       height: 100%;
       border-radius: 18px;
       touch-action: none;
-    }
-
-    /* Offline Avatar Fallback Cards */
-    .fallback-avatar-row {
-      display: none;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 8px;
-    }
-    .fallback-avatar-row.visible {
-      display: flex;
-    }
-
-    .avatar-card-btn {
-      background: white;
-      border: 3px solid #E2E8F0;
-      border-radius: 20px;
-      padding: 10px 20px;
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #2D3436;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-    .avatar-card-btn:active {
-      transform: scale(0.95);
     }
 
     /* Mom's Settings Modal */
@@ -831,13 +834,13 @@
     </div>
   </div>
 
-  <!-- LANDSCAPE NAME STUDIO (1-ROW SLIM HEADER + FULL GLASS CANVAS) -->
-  <div id="landscapeContainer">
+  <!-- LANDSCAPE NAME STUDIO (TWO-PORTRAIT PICKER + FULL GLASS CANVAS) -->
+  <div id="landscapeContainer" class="picker-mode">
     <div class="landscape-top">
       <div class="landscape-brand">
         <div class="landscape-name-badge" onclick="speakCurrentName()" title="แตะเพื่อฟังชื่อ">
-          <span>👧</span>
-          <span id="currentNameLabel">เซด้า</span>
+          <img id="currentGirlAvatar" class="badge-mini-avatar" src="./img/jayda.jpg" alt="">
+          <span id="currentNameLabel">เจด้า</span>
           <span>🔊</span>
         </div>
         <div style="font-weight: 800; color: #F39C12; font-size: 1rem; margin-left: 6px;">
@@ -846,26 +849,20 @@
       </div>
       <div class="landscape-controls">
         <button class="icon-action-btn" onclick="clearNameCanvas()" title="ลบวาดใหม่">🧽</button>
-        <button class="icon-action-btn" onclick="resetNameStudio()" title="พูดชื่อคนอื่น / สลับน้อง">🔄</button>
+        <button class="icon-action-btn" onclick="resetNameStudio()" title="เปลี่ยนคน / เลือกรูปน้อง">🔄</button>
         <button class="icon-action-btn" onclick="toggleLandscapeManual()" title="กลับหน้า ก-ฮ">✕</button>
       </div>
     </div>
 
-    <!-- Medallion Tap-to-Talk Screen -->
-    <div class="mic-medallion-stage" id="micMedallionStage">
-      <button class="glowing-mic-btn" id="micBtn" onclick="handleMicTap()">🎙️</button>
-      <div class="mic-prompt-text" id="micPromptText">แตะเพื่อคุยกันนะคะ</div>
-      <div class="mic-sub-text" id="micSubText">Tell me your nickname! (Sayda / Dada)</div>
-
-      <!-- 2-Strike Offline Avatar Fallback (Self-Learning Sister Slots) -->
-      <div class="fallback-avatar-row" id="fallbackAvatarRow">
-        <button class="avatar-card-btn" id="avatarBtnGirl1" onclick="handleSisterBtnTap(1)">
-          <span>🌸</span> <span id="avatarLabelGirl1">🌸 พี่สาว 1 (Sister 1)</span>
-        </button>
-        <button class="avatar-card-btn" id="avatarBtnGirl2" onclick="handleSisterBtnTap(2)">
-          <span>🌟</span> <span id="avatarLabelGirl2">🌟 น้องสาว 2 (Sister 2)</span>
-        </button>
-      </div>
+    <!-- Two-Portrait Picker Screen -->
+    <div class="portrait-picker-stage" id="portraitPickerStage">
+      <button class="picker-close-btn" onclick="toggleLandscapeManual()" title="กลับหน้า ก-ฮ" aria-label="กลับหน้า ก-ฮ">✕</button>
+      <button class="girl-portrait-btn jayda" onclick="selectGirl('jayda')" aria-label="เจด้า">
+        <img src="./img/jayda.jpg" alt="เจด้า">
+      </button>
+      <button class="girl-portrait-btn dada" onclick="selectGirl('dada')" aria-label="ดาด้า">
+        <img src="./img/dada.jpg" alt="ดาด้า">
+      </button>
     </div>
 
     <!-- Multi-Letter Tracing Stage (Expanded Full Height) -->
@@ -896,10 +893,6 @@
         * ค่าเริ่มต้น: อยู่ที่เดิมเพื่อให้ฝึกเขียนซ้ำ (Repeat mode)<br>
         * เปิดสวิตช์: เลื่อนไปตัวถัดไปเมื่อเขียนเสร็จ
       </div>
-
-      <button class="tool-btn" style="width:100%; justify-content:center; background:#FFF5F5; border:2px solid #FEB2B2; color:#C53030; padding:10px; border-radius:14px; font-weight:800; cursor:pointer; margin-top: 4px;" onclick="resetSavedSisterNames()">
-        🔄 ล้างชื่อพี่น้องเพื่อพูดบันทึกใหม่ (Reset Names)
-      </button>
 
       <button class="close-settings-btn" onclick="closeSettingsModal()">เรียบร้อย (Close)</button>
     </div>
@@ -1524,70 +1517,33 @@
       localStorage.setItem("mom_auto_advance", val ? "true" : "false");
     }
 
-    // --- SELF-LEARNING SISTER BRAIN (TWO-SLOT PHONETIC ROUTING) ---
-    let sister1Name = localStorage.getItem("sister1_name") || "";
-    let sister2Name = localStorage.getItem("sister2_name") || "";
-
-    function refreshSisterButtons() {
-      const btn1 = document.getElementById("avatarLabelGirl1");
-      const btn2 = document.getElementById("avatarLabelGirl2");
-      if (btn1) {
-        btn1.innerText = sister1Name ? ("🌸 " + sister1Name) : "🌸 พี่สาว 1 (Sister 1)";
+    // --- LANDSCAPE TWO-PORTRAIT NAME STUDIO ---
+    const GIRLS = {
+      jayda: {
+        name: "เจด้า",
+        avatar: "./img/jayda.jpg",
+        greetClip: "greet_jayda.m4a",
+        greetText: "สวัสดีค่ะน้องเจด้าคนเก่ง มาวาดชื่อกันเลยค่ะ",
+        praiseClip: "praise_jayda.m4a",
+        praiseText: "เก่งมากค่ะน้องเจด้า",
+        nameClip: "name_jayda.m4a"
+      },
+      dada: {
+        name: "ดาด้า",
+        avatar: "./img/dada.jpg",
+        greetClip: "greet_dada.m4a",
+        greetText: "สวัสดีค่ะน้องดาด้าคนเก่ง มาวาดชื่อกันเลยค่ะ",
+        praiseClip: "praise_dada.m4a",
+        praiseText: "เก่งมากค่ะน้องดาด้า",
+        nameClip: "name_dada.m4a"
       }
-      if (btn2) {
-        btn2.innerText = sister2Name ? ("🌟 " + sister2Name) : "🌟 น้องสาว 2 (Sister 2)";
-      }
-    }
-    setTimeout(refreshSisterButtons, 60);
-
-    const NAME_CLIP_KEY = {
-      "เซด้า": "sayda",
-      "เซดา": "sayda",
-      "ดาด้า": "dada",
-      "บีม": "beam",
-      "เจี๊ยบ": "jeab"
     };
 
-    function handleSisterBtnTap(slotNum) {
-      if (slotNum === 1) {
-        if (sister1Name) {
-          speakGreetingAndLoad(sister1Name, "สวัสดีค่ะน้อง " + sister1Name + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
-        } else {
-          playLedaOrFallback("name_ask_sister1.m4a", "บอกชื่อพี่สาวเลยค่ะ", () => {
-            setTimeout(startSpeechRecognition, 350);
-          });
-        }
-      } else {
-        if (sister2Name) {
-          speakGreetingAndLoad(sister2Name, "สวัสดีค่ะน้อง " + sister2Name + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
-        } else {
-          playLedaOrFallback("name_ask_sister2.m4a", "บอกชื่อน้องสาวเลยค่ะ", () => {
-            setTimeout(startSpeechRecognition, 350);
-          });
-        }
-      }
-    }
+    const ABOVE_MARKS = new Set(["่", "้", "๊", "๋", "ิ", "ี", "ึ", "ื", "็", "์"]);
+    const BELOW_MARKS = new Set(["ุ", "ู"]);
 
-    function resetSavedSisterNames() {
-      localStorage.removeItem("sister1_name");
-      localStorage.removeItem("sister2_name");
-      sister1Name = "";
-      sister2Name = "";
-      refreshSisterButtons();
-      closeSettingsModal();
-      alert("ล้างชื่อเรียบร้อยแล้วค่ะ ให้เด็กๆ พูดชื่อใหม่ได้เลย! (Sister names reset to blank slate)");
-    }
-
-    function showFallbackAvatars() {
-      refreshSisterButtons();
-      document.getElementById("fallbackAvatarRow").classList.add("visible");
-    }
-
-    // --- CONTINUOUS HANDS-FREE VOICE CONVERSATION LOOP ---
-    let speechAttempts = 0;
-    let isConversationActive = false;
-    let micPermissionGranted = localStorage.getItem("mic_perm_granted") === "true";
-    let currentNameString = "เซด้า";
+    let currentGirlKey = "jayda";
+    let currentNameString = GIRLS.jayda.name;
     let nameSegments = [];
     let nameTraceCursor = null;
     let nameCompleted = false;
@@ -1602,6 +1558,8 @@
         document.body.classList.add("is-landscape");
         onEnterLandscape();
       } else {
+        stopLedaAudio();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
         document.body.classList.remove("is-landscape");
       }
     }
@@ -1626,225 +1584,238 @@
     handleOrientationCheck();
 
     function onEnterLandscape() {
-      // Resize canvas to full glass dimensions
-      resizeLandscapeCanvas();
-      
-      // If mic permission was already granted previously, start the conversation loop hands-free!
-      if (micPermissionGranted && document.getElementById("micMedallionStage").style.display !== "none") {
-        handleMicTap();
+      const container = document.getElementById("landscapeContainer");
+      const picker = document.getElementById("portraitPickerStage");
+      const canvasStage = document.getElementById("nameCanvasStage");
+      if (canvasStage && canvasStage.classList.contains("active")) {
+        if (container) container.classList.remove("picker-mode");
+        if (picker) picker.style.display = "none";
+        if (resizeLandscapeCanvas(false)) {
+          initNameModel(currentNameString, true);
+        }
+      } else {
+        if (container) container.classList.add("picker-mode");
+        if (picker) picker.style.display = "flex";
       }
     }
 
-    function resizeLandscapeCanvas() {
+    function resizeLandscapeCanvas(force) {
       const box = document.getElementById("nameCanvasBox");
-      if (box && nCanvas) {
-        nCanvas.width = box.clientWidth || (window.innerWidth - 16);
-        nCanvas.height = box.clientHeight || (window.innerHeight - 54);
-      }
-    }
+      if (!box || !nCanvas) return false;
+      const newW = box.clientWidth || (window.innerWidth - 16);
+      const newH = box.clientHeight || (window.innerHeight - 54);
+      const prevW = nCanvas.width;
+      const prevH = nCanvas.height;
 
-    function handleMicTap() {
-      const micBtn = document.getElementById("micBtn");
-      const promptText = document.getElementById("micPromptText");
-      const subText = document.getElementById("micSubText");
-
-      micBtn.classList.add("listening");
-      promptText.innerText = "กำลังฟังเสียงนะคะ...";
-      subText.innerText = "Say your nickname clearly!";
-      isConversationActive = true;
-      speechAttempts = 0;
-
-      // Speak greeting, then automatically open mic
-      playLedaOrFallback("name_ask.m4a", "ชื่อเล่นอะไรคะ?", () => {
-        setTimeout(() => {
-          startSpeechRecognition();
-        }, 350);
-      });
-    }
-
-    function startSpeechRecognition() {
-      if (!isConversationActive) return;
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        showFallbackAvatars();
-        return;
+      if (!force && prevW > 0 && prevH > 0 && Math.abs(prevW - newW) <= 8 && Math.abs(prevH - newH) <= 8) {
+        return false;
       }
 
-      const recognition = new SpeechRecognition();
-      recognition.lang = "th-TH";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 3;
+      const hasProgress = !force && prevW > 0 && prevH > 0 && nameSegments.some(segs => segs.some(s => s.filled));
+      nCanvas.width = newW;
+      nCanvas.height = newH;
 
-      let recognized = false;
-
-      recognition.onstart = () => {
-        micPermissionGranted = true;
-        localStorage.setItem("mic_perm_granted", "true");
-        document.getElementById("micBtn").classList.add("listening");
-      };
-
-      recognition.onresult = (event) => {
-        recognized = true;
-        isConversationActive = false;
-        const transcript = event.results[0][0].transcript.trim().toLowerCase();
-        resolveChildName(transcript);
-      };
-
-      recognition.onerror = () => {
-        if (!recognized && isConversationActive) {
-          handleSpeechMiss();
+      if (hasProgress) {
+        const sx = newW / prevW;
+        const sy = newH / prevH;
+        for (const segs of nameSegments) {
+          for (const s of segs) {
+            s.x0 *= sx;
+            s.y0 *= sy;
+            s.x1 *= sx;
+            s.y1 *= sy;
+            s.mx *= sx;
+            s.my *= sy;
+          }
         }
-      };
-
-      recognition.onend = () => {
-        document.getElementById("micBtn").classList.remove("listening");
-        if (!recognized && isConversationActive) {
-          handleSpeechMiss();
-        }
-      };
-
-      try {
-        recognition.start();
-      } catch (err) {
-        console.warn("Speech start error:", err);
-        showFallbackAvatars();
+        renderNameCanvas();
+        return false;
       }
+      return true;
     }
 
-    function handleSpeechMiss() {
-      speechAttempts++;
-      const promptText = document.getElementById("micPromptText");
-      
-      if (speechAttempts < 2) {
-        // Continuous hands-free loop: Polite Thai nudge, then re-open mic automatically!
-        promptText.innerText = "พูดดังๆ อีกทีนะคะ คนเก่ง";
-        playLedaOrFallback("name_retry.m4a", "พูดดังๆ อีกทีนะคะ คนเก่ง", () => {
-          setTimeout(() => {
-            if (isConversationActive) startSpeechRecognition();
-          }, 350);
-        });
-      } else {
-        isConversationActive = false;
-        promptText.innerText = "แตะเลือกรูปชื่อของหนูได้เลยค่ะ";
-        playLedaOrFallback("name_pick.m4a", "แตะเลือกรูปชื่อของหนูได้เลยค่ะ");
-        showFallbackAvatars();
-      }
-    }
+    function selectGirl(girlKey) {
+      const girl = GIRLS[girlKey] || GIRLS.jayda;
+      currentGirlKey = girlKey in GIRLS ? girlKey : "jayda";
+      currentNameString = girl.name;
 
-    function resolveChildName(raw) {
-      const clean = raw.replace(/[\s\.\,\-]/g, "");
-      
-      const S_FAMILY_KEYS = ["เซด้า", "เซดา", "ซาดา", "ซิดา", "seda", "sayda", "cda", "sada", "เซ", "ดาเซ"];
-      const D_FAMILY_KEYS = ["ดาด้า", "ดาดา", "ด้าด้า", "ดา", "dada", "tata", "ta", "da"];
-      const BEAM_KEYS = ["บีม", "beam"];
-      const JEAB_KEYS = ["เจี๊ยบ", "jeab"];
-
-      if (S_FAMILY_KEYS.some(k => clean.includes(k))) {
-        // Slot 1: Sister 1
-        let authenticName = "เซด้า";
-        if (clean.includes("เซดา") || clean.includes("seda") || clean.includes("ซิดา")) {
-          authenticName = "เซดา";
-        }
-        sister1Name = authenticName;
-        localStorage.setItem("sister1_name", authenticName);
-        refreshSisterButtons();
-        speakGreetingAndLoad(authenticName, "สวัสดีค่ะน้อง " + authenticName + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
-
-      } else if (D_FAMILY_KEYS.some(k => clean.includes(k))) {
-        // Slot 2: Sister 2
-        let authenticName = "ดาด้า";
-        sister2Name = authenticName;
-        localStorage.setItem("sister2_name", authenticName);
-        refreshSisterButtons();
-        speakGreetingAndLoad(authenticName, "สวัสดีค่ะน้อง " + authenticName + " คนเก่ง! มาวาดชื่อกันเลยค่ะ");
-
-      } else if (BEAM_KEYS.some(k => clean.includes(k))) {
-        // Mom Beam
-        speakGreetingAndLoad("บีม", "สวัสดีค่ะคุณแม่บีม! มาวาดชื่อกันเลยค่ะ");
-
-      } else if (JEAB_KEYS.some(k => clean.includes(k))) {
-        // Grandma Jeab
-        speakGreetingAndLoad("เจี๊ยบ", "สวัสดีค่ะคุณยายเจี๊ยบ! มาวาดชื่อกันเลยค่ะ");
-
-      } else {
-        // Any other spoken name
-        speakGreetingAndLoad(raw, "สวัสดีค่ะ " + raw + "! มาวาดชื่อกันเลยค่ะ");
-      }
-    }
-
-    function speakGreetingAndLoad(nameStr, phrase) {
-      isConversationActive = false;
-      currentNameString = nameStr;
-      document.getElementById("micMedallionStage").style.display = "none";
+      document.getElementById("landscapeContainer").classList.remove("picker-mode");
+      document.getElementById("portraitPickerStage").style.display = "none";
       document.getElementById("nameCanvasStage").classList.add("active");
-      document.getElementById("currentNameLabel").innerText = nameStr;
+      document.getElementById("currentNameLabel").innerText = girl.name;
+      document.getElementById("currentGirlAvatar").src = girl.avatar;
 
-      resizeLandscapeCanvas();
-      const nameKey = NAME_CLIP_KEY[nameStr];
-      if (nameKey) {
-        playLedaOrFallback("greet_" + nameKey + ".m4a", phrase);
-      } else {
-        speakText(phrase);
-      }
-      initNameModel(nameStr);
+      initNameModel(girl.name);
+      playLedaOrFallback(girl.greetClip, girl.greetText);
     }
 
     function resetNameStudio() {
-      isConversationActive = false;
+      stopLedaAudio();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       document.getElementById("nameCanvasStage").classList.remove("active");
-      document.getElementById("micMedallionStage").style.display = "flex";
-      document.getElementById("micPromptText").innerText = "แตะเพื่อคุยกันนะคะ";
-      document.getElementById("micSubText").innerText = "Tell me your nickname! (Sayda / Dada)";
-      speechAttempts = 0;
+      document.getElementById("landscapeContainer").classList.add("picker-mode");
+      document.getElementById("portraitPickerStage").style.display = "flex";
     }
 
     function speakCurrentName() {
-      const nameKey = NAME_CLIP_KEY[currentNameString];
-      if (nameKey) {
-        playLedaOrFallback("name_" + nameKey + ".m4a", currentNameString);
-      } else {
-        speakText(currentNameString);
-      }
+      const girl = GIRLS[currentGirlKey] || GIRLS.jayda;
+      playLedaOrFallback(girl.nameClip, girl.name);
     }
 
-    // Multi-Letter Canvas Layout (Stretches to Available Physical Glass)
-    function initNameModel(name) {
+    function getGlyphBounds(ch) {
+      const strokes = TRACE_PATHS[ch] || [];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const pts of strokes) {
+        for (const pt of pts) {
+          if (pt[0] < minX) minX = pt[0];
+          if (pt[0] > maxX) maxX = pt[0];
+          if (pt[1] < minY) minY = pt[1];
+          if (pt[1] > maxY) maxY = pt[1];
+        }
+      }
+      if (!isFinite(minX)) {
+        return { minX: 120, maxX: 340, minY: 45, maxY: 415, w: 220, h: 370 };
+      }
+      return {
+        minX,
+        maxX,
+        minY,
+        maxY,
+        w: Math.max(maxX - minX, 90),
+        h: Math.max(maxY - minY, 40)
+      };
+    }
+
+    // Multi-Letter Canvas Layout with Authentic Thai Combining-Mark Placement
+    function initNameModel(name, skipResize = false) {
       nameCompleted = false;
       nameSegments = [];
       nameTraceCursor = null;
 
-      resizeLandscapeCanvas();
+      if (!skipResize) resizeLandscapeCanvas(true);
 
-      const chars = name.split("").filter(ch => TRACE_PATHS[ch]);
-      if (chars.length === 0) chars.push("ก");
+      const rawChars = name.split("").filter(ch => TRACE_PATHS[ch]);
+      if (rawChars.length === 0) rawChars.push("ก");
 
-      const totalChars = chars.length;
+      // Group base glyphs with floating above/below marks into grapheme columns
+      const cols = [];
+      let charSeq = 0;
+      for (const ch of rawChars) {
+        if (ABOVE_MARKS.has(ch) && cols.length > 0) {
+          cols[cols.length - 1].above.push({ ch, charIdx: charSeq++ });
+        } else if (BELOW_MARKS.has(ch) && cols.length > 0) {
+          cols[cols.length - 1].below.push({ ch, charIdx: charSeq++ });
+        } else {
+          cols.push({ ch, charIdx: charSeq++, bounds: getGlyphBounds(ch), above: [], below: [] });
+        }
+      }
+
+      const COL_GAP = 85;
+      const MARK_SCALE = 0.42;
+      const MARK_GAP = 56;
+      const STACK_GAP = 22;
+
+      const placements = [];
+      let curX = 0;
+      let minLX = Infinity, maxLX = -Infinity, minLY = Infinity, maxLY = -Infinity;
+
+      const recordBounds = (x0, x1, y0, y1) => {
+        if (x0 < minLX) minLX = x0;
+        if (x1 > maxLX) maxLX = x1;
+        if (y0 < minLY) minLY = y0;
+        if (y1 > maxLY) maxLY = y1;
+      };
+
+      for (const col of cols) {
+        const b = col.bounds;
+        const baseShiftX = curX - b.minX;
+        placements.push({
+          ch: col.ch,
+          charIdx: col.charIdx,
+          isMark: false,
+          scale: 1,
+          offsetX: baseShiftX,
+          offsetY: 0
+        });
+        recordBounds(b.minX + baseShiftX, b.maxX + baseShiftX, b.minY, b.maxY);
+
+        let cursorAboveY = b.minY - MARK_GAP;
+        for (const m of col.above) {
+          const mb = getGlyphBounds(m.ch);
+          const scaledH = (mb.maxY - mb.minY) * MARK_SCALE;
+          const anchorX = curX + col.bounds.w * 0.62;
+          const markCenterX = (mb.minX + mb.maxX) * 0.5 * MARK_SCALE;
+          const offsetX = anchorX - markCenterX;
+          const offsetY = cursorAboveY - (mb.maxY * MARK_SCALE);
+          placements.push({
+            ch: m.ch,
+            charIdx: m.charIdx,
+            isMark: true,
+            scale: MARK_SCALE,
+            offsetX,
+            offsetY
+          });
+          recordBounds(
+            offsetX + mb.minX * MARK_SCALE,
+            offsetX + mb.maxX * MARK_SCALE,
+            offsetY + mb.minY * MARK_SCALE,
+            offsetY + mb.maxY * MARK_SCALE
+          );
+          cursorAboveY -= scaledH + STACK_GAP;
+        }
+
+        let cursorBelowY = b.maxY + MARK_GAP;
+        for (const m of col.below) {
+          const mb = getGlyphBounds(m.ch);
+          const scaledH = (mb.maxY - mb.minY) * MARK_SCALE;
+          const anchorX = curX + col.bounds.w * 0.58;
+          const markCenterX = (mb.minX + mb.maxX) * 0.5 * MARK_SCALE;
+          const offsetX = anchorX - markCenterX;
+          const offsetY = cursorBelowY - (mb.minY * MARK_SCALE);
+          placements.push({
+            ch: m.ch,
+            charIdx: m.charIdx,
+            isMark: true,
+            scale: MARK_SCALE,
+            offsetX,
+            offsetY
+          });
+          recordBounds(
+            offsetX + mb.minX * MARK_SCALE,
+            offsetX + mb.maxX * MARK_SCALE,
+            offsetY + mb.minY * MARK_SCALE,
+            offsetY + mb.maxY * MARK_SCALE
+          );
+          cursorBelowY += scaledH + STACK_GAP;
+        }
+
+        curX += col.bounds.w + COL_GAP;
+      }
+
       const canvasW = nCanvas.width;
       const canvasH = nCanvas.height;
-
-      // Fill full glass height!
-      const charBoxW = Math.min(canvasH * 0.9, (canvasW - 20) / totalChars);
-      const charScale = charBoxW / 460;
-      const totalWidth = totalChars * charBoxW;
-      const startX = (canvasW - totalWidth) * 0.5;
-      const startY = (canvasH - (460 * charScale)) * 0.5;
+      const logicalW = Math.max(maxLX - minLX, 1);
+      const logicalH = Math.max(maxLY - minLY, 1);
+      const fitScale = Math.min((canvasW - 64) / logicalW, (canvasH - 40) / logicalH);
+      const originX = (canvasW - logicalW * fitScale) * 0.5 - minLX * fitScale;
+      const originY = (canvasH - logicalH * fitScale) * 0.5 - minLY * fitScale;
 
       let colorStep = 0;
-      chars.forEach((ch, cIdx) => {
-        const rawStrokes = TRACE_PATHS[ch] || [];
-        const offsetX = startX + (cIdx * charBoxW);
-        const offsetY = startY;
+      for (const p of placements) {
+        const rawStrokes = TRACE_PATHS[p.ch] || [];
+        const sScale = p.scale * fitScale;
+        const tx = originX + p.offsetX * fitScale;
+        const ty = originY + p.offsetY * fitScale;
 
-        rawStrokes.forEach(pts => {
+        for (const pts of rawStrokes) {
           const segs = [];
+          segs.charIdx = p.charIdx;
+          segs.isMark = p.isMark;
           for (let i = 0; i < pts.length - 1; i++) {
-            const x0 = offsetX + (pts[i][0] * charScale);
-            const y0 = offsetY + (pts[i][1] * charScale);
-            const x1 = offsetX + (pts[i + 1][0] * charScale);
-            const y1 = offsetY + (pts[i + 1][1] * charScale);
-            const dx = x1 - x0, dy = y1 - y0;
-            const len = Math.hypot(dx, dy) || 1;
+            const x0 = tx + pts[i][0] * sScale;
+            const y0 = ty + pts[i][1] * sScale;
+            const x1 = tx + pts[i + 1][0] * sScale;
+            const y1 = ty + pts[i + 1][1] * sScale;
             segs.push({
               x0, y0, x1, y1,
               mx: (x0 + x1) * 0.5,
@@ -1855,8 +1826,8 @@
             colorStep++;
           }
           nameSegments.push(segs);
-        });
-      });
+        }
+      }
 
       renderNameCanvas();
     }
@@ -1864,37 +1835,40 @@
     function renderNameCanvas() {
       nCtx.clearRect(0, 0, nCanvas.width, nCanvas.height);
 
-      // Underpass: Refined Solid Black (18px, down 50%)
+      // Underpass: Solid Black (18px base, 12px combining marks)
       nCtx.save();
       nCtx.strokeStyle = "#111111";
-      nCtx.lineWidth = 18;
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
-      for (const segs of nameSegments) {
-        let inRun = false;
-        nCtx.beginPath();
-        for (let i = 0; i < segs.length; i++) {
-          const s = segs[i];
-          if (s.filled) {
-            if (!inRun) {
-              nCtx.moveTo(s.x0, s.y0);
-              inRun = true;
+      for (const [markFlag, width] of [[false, 18], [true, 12]]) {
+        nCtx.lineWidth = width;
+        for (const segs of nameSegments) {
+          if (Boolean(segs.isMark) !== markFlag) continue;
+          let inRun = false;
+          nCtx.beginPath();
+          for (let i = 0; i < segs.length; i++) {
+            const s = segs[i];
+            if (s.filled) {
+              if (!inRun) {
+                nCtx.moveTo(s.x0, s.y0);
+                inRun = true;
+              }
+              nCtx.lineTo(s.x1, s.y1);
+            } else {
+              inRun = false;
             }
-            nCtx.lineTo(s.x1, s.y1);
-          } else {
-            inRun = false;
           }
+          nCtx.stroke();
         }
-        nCtx.stroke();
       }
       nCtx.restore();
 
-      // Overpass: Fine Rainbow Guide (8px, reduced 33%)
+      // Overpass: Rainbow Guide (8px base, 6px combining marks)
       nCtx.save();
-      nCtx.lineWidth = 8;
       nCtx.lineCap = "round";
       nCtx.lineJoin = "round";
       for (const segs of nameSegments) {
+        nCtx.lineWidth = segs.isMark ? 6 : 8;
         for (let i = 0; i < segs.length; i++) {
           const s = segs[i];
           if (s.filled) continue;
@@ -1959,17 +1933,19 @@
       }
       nameTraceCursor.segIdx = cur;
 
-      // Seamless Cross-Stroke Hop in Landscape
+      // Cross-Stroke Hop: generous within same glyph (58px), tight across separate glyphs (24px)
       let bestHop = null;
-      let bestHopDistSq = 62 * 62;
+      let bestHopDistSq = Infinity;
       for (let sIdx = 0; sIdx < nameSegments.length; sIdx++) {
         if (sIdx === nameTraceCursor.sIdx) continue;
         const oSegs = nameSegments[sIdx];
+        const hopLimit = oSegs.charIdx === segs.charIdx ? 58 : 24;
+        const limitSq = hopLimit * hopLimit;
         for (let i = 0; i < oSegs.length; i++) {
           const s = oSegs[i];
           if (s.filled) continue;
           const dSq = (s.mx - x) * (s.mx - x) + (s.my - y) * (s.my - y);
-          if (dSq < bestHopDistSq) {
+          if (dSq < limitSq && dSq < bestHopDistSq) {
             bestHopDistSq = dSq;
             bestHop = { sIdx, segIdx: i };
           }
@@ -2002,14 +1978,8 @@
         document.getElementById("starCount").innerText = stars;
         document.getElementById("landscapeStarCount").innerText = stars;
         localStorage.setItem("boo_boo_stars_alpha", stars);
-        const nameKey = NAME_CLIP_KEY[currentNameString];
-        if (nameKey === "sayda" || nameKey === "dada") {
-          playLedaOrFallback("praise_" + nameKey + ".m4a", "เก่งมากค่ะน้อง " + currentNameString);
-        } else if (nameKey) {
-          playLedaOrFallback("praise_generic.m4a", "เก่งมากค่ะ คนเก่ง");
-        } else {
-          speakText("เก่งมากค่ะน้อง " + currentNameString);
-        }
+        const girl = GIRLS[currentGirlKey] || GIRLS.jayda;
+        playLedaOrFallback(girl.praiseClip, girl.praiseText);
       }
     }
 
@@ -2105,24 +2075,22 @@
     }
 
     const NAME_STUDIO_CLIPS = [
-      "name_ask.m4a", "name_ask_sister1.m4a", "name_ask_sister2.m4a",
-      "name_retry.m4a", "name_pick.m4a",
-      "greet_sayda.m4a", "greet_dada.m4a", "greet_beam.m4a", "greet_jeab.m4a",
-      "praise_sayda.m4a", "praise_dada.m4a", "praise_generic.m4a",
-      "name_sayda.m4a", "name_dada.m4a", "name_beam.m4a", "name_jeab.m4a"
+      "greet_jayda.m4a", "greet_dada.m4a",
+      "praise_jayda.m4a", "praise_dada.m4a",
+      "name_jayda.m4a", "name_dada.m4a"
     ];
 
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
       navigator.serviceWorker.register("./sw.js").then(() => {
         if ("caches" in window) {
-          caches.open("glw-leda-v7").then(cache => {
-            const files = [...NAME_STUDIO_CLIPS];
+          caches.open("glw-leda-v8").then(cache => {
+            const urls = ["./img/jayda.jpg", "./img/dada.jpg"];
+            NAME_STUDIO_CLIPS.forEach(f => urls.push("./audio_leda/" + f));
             for (let i = 1; i <= 44; i++) {
               const p = pad2(i);
-              files.push("short_alpha_" + p + ".m4a", "coach_alpha_" + p + ".m4a");
+              urls.push("./audio_leda/short_alpha_" + p + ".m4a", "./audio_leda/coach_alpha_" + p + ".m4a");
             }
-            files.forEach(f => {
-              const u = "./audio_leda/" + f;
+            urls.forEach(u => {
               cache.match(u).then(hit => {
                 if (!hit) fetch(u).then(r => { if (r.ok) cache.put(u, r); }).catch(() => {});
               });

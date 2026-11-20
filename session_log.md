@@ -165,3 +165,18 @@
      * Added the **Dual Thai & English Numbers (`๑ = 1`)** tile directly beneath Thai Numbers on `index.html`, giving the kids all 3 core studio choices on the home hub, and registered `./sw.js` on `index.html`.
      * Bumped PWA cache to `glw-leda-v7` in `sw.js` and `widget_alphabet.html` (leaving Alphabet's Landscape Name Studio untouched until the user is home).
      * Verified `node --check` across all 5 HTML scripts + `sw.js`, 53/53 bilingual audio keys, 22/22 identical Thai widget keys, and 104/104 `audio_leda/` clips.
+
+---
+
+## 2026-11-20 (Part 3) — Landscape Two-Portrait Name Studio & Jayda (`เจด้า`) Spelling Fix
+* **Tool Used:** Antigravity
+* **Accomplished:**
+  1. **Portrait Medallions & Offline Jayda Audio (`img/`, `audio_leda/`):**
+     * Square-cropped and Lanczos-scaled both uploaded portraits (`480x480` in `img/jayda.jpg` [52 KB] and `img/dada.jpg` [56 KB]) inside clean circular margins, matching face scale and clipping outer drop-shadow bevels.
+     * Updated Jayda's confirmed Thai spelling from `เซด้า` (`Sayda`) to **`เจด้า`** (per family worksheet) across `index.html`, `widget_alphabet.html`, and generated 3 verified raw Leda clips (`greet_jayda.m4a`, `praise_jayda.m4a`, `name_jayda.m4a`) audited via `gemini-3.8-flash` and `ffprobe`.
+  2. **Zero-Speech Two-Portrait Landscape Redesign (`widget_alphabet.html`):**
+     * Replaced `SpeechRecognition`, mic medallion stage, and fallback slots with `#portraitPickerStage` showing only Jayda (`เจด้า`) and Dada (`ดาด้า`) filling the horizontal smartphone screen, plus a subtle `✕` exit button.
+     * Added `selectGirl()` to load the chosen name easel immediately with Leda's Thai greeting, mini-avatar badge, progress-preserving resize handling, and `resetNameStudio()` switcher.
+  3. **Authentic Thai Combining-Mark Layout & PWA `glw-leda-v8` (`widget_alphabet.html`, `sw.js`):**
+     * Updated `initNameModel()` to group `ABOVE_MARKS` (`้`, `่`, `๊`, `๋`, `ิ`, `ี`, `ึ`, `ื`, `็`, `์`) and `BELOW_MARKS` (`ุ`, `ู`) onto their base consonant at 42% scale (`MARK_GAP = 56`), so `้` floats cleanly above `ด` instead of rendering inline at baseline height.
+     * Added tighter cross-glyph hop limits (`24px` vs `58px` intra-glyph) so tracing `ด` never prematurely auto-fills `้`, bumped `glw-leda-v8` across `sw.js` and `widget_alphabet.html` with portrait precaching, and verified all checks cleanly via `scratch/verify_portrait_studio.py`.

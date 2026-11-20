@@ -1185,6 +1185,54 @@
 <li>Bumped PWA cache to <code>glw-leda-v7</code> in <code>sw.js</code> and <code>widget_alphabet.html</code> (leaving Alphabet's Landscape Name Studio untouched until the user is home).</li>
 <li>Verified <code>node --check</code> across all 5 HTML scripts + <code>sw.js</code>, 53/53 bilingual audio keys, 22/22 identical Thai widget keys, and 104/104 <code>audio_leda/</code> clips.</li>
 </ul>
+<hr>
+<div class="section-anchor" id="sec-12"><h2 class="heading-with-scroll"><span class="heading-title">2026-11-20 (Part 3) — Landscape Two-Portrait Name Studio & Jayda (<code>เจด้า</code>) Spelling Fix</span> <button class="btn-sec-scroll" id="btn-scroll-sec-12" title="Pronounce this section" onclick="readSection('sec-12', '2026-11-20 (Part 3) — Landscape Two-Portrait Name Studio &amp; Jayda (เจด้า) Spelling Fix')"><svg class="sec-scroll-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="whiteParchment" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f7f3e4"/>
+      <stop offset="100%" stop-color="#e3dcc8"/>
+    </linearGradient>
+    <linearGradient id="silverFinial" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ece1"/>
+      <stop offset="100%" stop-color="#a8a191"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <circle cx="50" cy="12" r="4.5" fill="url(#silverFinial)"/>
+  <rect x="10" y="10" width="40" height="4.5" rx="2" fill="url(#silverFinial)"/>
+  <path d="M14 13 C 14 13, 16 28, 12 47 C 18 51, 42 51, 48 47 C 44 28, 46 13, 46 13 Z" fill="url(#whiteParchment)" stroke="#787161" stroke-width="1.6"/>
+  <path d="M8 47 C 18 53, 42 53, 52 47 C 52 47, 50 51, 46 52 C 28 53, 14 53, 8 47 Z" fill="url(#silverFinial)" stroke="#615a4c" stroke-width="1.2"/>
+  <line x1="20" y1="21" x2="40" y2="21" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="18" y1="27" x2="42" y2="27" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="19" y1="33" x2="39" y2="33" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="21" y1="39" x2="35" y2="39" stroke="#8c8474" stroke-width="1.8" stroke-linecap="round"/>
+</svg></button></h2></div>
+<ul>
+<li><strong>Tool Used:</strong> Antigravity</li>
+<li><strong>Accomplished:</strong></li>
+</ul>
+<ol>
+<li><strong>Portrait Medallions & Offline Jayda Audio (<code>img/</code>, <code>audio_leda/</code>):</strong></li>
+</ol>
+<ul>
+<li>Square-cropped and Lanczos-scaled both uploaded portraits (<code>480x480</code> in <code>img/jayda.jpg</code> [52 KB] and <code>img/dada.jpg</code> [56 KB]) inside clean circular margins, matching face scale and clipping outer drop-shadow bevels.</li>
+<li>Updated Jayda's confirmed Thai spelling from <code>เซด้า</code> (<code>Sayda</code>) to <strong><code>เจด้า</code></strong> (per family worksheet) across <code>index.html</code>, <code>widget<em>alphabet.html</code>, and generated 3 verified raw Leda clips (<code>greet</em>jayda.m4a</code>, <code>praise<em>jayda.m4a</code>, <code>name</em>jayda.m4a</code>) audited via <code>gemini-3.8-flash</code> and <code>ffprobe</code>.</li>
+</ul>
+<ol>
+<li><strong>Zero-Speech Two-Portrait Landscape Redesign (<code>widget_alphabet.html</code>):</strong></li>
+</ol>
+<ul>
+<li>Replaced <code>SpeechRecognition</code>, mic medallion stage, and fallback slots with <code>#portraitPickerStage</code> showing only Jayda (<code>เจด้า</code>) and Dada (<code>ดาด้า</code>) filling the horizontal smartphone screen, plus a subtle <code>✕</code> exit button.</li>
+<li>Added <code>selectGirl()</code> to load the chosen name easel immediately with Leda's Thai greeting, mini-avatar badge, progress-preserving resize handling, and <code>resetNameStudio()</code> switcher.</li>
+</ul>
+<ol>
+<li><strong>Authentic Thai Combining-Mark Layout & PWA <code>glw-leda-v8</code> (<code>widget_alphabet.html</code>, <code>sw.js</code>):</strong></li>
+</ol>
+<ul>
+<li>Updated <code>initNameModel()</code> to group <code>ABOVE<em>MARKS</code> (<code>้</code>, <code>่</code>, <code>๊</code>, <code>๋</code>, <code>ิ</code>, <code>ี</code>, <code>ึ</code>, <code>ื</code>, <code>็</code>, <code>์</code>) and <code>BELOW</em>MARKS</code> (<code>ุ</code>, <code>ู</code>) onto their base consonant at 42% scale (<code>MARK_GAP = 56</code>), so <code>้</code> floats cleanly above <code>ด</code> instead of rendering inline at baseline height.</li>
+<li>Added tighter cross-glyph hop limits (<code>24px</code> vs <code>58px</code> intra-glyph) so tracing <code>ด</code> never prematurely auto-fills <code>้</code>, bumped <code>glw-leda-v8</code> across <code>sw.js</code> and <code>widget<em>alphabet.html</code> with portrait precaching, and verified all checks cleanly via <code>scratch/verify</em>portrait_studio.py</code>.</li>
+</ul>
   </div>
 
   <script>

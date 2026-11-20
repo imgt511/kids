@@ -1,11 +1,13 @@
-const CACHE_NAME = "glw-leda-v7";
+const CACHE_NAME = "glw-leda-v8";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./widget_numbers.html",
   "./widget_numbers_thai.html",
   "./widget_numbers_bilingual.html",
-  "./widget_alphabet.html"
+  "./widget_alphabet.html",
+  "./img/jayda.jpg",
+  "./img/dada.jpg"
 ];
 
 self.addEventListener("install", (event) => {
