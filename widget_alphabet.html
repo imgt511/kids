@@ -2115,7 +2115,7 @@
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
       navigator.serviceWorker.register("./sw.js").then(() => {
         if ("caches" in window) {
-          caches.open("glw-leda-v6").then(cache => {
+          caches.open("glw-leda-v7").then(cache => {
             const files = [...NAME_STUDIO_CLIPS];
             for (let i = 1; i <= 44; i++) {
               const p = pad2(i);

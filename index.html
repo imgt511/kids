@@ -148,6 +148,10 @@
       background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
     }
 
+    .tile-bilingual {
+      background: linear-gradient(135deg, #3867D6 0%, #0FB9B1 100%);
+    }
+
     .tile-alphabet {
       background: linear-gradient(135deg, #20BF6B 0%, #01A3A4 100%);
     }
@@ -345,7 +349,22 @@
       <div class="tile-arrow">❯</div>
     </a>
 
-    <!-- Tile 2: Thai Alphabet & Name Studio -->
+    <!-- Tile 2: Numbers Tracing (Dual Thai & English) -->
+    <a href="widget_numbers_bilingual.html" class="app-tile tile-bilingual" onclick="playClickChime()">
+      <div class="tile-art">
+        <div class="tile-art-icon">🌐</div>
+        <div class="tile-art-sub">๑ = 1</div>
+      </div>
+      <div class="tile-info">
+        <div class="tile-title">ตัวเลขไทย & อังกฤษ ๑–๑๐ / 1–10</div>
+        <div class="tile-desc-th">หัดนับและวาดเลขไทยคู่เลขอังกฤษ 1–10</div>
+        <div class="tile-desc-en">Dual Thai & English Numbers (๑–๑๐ / 1–10)</div>
+        <div class="tile-badge">🇹🇭🇺🇸 2 ภาษา · พร้อมเล่น (Bilingual)</div>
+      </div>
+      <div class="tile-arrow">❯</div>
+    </a>
+
+    <!-- Tile 3: Thai Alphabet & Name Studio -->
     <a href="widget_alphabet.html" class="app-tile tile-alphabet" onclick="playClickChime()">
       <div class="tile-art">
         <div class="tile-art-icon">🔤</div>
@@ -539,6 +558,10 @@
     window.addEventListener("DOMContentLoaded", () => {
       updateTotalStars();
     });
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
   </script>
 </body>
 </html>

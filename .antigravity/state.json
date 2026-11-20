@@ -11,7 +11,7 @@
     "active_goal": "Thai Alphabet & Numbers Learning Hub (Dada & Sayda)"
   },
   "execution_state": {
-    "current_subtask": "Mobile field-test of Leda Alphabet & Name Studio; next: App 2 Math Addition overhaul",
+    "current_subtask": "Mobile field-test of 3 core widgets (Thai Numbers, Dual Thai & English Numbers, Alphabet Studio); landscape Name Studio change-up when user returns home",
     "completed_milestones": [
       "App 1: Numbers & Vector Tracing (1–10) live on GitHub Pages with Leda voice coaching",
       "App 2: Math Addition Challenge isolated to standalone widget; card-based fruit counting & keypad spec recorded in TODO.md",
@@ -20,15 +20,19 @@
       "Numbers Audition: 30-voice PWA with seg01 cheerful filtering live at voice_audition/",
       "Alphabet Audition: 30-voice PWA v2 with 44/44 clean clips (Vindemiatrix [p2] re-pulled) live at alphabet_audition/",
       "Voice selection: Selected raw cheerful Leda across Numbers & Alphabet Studio",
-      "Alphabet Studio Audio Integration: Wired 112 Leda audio_leda/ clips (44 consonants, 8 modular coaching cues, 44 stitched coaches, 16 Name Studio clips) + glw-leda-v6 PWA cache into widget_alphabet.html"
+      "Alphabet Studio Audio Integration: Wired 112 Leda audio_leda/ clips (44 consonants, 8 modular coaching cues, 44 stitched coaches, 16 Name Studio clips) + glw-leda-v7 PWA cache into widget_alphabet.html",
+      "Dual Thai & English Numbers Upgrade: Audited 20 v30_leda clips, added 10 Leda English coaching clips + stitched both_1..10 + top-down English tracing starts (53 embedded keys), exposed on Hub as Tile #2, bumped PWA cache to glw-leda-v7"
     ],
     "pending_milestones": [
+      "Landscape Name Studio change-up (when user returns home)",
       "App 2 Overhaul: Build new progressive 1+1 fruit counting dual-card addition widget with on-screen numerical keypad"
     ],
     "world_variables": {
       "tracked_files": [
         "index.html",
         "widget_numbers.html",
+        "widget_numbers_thai.html",
+        "widget_numbers_bilingual.html",
         "widget_alphabet.html",
         "widget_addition.html",
         "alphabet_audition/index.html",

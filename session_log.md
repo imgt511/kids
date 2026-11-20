@@ -147,3 +147,21 @@
      * Replaced `(best.sIdx !== 0 || best.segIdx > 4)` in `lockInitialTouch` with the 75px start-point distance check matching `widget_numbers.html`.
      * Unified PWA cache to `glw-leda-v6` across `sw.js` and `widget_alphabet.html`, precaching all 104 runtime audio clips.
      * Verified `node --check`, zero Charon refs, and 104/104 `ffprobe` audio integrity.
+
+---
+
+## 2026-11-20 (Part 2) — Dual Thai & English Numbers Leda Upgrade & Hub Choice #2
+* **Tool Used:** Antigravity
+* **Accomplished:**
+  1. **Flash Audio Audit & Raw Leda Bilingual Generation (`12` TTS calls):**
+     * Audited all 20 existing `v30_leda` Thai & English `1–10` clips via `gemini-3.8-flash` (20/20 passed, 0 TTS quota).
+     * Generated 10 raw Leda English tracing coaching clips (`coach_en_1..10`) plus Leda `en_praise` and `th_tooktong` (`ถูกต้องค่ะ เก่งมากเลย`).
+     * Pre-stitched 10 single-file `both_1..10` clips in 24 kHz mono PCM (`th_X` + 200ms silence + `en_X`) so iOS Safari plays sequential Thai + English cleanly in one `<audio>` call.
+     * Embedded all 53 Leda keys into `widget_numbers_bilingual.html` and refreshed all 22 Leda keys in `widget_numbers.html` and `widget_numbers_thai.html`.
+  2. **Top-Down English Numeral Centerlines & Bilingual Coaching (`widget_numbers_bilingual.html`):**
+     * Reordered/reversed existing `TRACE_PATHS.english` polylines for digits `3, 4, 5, 6, 7, 8, 9` so all 10 digits start at authentic top-down coordinates (`y <= 212`).
+     * Enabled 75px start-point coaching on both Thai and English easels, added a `🔊` replay-coaching button, and bumped `glw_coached_num_bilingual_v2`.
+  3. **Hub Exposure & PWA Cache Bump (`index.html`, `sw.js`, `widget_alphabet.html`):**
+     * Added the **Dual Thai & English Numbers (`๑ = 1`)** tile directly beneath Thai Numbers on `index.html`, giving the kids all 3 core studio choices on the home hub, and registered `./sw.js` on `index.html`.
+     * Bumped PWA cache to `glw-leda-v7` in `sw.js` and `widget_alphabet.html` (leaving Alphabet's Landscape Name Studio untouched until the user is home).
+     * Verified `node --check` across all 5 HTML scripts + `sw.js`, 53/53 bilingual audio keys, 22/22 identical Thai widget keys, and 104/104 `audio_leda/` clips.
