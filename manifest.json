@@ -1,0 +1,17 @@
+{
+  "name": "Kids Learning Studio",
+  "short_name": "Kids Studio",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFDF5",
+  "theme_color": "#FFFDF5",
+  "icons": [
+    {
+      "src": "./img/jayda.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

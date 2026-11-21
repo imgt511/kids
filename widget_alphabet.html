@@ -5,6 +5,10 @@
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>สนุกเรียนรู้ ก-ฮ & วาดชื่อหนูน้อย | Thai Alphabet & Name Studio</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kids Studio">
+  <link rel="manifest" href="./manifest.json">
   <style>
     :root {
       --bg-color: #FFFDF5;
@@ -467,83 +471,18 @@
       left: 0;
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       background: #FFFDF5;
       z-index: 2000;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 4px 8px;
+      padding: max(6px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
       overflow: hidden;
     }
 
     body.is-landscape #landscapeContainer {
       display: flex;
-    }
-
-    #landscapeContainer.picker-mode .landscape-top {
-      display: none;
-    }
-
-    /* 1-Row Slim Top Bar (42px) */
-    .landscape-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      height: 42px;
-      padding: 0 4px 4px 4px;
-    }
-
-    .landscape-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .landscape-name-badge {
-      background: linear-gradient(135deg, #FF6B6B 0%, #D65DB1 100%);
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 900;
-      padding: 4px 14px 4px 8px;
-      border-radius: 18px;
-      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.35);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .badge-mini-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255,255,255,0.9);
-      display: block;
-    }
-
-    .landscape-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-action-btn {
-      background: white;
-      border: 2px solid #E2E8F0;
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 1.15rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    }
-    .icon-action-btn:active {
-      transform: scale(0.9);
     }
 
     /* Two-Portrait Sister Picker Stage (Landscape Full Screen) */
@@ -626,7 +565,9 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: calc(100vh - 48px);
+      flex: 1;
+      min-height: 0;
+      height: 100%;
       margin: 0;
     }
     .name-canvas-stage.active {
@@ -634,15 +575,45 @@
     }
 
     .landscape-canvas-box {
-      width: 98vw;
-      height: calc(100vh - 54px);
-      max-height: calc(100vh - 54px);
+      width: 100%;
+      height: 100%;
       background: white;
       border: 3px dashed #CBD5E0;
       border-radius: 20px;
       position: relative;
       touch-action: none;
       box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    .floating-canvas-btn {
+      position: absolute;
+      top: 10px;
+      z-index: 25;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.94);
+      border: 2.5px solid #E2E8F0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.14s ease;
+    }
+    .floating-canvas-btn:active {
+      transform: scale(0.9);
+    }
+    .floating-back-btn {
+      left: 10px;
+      border-color: #FFD1DC;
+    }
+    .floating-clear-btn {
+      right: 10px;
+      border-color: #FDE68A;
+      font-size: 1.55rem;
+      line-height: 1;
     }
 
     #nameCanvas {
@@ -836,24 +807,6 @@
 
   <!-- LANDSCAPE NAME STUDIO (TWO-PORTRAIT PICKER + FULL GLASS CANVAS) -->
   <div id="landscapeContainer" class="picker-mode">
-    <div class="landscape-top">
-      <div class="landscape-brand">
-        <div class="landscape-name-badge" onclick="speakCurrentName()" title="แตะเพื่อฟังชื่อ">
-          <img id="currentGirlAvatar" class="badge-mini-avatar" src="./img/jayda.jpg" alt="">
-          <span id="currentNameLabel">เจด้า</span>
-          <span>🔊</span>
-        </div>
-        <div style="font-weight: 800; color: #F39C12; font-size: 1rem; margin-left: 6px;">
-          ⭐ <span id="landscapeStarCount">0</span>
-        </div>
-      </div>
-      <div class="landscape-controls">
-        <button class="icon-action-btn" onclick="clearNameCanvas()" title="ลบวาดใหม่">🧽</button>
-        <button class="icon-action-btn" onclick="resetNameStudio()" title="เปลี่ยนคน / เลือกรูปน้อง">🔄</button>
-        <button class="icon-action-btn" onclick="toggleLandscapeManual()" title="กลับหน้า ก-ฮ">✕</button>
-      </div>
-    </div>
-
     <!-- Two-Portrait Picker Screen -->
     <div class="portrait-picker-stage" id="portraitPickerStage">
       <button class="picker-close-btn" onclick="toggleLandscapeManual()" title="กลับหน้า ก-ฮ" aria-label="กลับหน้า ก-ฮ">✕</button>
@@ -865,9 +818,21 @@
       </button>
     </div>
 
-    <!-- Multi-Letter Tracing Stage (Expanded Full Height) -->
+    <!-- Multi-Letter Tracing Stage (Expanded Full Height + Floating Corner Buttons) -->
     <div class="name-canvas-stage" id="nameCanvasStage">
       <div class="landscape-canvas-box" id="nameCanvasBox">
+        <button class="floating-canvas-btn floating-back-btn" onclick="resetNameStudio()" title="กลับไปเลือกรูปน้อง" aria-label="กลับไปเลือกรูปน้อง">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="kidBackGrad" x1="4" y1="6" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FF8FB1"/>
+                <stop offset="100%" stop-color="#FF5E8E"/>
+              </linearGradient>
+            </defs>
+            <path d="M14.5 7.5L5.5 16L14.5 24.5C15.6 25.5 17.4 24.8 17.4 23.2V19.2H24.5C26.2 19.2 27.5 17.9 27.5 16.2V15.8C27.5 14.1 26.2 12.8 24.5 12.8H17.4V8.8C17.4 7.2 15.6 6.5 14.5 7.5Z" fill="url(#kidBackGrad)" stroke="#D6336C" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="floating-canvas-btn floating-clear-btn" onclick="clearNameCanvas()" title="ลบวาดใหม่" aria-label="ลบวาดใหม่">🧽</button>
         <canvas id="nameCanvas"></canvas>
       </div>
     </div>
@@ -957,7 +922,6 @@
     let currentIndex = 0;
     let stars = parseInt(localStorage.getItem("boo_boo_stars_alpha") || "0", 10);
     document.getElementById("starCount").innerText = stars;
-    document.getElementById("landscapeStarCount").innerText = stars;
 
     let autoAdvance = localStorage.getItem("mom_auto_advance") === "true";
     document.getElementById("autoAdvanceToggle").checked = autoAdvance;
@@ -1404,7 +1368,6 @@
       triggerConfetti();
       stars++;
       document.getElementById("starCount").innerText = stars;
-      document.getElementById("landscapeStarCount").innerText = stars;
       localStorage.setItem("boo_boo_stars_alpha", stars);
 
       if (autoAdvance) {
@@ -1551,6 +1514,19 @@
     const nCanvas = document.getElementById("nameCanvas");
     const nCtx = nCanvas.getContext("2d");
 
+    function enterFullscreenIfSupported() {
+      const el = document.documentElement;
+      if (!document.fullscreenElement && el.requestFullscreen) {
+        el.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+      }
+    }
+
+    function exitFullscreenIfActive() {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
     let manualLandscape = false;
     function toggleLandscapeManual() {
       manualLandscape = !manualLandscape;
@@ -1560,6 +1536,7 @@
       } else {
         stopLedaAudio();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
+        exitFullscreenIfActive();
         document.body.classList.remove("is-landscape");
       }
     }
@@ -1603,7 +1580,7 @@
       const box = document.getElementById("nameCanvasBox");
       if (!box || !nCanvas) return false;
       const newW = box.clientWidth || (window.innerWidth - 16);
-      const newH = box.clientHeight || (window.innerHeight - 54);
+      const newH = box.clientHeight || (window.innerHeight - 16);
       const prevW = nCanvas.width;
       const prevH = nCanvas.height;
 
@@ -1639,11 +1616,10 @@
       currentGirlKey = girlKey in GIRLS ? girlKey : "jayda";
       currentNameString = girl.name;
 
+      enterFullscreenIfSupported();
       document.getElementById("landscapeContainer").classList.remove("picker-mode");
       document.getElementById("portraitPickerStage").style.display = "none";
       document.getElementById("nameCanvasStage").classList.add("active");
-      document.getElementById("currentNameLabel").innerText = girl.name;
-      document.getElementById("currentGirlAvatar").src = girl.avatar;
 
       initNameModel(girl.name);
       playLedaOrFallback(girl.greetClip, girl.greetText);
@@ -1796,7 +1772,7 @@
       const canvasH = nCanvas.height;
       const logicalW = Math.max(maxLX - minLX, 1);
       const logicalH = Math.max(maxLY - minLY, 1);
-      const fitScale = Math.min((canvasW - 64) / logicalW, (canvasH - 40) / logicalH);
+      const fitScale = Math.min((canvasW - 64) / logicalW, (canvasH - 36) / logicalH);
       const originX = (canvasW - logicalW * fitScale) * 0.5 - minLX * fitScale;
       const originY = (canvasH - logicalH * fitScale) * 0.5 - minLY * fitScale;
 
@@ -1997,7 +1973,6 @@
         triggerConfetti();
         stars += 3;
         document.getElementById("starCount").innerText = stars;
-        document.getElementById("landscapeStarCount").innerText = stars;
         localStorage.setItem("boo_boo_stars_alpha", stars);
         const girl = GIRLS[currentGirlKey] || GIRLS.jayda;
         playLedaOrFallback(girl.praiseClip, girl.praiseText);
@@ -2111,7 +2086,7 @@
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
       navigator.serviceWorker.register("./sw.js").then(() => {
         if ("caches" in window) {
-          caches.open("glw-leda-v9").then(cache => {
+          caches.open("glw-leda-v10").then(cache => {
             const urls = ["./img/jayda.jpg", "./img/dada.jpg"];
             NAME_STUDIO_CLIPS.forEach(f => urls.push("./audio_leda/" + f));
             for (let i = 1; i <= 44; i++) {
