@@ -6,12 +6,12 @@
     "environment": "macOS (Apple Silicon)"
   },
   "lifecycle": {
-    "last_session": "2026-11-20",
+    "last_session": "2026-11-24",
     "status": "active",
     "active_goal": "Thai Alphabet & Numbers Learning Hub (Dada & Jayda)"
   },
   "execution_state": {
-    "current_subtask": "Mobile field-test of 3 core widgets (Thai Numbers, Dual Thai & English Numbers, Alphabet & Two-Portrait Name Studio)",
+    "current_subtask": "Field-test full-glass Name Studio on phones (Pixel 9 Pro, iPhones, Bison GT)",
     "completed_milestones": [
       "App 1: Numbers & Vector Tracing (1–10) live on GitHub Pages with Leda voice coaching",
       "App 2: Math Addition Challenge isolated to standalone widget; card-based fruit counting & keypad spec recorded in TODO.md",
@@ -22,7 +22,9 @@
       "Voice selection: Selected raw cheerful Leda across Numbers & Alphabet Studio",
       "Alphabet Studio Audio Integration: Wired 112 Leda audio_leda/ clips (44 consonants, 8 modular coaching cues, 44 stitched coaches, 16 Name Studio clips) + glw-leda-v7 PWA cache into widget_alphabet.html",
       "Dual Thai & English Numbers Upgrade: Audited 20 v30_leda clips, added 10 Leda English coaching clips + stitched both_1..10 + top-down English tracing starts (53 embedded keys), exposed on Hub as Tile #2, bumped PWA cache to glw-leda-v7",
-      "Landscape Two-Portrait Name Studio & Jayda Spelling Fix: Replaced SpeechRecognition mic screen with full-screen Jayda (เจด้า) & Dada (ดาด้า) portrait picker, fixed Thai combining-mark layout (floating ้ above ด), cut landscape stroke widths & touch/hop radii in half for 1-to-1 finger tracking, added 3 Flash-verified Jayda Leda clips, bumped PWA cache to glw-leda-v9"
+      "Landscape Two-Portrait Name Studio & Jayda Spelling Fix: Replaced SpeechRecognition mic screen with full-screen Jayda (เจด้า) & Dada (ดาด้า) portrait picker, fixed Thai combining-mark layout (floating ้ above ด), cut landscape stroke widths & touch/hop radii in half for 1-to-1 finger tracking, added 3 Flash-verified Jayda Leda clips, bumped PWA cache to glw-leda-v9",
+      "Full Glass Name Studio & Floating Controls: Eliminated 42px top bar, placed floating pastel back arrow and sponge eraser over empty top corners, switched to 100dvh with safe-area padding for mobile home bars, added Android auto-fullscreen and PWA manifest.json, bumped cache to glw-leda-v10, and deployed live to GitHub Pages (29f917b)",
+      "Automated Unit Test Suites: Created pytest (tests/test_pwa_and_assets.py, tests/test_audition_apps.py) and vitest (tests/*.test.mjs + tests/helpers/widgetHarness.mjs) suites covering core widgets, PWA/assets, all 94 Leda AAC clips, embedded audio, Name Studio layout/wavefront isolation, both live audition PWAs (voice_audition/ & alphabet_audition/), and all 3 service workers (14/14 pytest + 28/28 vitest passing); removed nested duplicate block in alphabet_audition/index.html"
     ],
     "pending_milestones": [
       "App 2 Overhaul: Build new progressive 1+1 fruit counting dual-card addition widget with on-screen numerical keypad"

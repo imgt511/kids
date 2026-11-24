@@ -716,7 +716,7 @@
   <div class="meta-bar">
     <div class="meta-box">
       <span>Last Active Session</span>
-      <strong>2026-11-20</strong>
+      <strong>2026-11-24</strong>
     </div>
     <div class="meta-box">
       <span>Primary Tool</span>
@@ -724,11 +724,11 @@
     </div>
     <div class="meta-box">
       <span>Blockers / Issues</span>
-      <strong><span class="badge-ok">✓ 0 Blockers</span></strong>
+      <strong><span style="color: var(--red); font-weight: 800;">⚠️ 1 Open</span></strong>
     </div>
     <div class="meta-box">
       <span>Source Audit Hash</span>
-      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">6e28e51b2f018d87...</strong>
+      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">86d03871db7b4178...</strong>
     </div>
   </div>
 
@@ -761,7 +761,7 @@
 </svg>
         </button>
       </div>
-      <p>Redesigned `widget_alphabet.html` Landscape Name Studio into an instant zero-speech two-portrait tap picker (`img/jayda.jpg` &amp; `img/dada.jpg`), corrected Jayda&#x27;s Thai nickname to `เจด้า` across `index.html`, `widget_alphabet.html`, and 3 Flash-verified raw Leda Thai audio clips (`greet_jayda.m4a`, `praise_jayda.m4a`, `name_jayda.m4a`), fixed Thai combining-mark rendering (`้` floating above `ด`), cut landscape name stroke thickness and capture/hop radii in half (`9px/6px` underpass, `4.5px/3.5px` rainbow, `24px` lock, `22px` `dNext &lt;= dCur` 1-to-1 finger tracking, endpoint-only hop) so tracing never darkens ahead of the finger or bleeds across letter branches, bumped PWA cache to `glw-leda-v9`, and pushed live.</p>
+      <p>Created automated unit test suites in `tests/` using `pytest` and `vitest` (`vitest.config.mjs`) covering core widgets plus both live audition apps (`voice_audition/` and `alphabet_audition/`). Verified PWA manifest/service-worker sync (`glw-leda-v10`, `thai-voice-audition-v3`, `thai-alphabet-audition-v2`), portal links, stale reference removal, JPEG portraits, all 94 Leda `.m4a` AAC clips, embedded audio payloads, all 30 alphabet audition folders (46 clips each), 33 voice audition folders, Thai alphabet/Name Studio layout and wavefront tracing, numbers tracing, math addition challenge, audition UI controls, and all 3 `sw.js` service workers (14 pytest checks + 28 vitest checks passing 100%). Cleaned up duplicate `installAllOffline()` / `serviceWorker.register(&quot;./sw.js&quot;)` block inside `setVoice(v)` in `alphabet_audition/index.html`, removed `.agents/rules/testing-catchup-reminder.md`, and added preflight acceptance gates to `CONTRACT.prose.md`.</p>
     </div>
 
     <div class="card" id="card-next">
@@ -792,7 +792,7 @@
 </svg>
         </button>
       </div>
-      <p>Field-test all 3 core studio widgets (Thai Numbers, Dual Thai &amp; English Numbers, Alphabet &amp; Two-Portrait Name Studio) on phone; optional English greeting variant if desired (56/100 daily TTS quota left); next milestone: App 2 Math Addition fruit-counting overhaul.</p>
+      <p>Field-test the updated full-glass Name Studio on phones (Pixel 9 Pro, iPhone 17 Pro, iPhone 15 Pro, Bison GT); next milestone: App 2 Math Addition fruit-counting overhaul.</p>
     </div>
   </div>
 
@@ -824,7 +824,7 @@
 </svg>
       </button>
     </div>
-    <p style="color: var(--muted);">No open issues or blockers reported.</p>
+    <ul class="issues-list"><li class="issue-item">• Pre-existing missing clip `voice_audition/audio/v30_puck/en_10.m4a` (locked in `tests/test_audition_apps.py`).</li></ul>
   </div>
 
   

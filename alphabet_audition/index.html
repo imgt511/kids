@@ -119,53 +119,10 @@
     }
 
     function setVoice(v) {
+      stopAudio();
       activeVoice = v;
-      async function installAllOffline() {
-      const btn = document.getElementById("btnInstallOffline");
-      const status = document.getElementById("statusText");
-      if (location.protocol === "file:") {
-        status.innerText = "Local disk mode active.";
-        return;
-      }
-      if (!("caches" in window)) {
-        status.innerText = "Browser Cache API unavailable.";
-        return;
-      }
-      if (btn) btn.innerText = "Downloading...";
-      status.innerText = "Caching all 30 Alphabet voices offline...";
-      const cache = await caches.open("thai-alphabet-audition-v2");
-      await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
-      const urls = [];
-      VOICES.forEach(([n]) => {
-        const v = n.toLowerCase();
-        urls.push(`./audio/${v}/master_p1.m4a`, `./audio/${v}/master_p2.m4a`);
-        for (let i = 1; i <= 44; i++) urls.push(`./audio/${v}/alpha_${String(i).padStart(2, "0")}.m4a`);
-      });
-      let done = 0, cached = 0;
-      const BATCH = 12;
-      for (let i = 0; i < urls.length; i += BATCH) {
-        const chunk = urls.slice(i, i + BATCH);
-        await Promise.all(chunk.map(async (u) => {
-          try {
-            if (await cache.match(u)) { cached++; }
-            else {
-              const r = await fetch(u);
-              if (r.ok) { await cache.put(u, r); cached++; }
-            }
-          } catch (_) {}
-          done++;
-        }));
-        status.innerText = `Caching ${done} / ${urls.length} (${cached} saved)...`;
-      }
-      if (btn) btn.innerText = `DONE (${cached} Cached)`;
-      status.innerText = `DONE — ${cached} clips cached offline. Safe to turn off Wi-Fi.`;
-    }
-
-    if ("serviceWorker" in navigator && location.protocol !== "file:") {
-      navigator.serviceWorker.register("./sw.js").catch(() => {});
-    }
-
-    refreshCards();
+      document.getElementById("statusText").innerText = `Active voice: ${v.toUpperCase()}`;
+      refreshCards();
     }
 
     function refreshCards() {

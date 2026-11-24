@@ -3,7 +3,7 @@ kind: hybrid
 version: 1.3.0
 project: Granddaughters_Learning_Widgets
 track: Track D / Hybrid Bilingual Learning Engine
-updated: 2026-10-24
+updated: 2026-11-24
 ---
 
 # Granddaughters Learning Widgets Contract
@@ -27,3 +27,7 @@ updated: 2026-10-24
 * 100% offline standalone HTML5 / CSS / Vanilla JavaScript per widget.
 * No frameworks, zero external data tracking.
 * Works seamlessly on budget Android and older iOS devices via "Add to Home Screen".
+
+### Preflight Acceptance Gates
+- [x] Maintainer Merge Standard: As the maintainer running this at home, would you merge this? (Passing tests alone is not sufficient; must be minimal, clean, and maintainable).
+- [x] Automated Unit Tests: For Track B, C, and D projects, pytest (Python), vitest (JavaScript), or swift test (Swift Package) tests exist in tests/ or Tests/ and pass 100%.
