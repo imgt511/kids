@@ -724,11 +724,11 @@
     </div>
     <div class="meta-box">
       <span>Blockers / Issues</span>
-      <strong><span style="color: var(--red); font-weight: 800;">⚠️ 1 Open</span></strong>
+      <strong><span class="badge-ok">✓ 0 Blockers</span></strong>
     </div>
     <div class="meta-box">
       <span>Source Audit Hash</span>
-      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">86d03871db7b4178...</strong>
+      <strong style="font-family: monospace; font-size: 14px; color: var(--muted);">92ad539e1c7db48e...</strong>
     </div>
   </div>
 
@@ -761,7 +761,7 @@
 </svg>
         </button>
       </div>
-      <p>Created automated unit test suites in `tests/` using `pytest` and `vitest` (`vitest.config.mjs`) covering core widgets plus both live audition apps (`voice_audition/` and `alphabet_audition/`). Verified PWA manifest/service-worker sync (`glw-leda-v10`, `thai-voice-audition-v3`, `thai-alphabet-audition-v2`), portal links, stale reference removal, JPEG portraits, all 94 Leda `.m4a` AAC clips, embedded audio payloads, all 30 alphabet audition folders (46 clips each), 33 voice audition folders, Thai alphabet/Name Studio layout and wavefront tracing, numbers tracing, math addition challenge, audition UI controls, and all 3 `sw.js` service workers (14 pytest checks + 28 vitest checks passing 100%). Cleaned up duplicate `installAllOffline()` / `serviceWorker.register(&quot;./sw.js&quot;)` block inside `setVoice(v)` in `alphabet_audition/index.html`, removed `.agents/rules/testing-catchup-reminder.md`, and added preflight acceptance gates to `CONTRACT.prose.md`.</p>
+      <p>Re-pulled cheerful **Puck** (`v30_puck`) Numbers Audition master and sliced all 20 clean Thai/English clips (`num_01..10.m4a`, `en_01..10.m4a`, including `&quot;Ten&quot;`), verified 5 boundary clips via `gemini-3.8-flash` + all 21 files via `ffprobe`, bumped `voice_audition` PWA cache to `thai-voice-audition-v4`, and tightened `tests/test_audition_apps.py` to enforce zero missing clips across all 30 voices. Automated suites in `tests/` (`14` pytest + `28` vitest across 4 files) pass 100%.</p>
     </div>
 
     <div class="card" id="card-next">
@@ -824,7 +824,7 @@
 </svg>
       </button>
     </div>
-    <ul class="issues-list"><li class="issue-item">• Pre-existing missing clip `voice_audition/audio/v30_puck/en_10.m4a` (locked in `tests/test_audition_apps.py`).</li></ul>
+    <p style="color: var(--muted);">No open issues or blockers reported.</p>
   </div>
 
   

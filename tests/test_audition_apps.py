@@ -85,7 +85,7 @@ def test_alphabet_audition_audio_coverage_and_headers() -> None:
 
 
 def test_voice_audition_audio_coverage_and_headers() -> None:
-    """Verify all 33 voice_audition folders, Thai clips, and locked English clip coverage."""
+    """Verify all 33 voice_audition folders, Thai clips, and all English clips."""
     html = _read_text("voice_audition/index.html")
     voices_block = re.search(r"const\s+VOICES\s*=\s*\[(.*?)\];", html, re.S)
     assert voices_block is not None
@@ -105,17 +105,7 @@ def test_voice_audition_audio_coverage_and_headers() -> None:
         for clip in thai_required:
             _assert_valid_m4a(voice_dir / clip)
 
-    missing_en: set[tuple[str, str]] = set()
     for voice in v30_names:
         voice_dir = audio_root / voice
         for i in range(1, 11):
-            clip = f"en_{i:02d}.m4a"
-            clip_path = voice_dir / clip
-            if not clip_path.is_file():
-                missing_en.add((voice, clip))
-            else:
-                _assert_valid_m4a(clip_path)
-
-    assert missing_en == {("v30_puck", "en_10.m4a")}, (
-        f"Unexpected missing English audition clips: {sorted(missing_en)}"
-    )
+            _assert_valid_m4a(voice_dir / f"en_{i:02d}.m4a")

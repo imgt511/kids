@@ -451,7 +451,7 @@
       const btn = document.getElementById("btnInstallOffline");
       if (btn) btn.innerText = "Downloading...";
       status.innerText = "Downloading all voices to phone cache...";
-      const cache = await caches.open("thai-voice-audition-v3");
+      const cache = await caches.open("thai-voice-audition-v4");
       await cache.addAll(["./", "./index.html", "./manifest.json"]).catch(() => {});
 
       const urls = [];
