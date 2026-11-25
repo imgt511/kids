@@ -1,7 +1,7 @@
 # Project Status: Granddaughters Learning Widgets
 
-Last session: 2026-11-24
+Last session: 2026-11-25
 Tool used: Antigravity
-Status: Re-pulled cheerful **Puck** (`v30_puck`) Numbers Audition master and sliced all 20 clean Thai/English clips (`num_01..10.m4a`, `en_01..10.m4a`, including `"Ten"`), verified 5 boundary clips via `gemini-3.8-flash` + all 21 files via `ffprobe`, bumped `voice_audition` PWA cache to `thai-voice-audition-v4`, and tightened `tests/test_audition_apps.py` to enforce zero missing clips across all 30 voices. Automated suites in `tests/` (`14` pytest + `28` vitest across 4 files) pass 100%.
-Next step: Field-test the updated full-glass Name Studio on phones (Pixel 9 Pro, iPhone 17 Pro, iPhone 15 Pro, Bison GT); next milestone: App 2 Math Addition fruit-counting overhaul.
+Status: Built shareable base alphabet app (`alphabet.html`, `manifest_alphabet.json`, `img/alphabet_icon.svg`) backed by shared engine (`alphabet_core.css`, `alphabet_core.js`), removed duplicate `widget_numbers_thai.html`, added `ui_lang.js` Thai/British-English (`🇹🇭`/`🇬🇧`) switcher across all 6 user pages with English-first `<title>` tags, moved Voice Audition tools to mini footer links on `index.html`, differentiated Jayda & Dada Alphabet vs Generic Alphabet on the Hub, bumped `sw.js` cache to `glw-leda-v12`, verified `33` vitest + `16` pytest passing 100%, and deployed live to GitHub Pages.
+Next step: Share `https://imgt511.github.io/kids/alphabet.html` with the laundromat mom; build her child's custom mini-hub and alphabet page once her kid's nickname and photo are ready.
 Open issues: None.

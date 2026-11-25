@@ -7,15 +7,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(__dirname, "../..");
 
 /**
- * Read an HTML file relative to ROOT and concatenate its inline <script> blocks.
+ * Read an HTML file relative to ROOT and concatenate its inline and local external <script> blocks.
  */
 export function extractInlineScripts(relHtmlPath) {
+  const htmlDir = path.dirname(path.join(ROOT, relHtmlPath));
   const html = fs.readFileSync(path.join(ROOT, relHtmlPath), "utf8");
   const scripts = [];
-  const regex = /<script[^>]*>([\s\S]*?)<\/script>/g;
+  const regex = /<script\b([^>]*)>([\s\S]*?)<\/script>/g;
   let match;
   while ((match = regex.exec(html)) !== null) {
-    scripts.push(match[1]);
+    const attrs = match[1] || "";
+    const srcMatch = /\bsrc\s*=\s*["']([^"']+)["']/.exec(attrs);
+    if (srcMatch) {
+      const src = srcMatch[1];
+      if (!/^https?:\/\//i.test(src)) {
+        const scriptPath = path.resolve(htmlDir, src);
+        scripts.push(fs.readFileSync(scriptPath, "utf8"));
+      }
+    } else if (match[2].trim()) {
+      scripts.push(match[2]);
+    }
   }
   return scripts.join("\n;\n");
 }

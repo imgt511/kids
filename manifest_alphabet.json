@@ -1,0 +1,17 @@
+{
+  "name": "Thai Alphabet (ก-ฮ)",
+  "short_name": "Thai Alphabet",
+  "start_url": "./alphabet.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFDF5",
+  "theme_color": "#FFFDF5",
+  "icons": [
+    {
+      "src": "./img/alphabet_icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

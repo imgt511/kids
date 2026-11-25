@@ -44,37 +44,43 @@ def _probe_aac(path: Path) -> tuple[str, str, float]:
     return path.name, codec, duration
 
 
-def test_manifest_valid_and_assets_exist() -> None:
-    """Verify manifest.json standalone config, start_url, and icon files."""
-    manifest = json.loads(_read_text("manifest.json"))
+@pytest.mark.parametrize("manifest_rel", ["manifest.json", "manifest_alphabet.json"])
+def test_manifest_valid_and_assets_exist(manifest_rel: str) -> None:
+    """Verify PWA manifest standalone config, start_url, and icon files."""
+    manifest = json.loads(_read_text(manifest_rel))
     assert manifest.get("display") == "standalone"
 
     start_url = manifest.get("start_url")
     assert isinstance(start_url, str) and start_url
     start_path = (ROOT / start_url).resolve()
-    assert start_path.is_file(), f"Missing manifest start_url: {start_url}"
+    assert start_path.is_file(), f"Missing {manifest_rel} start_url: {start_url}"
 
     icons = manifest.get("icons", [])
-    assert icons, "manifest.json must declare at least one icon"
+    assert icons, f"{manifest_rel} must declare at least one icon"
     for icon in icons:
         src = icon.get("src", "")
         icon_path = (ROOT / src).resolve()
         assert icon_path.is_file() and icon_path.stat().st_size > 0, (
-            f"Missing or empty manifest icon: {src}"
+            f"Missing or empty {manifest_rel} icon: {src}"
         )
 
 
 def test_service_worker_assets_and_cache_version_sync() -> None:
-    """Verify sw.js CORE_ASSETS exist and CACHE_NAME matches widget_alphabet.html."""
+    """Verify sw.js CORE_ASSETS exist and CACHE_NAME matches alphabet core & pages."""
     sw_text = _read_text("sw.js")
     cache_match = re.search(r'const\s+CACHE_NAME\s*=\s*"([^"]+)"', sw_text)
     assert cache_match is not None, "CACHE_NAME not found in sw.js"
     cache_name = cache_match.group(1)
 
-    alpha_text = _read_text("widget_alphabet.html")
-    assert f'caches.open("{cache_name}")' in alpha_text, (
-        f"widget_alphabet.html cache name out of sync with sw.js ({cache_name})"
+    core_js = _read_text("alphabet_core.js")
+    assert f'"{cache_name}"' in core_js, (
+        f"alphabet_core.js default cache name out of sync with sw.js ({cache_name})"
     )
+    for rel_page in ("widget_alphabet.html", "alphabet.html"):
+        page_text = _read_text(rel_page)
+        assert f'cacheName: "{cache_name}"' in page_text, (
+            f"{rel_page} cacheName out of sync with sw.js ({cache_name})"
+        )
 
     assets_match = re.search(r"const\s+CORE_ASSETS\s*=\s*\[(.*?)\];", sw_text, re.S)
     assert assets_match is not None, "CORE_ASSETS array not found in sw.js"
@@ -93,10 +99,14 @@ def test_portal_links_and_manifest_tags() -> None:
     """Verify all relative portal links exist and manifest link tags are present."""
     index_text = _read_text("index.html")
     alpha_text = _read_text("widget_alphabet.html")
+    base_alpha_text = _read_text("alphabet.html")
 
     manifest_tag = '<link rel="manifest" href="./manifest.json">'
     assert manifest_tag in index_text, "Missing manifest link tag in index.html"
     assert manifest_tag in alpha_text, "Missing manifest link tag in widget_alphabet.html"
+    assert '<link rel="manifest" href="./manifest_alphabet.json">' in base_alpha_text, (
+        "Missing manifest_alphabet.json link tag in alphabet.html"
+    )
 
     hrefs = re.findall(r'<a\b[^>]*\bhref="([^"]+)"', index_text)
     assert hrefs, "Expected <a> links in index.html"
@@ -113,7 +123,7 @@ def test_portal_links_and_manifest_tags() -> None:
 
 
 def test_no_stale_references_and_full_glass_markup() -> None:
-    """Verify legacy Sayda/SpeechRecognition strings are gone and full-glass controls exist."""
+    """Verify legacy Sayda/SpeechRecognition strings are gone, base alphabet is neutral, and full-glass controls exist."""
     forbidden = [
         "เซด้า",
         "Sayda",
@@ -122,16 +132,32 @@ def test_no_stale_references_and_full_glass_markup() -> None:
         "SpeechRecognition",
         "currentNameLabel",
     ]
-    for rel_path in ("widget_alphabet.html", "index.html", "sw.js"):
+    for rel_path in (
+        "widget_alphabet.html",
+        "alphabet.html",
+        "alphabet_core.js",
+        "alphabet_core.css",
+        "index.html",
+        "sw.js",
+    ):
         content = _read_text(rel_path)
         for token in forbidden:
             assert token not in content, f"Stale reference {token!r} found in {rel_path}"
 
+    base_alpha_text = _read_text("alphabet.html")
+    for family_token in ("jayda", "dada", "เจด้า", "ดาด้า", "index.html", "landscapeContainer"):
+        assert family_token not in base_alpha_text.lower(), (
+            f"Family reference {family_token!r} found in base alphabet.html"
+        )
+
     alpha_text = _read_text("widget_alphabet.html")
-    for required_token in ("floating-back-btn", "floating-clear-btn", "100dvh"):
+    for required_token in ("floating-back-btn", "floating-clear-btn"):
         assert required_token in alpha_text, (
             f"Missing full-glass Name Studio token {required_token!r} in widget_alphabet.html"
         )
+    assert "100dvh" in _read_text("alphabet_core.css"), (
+        "Missing full-glass 100dvh rule in alphabet_core.css"
+    )
 
 
 def test_portrait_images_valid_jpeg() -> None:
@@ -146,8 +172,8 @@ def test_portrait_images_valid_jpeg() -> None:
 
 def test_alphabet_and_name_audio_clips_valid_aac() -> None:
     """Verify every Leda alphabet and Name Studio .m4a clip exists and decodes as AAC."""
-    alpha_text = _read_text("widget_alphabet.html")
-    expected_clips = set(re.findall(r'"([a-z0-9_]+\.m4a)"', alpha_text))
+    combined_alpha = _read_text("widget_alphabet.html") + "\n" + _read_text("alphabet_core.js")
+    expected_clips = set(re.findall(r'"([a-z0-9_]+\.m4a)"', combined_alpha))
     for i in range(1, 45):
         expected_clips.add(f"short_alpha_{i:02d}.m4a")
         expected_clips.add(f"coach_alpha_{i:02d}.m4a")
@@ -208,11 +234,10 @@ def test_alphabet_and_name_audio_clips_valid_aac() -> None:
 def test_numbers_widgets_parity_and_embedded_audio_valid(
     rel_path: str, expected_keys: set[str]
 ) -> None:
-    """Verify number widget mirror parity and valid MP4/M4A base64 payloads."""
-    if rel_path == "widget_numbers.html":
-        assert _read_text("widget_numbers.html") == _read_text("widget_numbers_thai.html"), (
-            "widget_numbers.html and widget_numbers_thai.html must remain byte-identical"
-        )
+    """Verify duplicate widget_numbers_thai.html is removed and MP4/M4A payloads are valid."""
+    assert not (ROOT / "widget_numbers_thai.html").exists(), (
+        "Duplicate widget_numbers_thai.html must remain deleted"
+    )
 
     html = _read_text(rel_path)
     match = re.search(r"const\s+EMBEDDED_AUDIO\s*=\s*(\{.*?\});", html)
@@ -232,3 +257,55 @@ def test_numbers_widgets_parity_and_embedded_audio_valid(
         )
         raw = base64.b64decode(uri[len(prefix) :], validate=True)
         assert b"ftyp" in raw[:32], f"Missing MP4 ftyp header for {rel_path}:{key}"
+
+
+def test_ui_lang_switcher_english_titles_and_hub_layout() -> None:
+    """Verify TH/GB flag switcher, English-first titles, and Hub alphabet/audition placement."""
+    assert (ROOT / "ui_lang.js").is_file(), "Missing shared ui_lang.js script"
+
+    user_pages = (
+        "index.html",
+        "alphabet.html",
+        "widget_alphabet.html",
+        "widget_numbers.html",
+        "widget_numbers_bilingual.html",
+        "widget_addition.html",
+    )
+    for rel_page in user_pages:
+        html = _read_text(rel_page)
+        assert '<script src="./ui_lang.js"></script>' in html, (
+            f"Missing ui_lang.js script tag in {rel_page}"
+        )
+        assert 'data-set-lang="th"' in html and "🇹🇭" in html, (
+            f"Missing Thai flag toggle in {rel_page}"
+        )
+        assert 'data-set-lang="en"' in html and "🇬🇧" in html, (
+            f"Missing British English flag toggle in {rel_page}"
+        )
+        title_match = re.search(r"<title>(.*?)</title>", html)
+        assert title_match is not None, f"Missing <title> in {rel_page}"
+        assert title_match.group(1)[0].isascii(), (
+            f"<title> must start in English/ASCII in {rel_page}: {title_match.group(1)!r}"
+        )
+
+    index_html = _read_text("index.html")
+    assert 'href="widget_alphabet.html"' in index_html, "Hub missing Jayda & Dada Alphabet link"
+    assert 'href="alphabet.html"' in index_html, "Hub missing Generic Alphabet link"
+
+    footer_match = re.search(
+        r'<footer class="dev-mini-links">(.*?)</footer>', index_html, re.S
+    )
+    assert footer_match is not None, "Hub missing dev-mini-links footer"
+    footer_html = footer_match.group(1)
+    assert 'href="voice_audition/"' in footer_html, "Numbers audition link missing from footer"
+    assert 'href="alphabet_audition/"' in footer_html, "Alphabet audition link missing from footer"
+
+    tiles_match = re.search(
+        r'<main class="tiles-container">(.*?)</main>', index_html, re.S
+    )
+    assert tiles_match is not None, "Hub missing tiles-container"
+    tiles_html = tiles_match.group(1)
+    assert "voice_audition/" not in tiles_html and "alphabet_audition/" not in tiles_html, (
+        "Audition labs should be mini footer links, not main kid tiles"
+    )
+

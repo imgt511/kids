@@ -112,3 +112,103 @@ describe("sw.js service worker", () => {
     }
   });
 });
+
+describe("ui_lang.js language toggle", () => {
+  function runUiLang(initialLang = null) {
+    const storageMap = new Map();
+    if (initialLang !== null) storageMap.set("glw_ui_lang", initialLang);
+
+    const makeMock = (attrs, initialClass = "") => {
+      const classes = new Set(initialClass ? initialClass.split(/\s+/) : []);
+      return {
+        attrs: { ...attrs },
+        innerText: attrs["data-i18n-th"] || "",
+        innerHTML: attrs["data-i18n-html-th"] || "",
+        title: attrs["data-title-th"] || "",
+        classList: {
+          toggle(name, force) {
+            if (force) classes.add(name);
+            else classes.delete(name);
+          },
+          contains(name) {
+            return classes.has(name);
+          }
+        },
+        getAttribute(k) {
+          return Object.prototype.hasOwnProperty.call(this.attrs, k) ? this.attrs[k] : null;
+        },
+        setAttribute(k, v) {
+          this.attrs[k] = String(v);
+        }
+      };
+    };
+
+    const titleEl = makeMock({
+      "data-i18n-th": "ภาษาไทย",
+      "data-i18n-en": "English Title"
+    });
+    const htmlEl = makeMock({
+      "data-i18n-html-th": "<b>ไทย</b>",
+      "data-i18n-html-en": "<b>English</b>"
+    });
+    const hintEl = makeMock({
+      "data-title-th": "คำใบ้",
+      "data-title-en": "English Hint"
+    });
+    const thBtn = makeMock({ "data-set-lang": "th" }, "active");
+    const enBtn = makeMock({ "data-set-lang": "en" });
+
+    let changeCalls = 0;
+    const windowObj = {
+      onUiLangChange(lang) {
+        changeCalls++;
+        windowObj.lastLang = lang;
+      }
+    };
+
+    const ctx = vm.createContext({
+      localStorage: {
+        getItem: (k) => (storageMap.has(k) ? storageMap.get(k) : null),
+        setItem: (k, v) => storageMap.set(String(k), String(v))
+      },
+      window: windowObj,
+      document: {
+        querySelectorAll(sel) {
+          if (sel === "[data-i18n-th]") return [titleEl];
+          if (sel === "[data-i18n-html-th]") return [htmlEl];
+          if (sel === "[data-title-th]") return [hintEl];
+          if (sel === "[data-set-lang]") return [thBtn, enBtn];
+          return [];
+        }
+      }
+    });
+
+    const code = fs.readFileSync(path.join(ROOT, "ui_lang.js"), "utf8");
+    new vm.Script(code, { filename: "ui_lang.js" }).runInContext(ctx);
+    return { windowObj, storageMap, titleEl, htmlEl, hintEl, thBtn, enBtn, getChangeCalls: () => changeCalls };
+  }
+
+  it("defaults to Thai and switches cleanly between Thai and British English", () => {
+    const env = runUiLang();
+    expect(env.windowObj.getUiLang()).toBe("th");
+    expect(env.titleEl.innerText).toBe("ภาษาไทย");
+    expect(env.thBtn.classList.contains("active")).toBe(true);
+    expect(env.enBtn.classList.contains("active")).toBe(false);
+
+    env.windowObj.setUiLang("en");
+    expect(env.windowObj.getUiLang()).toBe("en");
+    expect(env.storageMap.get("glw_ui_lang")).toBe("en");
+    expect(env.titleEl.innerText).toBe("English Title");
+    expect(env.htmlEl.innerHTML).toBe("<b>English</b>");
+    expect(env.hintEl.title).toBe("English Hint");
+    expect(env.thBtn.classList.contains("active")).toBe(false);
+    expect(env.enBtn.classList.contains("active")).toBe(true);
+    expect(env.windowObj.lastLang).toBe("en");
+    expect(env.getChangeCalls()).toBe(2);
+
+    env.windowObj.setUiLang("th");
+    expect(env.storageMap.get("glw_ui_lang")).toBe("th");
+    expect(env.titleEl.innerText).toBe("ภาษาไทย");
+    expect(env.thBtn.classList.contains("active")).toBe(true);
+  });
+});

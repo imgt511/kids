@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>บวกเลขหรรษา - Math Addition (On Hold)</title>
+  <title>Math Addition (On Hold) | บวกเลขหรรษา</title>
   <style>
     :root {
       --primary: #4ECDC4;
@@ -47,13 +47,47 @@
     .app-title-badge {
       background: linear-gradient(135deg, #10B981 0%, #059669 100%);
       color: white;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 900;
-      padding: 8px 20px;
+      padding: 8px 14px;
       border-radius: 24px;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       text-align: center;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: #EDF2F7;
+      border: 2px solid #CBD5E1;
+      border-radius: 999px;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .lang-flag-btn {
+      border: none;
+      background: transparent;
+      border-radius: 999px;
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.15s, background-color 0.15s, transform 0.15s;
+    }
+    .lang-flag-btn.active {
+      background: #FFFFFF;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .lang-flag-btn:active {
+      transform: scale(0.92);
     }
 
     .on-hold-pill {
@@ -251,22 +285,26 @@
   <canvas id="confettiCanvas"></canvas>
 
   <header>
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 440px;">
-      <a href="index.html" style="text-decoration:none; width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06);" title="กลับหน้ารวมแอป (Home Portal)">🏠</a>
-      <div class="app-title-badge notranslate" translate="no" style="flex: 1;">➕ บวกเลขหรรษา (Addition)</div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 440px;">
+      <a href="index.html" style="text-decoration:none; width: 38px; height: 38px; border-radius: 50%; background: #FFFFFF; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);" title="กลับหน้ารวมแอป (Home Portal)" data-title-th="กลับหน้ารวมแอป" data-title-en="Home Studio Hub">🏠</a>
+      <div class="app-title-badge notranslate" translate="no" style="flex: 1; min-width: 0;" data-i18n-th="➕ บวกเลขหรรษา (Addition)" data-i18n-en="➕ Math Addition">➕ บวกเลขหรรษา (Addition)</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-flag-btn active" data-set-lang="th" onclick="setUiLang('th')" title="ภาษาไทย">🇹🇭</button>
+        <button type="button" class="lang-flag-btn" data-set-lang="en" onclick="setUiLang('en')" title="English">🇬🇧</button>
+      </div>
     </div>
-    <div class="on-hold-pill">⏸️ หมวดนี้พักไว้ก่อน (Status: On Hold)</div>
+    <div class="on-hold-pill" data-i18n-th="⏸️ หมวดนี้พักไว้ก่อน (Status: On Hold)" data-i18n-en="⏸️ Status: On Hold">⏸️ หมวดนี้พักไว้ก่อน (Status: On Hold)</div>
   </header>
 
   <main class="board-card">
     <div class="stars-score">
-      <span>⭐ รวมดวงดาว:</span>
+      <span data-i18n-th="⭐ รวมดวงดาว:" data-i18n-en="⭐ Total Stars:">⭐ รวมดวงดาว:</span>
       <span id="starCount">0</span>
     </div>
 
     <!-- Math Addition Puzzle -->
     <div class="math-puzzle-box">
-      <div class="puzzle-title">นับผลไม้แล้วหาคำตอบเลย! 🥭🍌</div>
+      <div class="puzzle-title" data-i18n-th="นับผลไม้แล้วหาคำตอบเลย! 🥭🍌" data-i18n-en="Count the fruit and pick the answer! 🥭🍌">นับผลไม้แล้วหาคำตอบเลย! 🥭🍌</div>
       <div class="counters-grid" id="mathVisualGrid"></div>
       <div class="math-equation" id="equationText">
         <span>2</span> + <span>3</span> = <span>?</span>
@@ -275,12 +313,12 @@
     </div>
 
     <div class="controls-bar">
-      <button class="next-big-btn" onclick="generateMathQuestion()">ข้อต่อไป 🎲</button>
+      <button class="next-big-btn" onclick="generateMathQuestion()" data-i18n-th="ข้อต่อไป 🎲" data-i18n-en="Next Question 🎲">ข้อต่อไป 🎲</button>
     </div>
   </main>
 
   <div class="nav-link-row">
-    <a href="index.html">👉 ไปที่หน้า วาดตัวเลข 1-10 (Number Tracing)</a>
+    <a href="index.html" data-i18n-th="👉 ไปที่หน้า วาดตัวเลข 1-10 (Number Tracing)" data-i18n-en="👉 Back to Kids Studio Hub">👉 ไปที่หน้า วาดตัวเลข 1-10 (Number Tracing)</a>
   </div>
 
   <script>
@@ -508,5 +546,6 @@
     // Initialize Math Game
     generateMathQuestion();
   </script>
+  <script src="./ui_lang.js"></script>
 </body>
 </html>

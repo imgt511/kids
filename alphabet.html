@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th" class="notranslate" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Generic Thai Alphabet (ก-ฮ) | Base Learning App</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Thai Alphabet">
+  <link rel="manifest" href="./manifest_alphabet.json">
+  <link rel="stylesheet" href="./alphabet_core.css">
+</head>
+<body>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- PORTRAIT MODE HEADER -->
+  <header>
+    <div class="header-bar">
+      <div class="app-title-badge notranslate" translate="no" data-i18n-th="🎨 ก-ฮ พยัญชนะไทยแสนสนุก" data-i18n-en="🎨 Generic Thai Alphabet (ก–ฮ)">🎨 ก-ฮ พยัญชนะไทยแสนสนุก</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-flag-btn active" data-set-lang="th" onclick="setUiLang('th')" title="ภาษาไทย">🇹🇭</button>
+        <button type="button" class="lang-flag-btn" data-set-lang="en" onclick="setUiLang('en')" title="English">🇬🇧</button>
+      </div>
+      <button class="header-btn" id="momSettingsBtn" title="Mom's Settings (Hold 2s)">⚙️</button>
+    </div>
+  </header>
+
+  <!-- PORTRAIT BOARD CARD -->
+  <main class="board-card">
+    <div class="stars-score">
+      <span data-i18n-th="⭐ รวมดาวคนเก่ง:" data-i18n-en="⭐ Stars Earned:">⭐ รวมดาวคนเก่ง:</span>
+      <span id="starCount">0</span>
+    </div>
+
+    <!-- Hero Card for Consonant -->
+    <div class="consonant-hero">
+      <div class="big-thai-char notranslate" id="heroChar" translate="no">ก</div>
+      <div class="consonant-meta">
+        <div class="mnemonic-th" id="heroMnemonicTh">ก เอ๋ย ก ไก่</div>
+        <div class="mnemonic-en" id="heroMnemonicEn">Gor Gai (Chicken)</div>
+      </div>
+      <div class="hero-emoji" id="heroEmoji">🐔</div>
+
+      <div class="hero-actions">
+        <button class="sound-pulse-btn" onclick="speakCurrentConsonant()" title="ฟังเสียง" data-title-th="ฟังเสียง" data-title-en="Play Sound">🔊</button>
+        <!-- Three Hands Holding Pens / Crayons (Zero Text) -->
+        <button class="hands-practice-btn" onclick="openTraceModal()" title="วาดพยัญชนะ (Trace Letter)" data-title-th="วาดพยัญชนะ" data-title-en="Trace Letter">
+          <span class="hand-icon">✍️</span>
+          <span class="hand-icon">🖍️</span>
+          <span class="hand-icon">✏️</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-row">
+      <button class="nav-arrow-btn" onclick="prevConsonant()">❮</button>
+      <div class="letter-counter" id="letterCounter">๑ / ๔๔</div>
+      <button class="nav-arrow-btn" onclick="nextConsonant()">❯</button>
+    </div>
+
+    <!-- Alphabet Quick Drawer -->
+    <div class="alphabet-grid-wrap">
+      <div class="alphabet-pills" id="alphaPillsContainer"></div>
+    </div>
+  </main>
+
+  <!-- TRACING MODAL (PORTRAIT) - DYNAMIC GLASS SCALING -->
+  <div class="trace-modal" id="traceModal">
+    <div class="trace-card">
+      <div class="trace-header">
+        <div class="trace-title" id="traceHeaderTitle">🎨 วาดลายเส้น ก ไก่</div>
+        <button class="close-trace-btn" onclick="closeTraceModal()">✕</button>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="traceCanvas" width="460" height="460"></canvas>
+      </div>
+
+      <div class="trace-actions">
+        <button class="tool-btn" onclick="clearTraceCanvas()" data-i18n-th="🧽 ลบใหม่" data-i18n-en="🧽 Erase">🧽 ลบใหม่</button>
+        <button class="tool-btn" onclick="speakTraceCoaching()" data-i18n-th="🔊 ฟังวิธีเขียน" data-i18n-en="🔊 Hear Guide">🔊 ฟังวิธีเขียน</button>
+        <button class="tool-btn" onclick="nextConsonantFromModal()" data-i18n-th="ตัวต่อไป ❯" data-i18n-en="Next ❯">ตัวต่อไป ❯</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOM'S SETTINGS MODAL -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-box">
+      <div class="settings-title" data-i18n-th="⚙️ ตั้งค่าสำหรับคุณแม่ / คุณยาย" data-i18n-en="⚙️ Parent Settings">⚙️ ตั้งค่าสำหรับคุณแม่ / คุณยาย</div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label" data-i18n-th="เลื่อนตัวอักษรถัดไปอัตโนมัติ" data-i18n-en="Auto-Advance to Next Letter">เลื่อนตัวอักษรถัดไปอัตโนมัติ</div>
+          <div style="font-size: 0.8rem; color: #718096;" data-i18n-th="(Auto-Advance to next letter)" data-i18n-en="Moves forward after tracing">Moves forward after tracing</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="autoAdvanceToggle" onchange="toggleAutoAdvance(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div style="font-size: 0.85rem; color: #718096; line-height: 1.4;" data-i18n-html-th="* ค่าเริ่มต้น: อยู่ที่เดิมเพื่อให้ฝึกเขียนซ้ำ (Repeat mode)<br>* เปิดสวิตช์: เลื่อนไปตัวถัดไปเมื่อเขียนเสร็จ" data-i18n-html-en="* Default OFF: stays on the same letter to repeat.<br>* Turn ON: moves to next letter automatically.">
+        * ค่าเริ่มต้น: อยู่ที่เดิมเพื่อให้ฝึกเขียนซ้ำ (Repeat mode)<br>
+        * เปิดสวิตช์: เลื่อนไปตัวถัดไปเมื่อเขียนเสร็จ
+      </div>
+
+      <button class="close-settings-btn" onclick="closeSettingsModal()" data-i18n-th="เรียบร้อย (Close)" data-i18n-en="Done (Close)">เรียบร้อย (Close)</button>
+    </div>
+  </div>
+
+  <script>
+    window.ALPHABET_CONFIG = {
+      enableNameStudio: false,
+      kids: {},
+      cacheName: "glw-leda-v12",
+      starsStorageKey: "glw_stars_alphabet_base"
+    };
+  </script>
+  <script src="./alphabet_core.js"></script>
+  <script src="./ui_lang.js"></script>
+</body>
+</html>

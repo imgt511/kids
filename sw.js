@@ -1,14 +1,18 @@
-const CACHE_NAME = "glw-leda-v10";
+const CACHE_NAME = "glw-leda-v12";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
+  "./manifest_alphabet.json",
+  "./alphabet.html",
+  "./alphabet_core.css",
+  "./alphabet_core.js",
+  "./ui_lang.js",
   "./widget_numbers.html",
-  "./widget_numbers_thai.html",
   "./widget_numbers_bilingual.html",
   "./widget_alphabet.html",
-  "./img/jayda.jpg",
-  "./img/dada.jpg"
+  "./widget_addition.html",
+  "./img/alphabet_icon.svg"
 ];
 
 self.addEventListener("install", (event) => {

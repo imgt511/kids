@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>บ้านการเรียนรู้หนูน้อย | Kids Learning Studio Portal</title>
+  <title>Kids Learning Studio Hub | บ้านการเรียนรู้หนูน้อย</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Kids Hub">
@@ -50,6 +50,15 @@
       align-items: center;
     }
 
+    .portal-top-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
     .family-badge {
       display: inline-flex;
       align-items: center;
@@ -57,13 +66,12 @@
       background: #FFFFFF;
       border: 2px solid #FFEAA7;
       border-radius: 999px;
-      padding: 6px 16px;
+      padding: 6px 14px;
       box-shadow: 0 4px 12px rgba(253, 203, 110, 0.25);
-      margin-bottom: 10px;
     }
 
     .family-sister {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: #D63031;
     }
@@ -71,6 +79,43 @@
     .family-divider {
       color: #FDCB6E;
       font-size: 0.8rem;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #EDF2F7;
+      border: 2px solid #E2E8F0;
+      border-radius: 999px;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .lang-flag-btn {
+      border: none;
+      background: transparent;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.15rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.15s, background-color 0.15s, transform 0.15s;
+    }
+
+    .lang-flag-btn.active {
+      background: #FFFFFF;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    .lang-flag-btn:active {
+      transform: scale(0.92);
     }
 
     .portal-title {
@@ -155,6 +200,10 @@
 
     .tile-alphabet {
       background: linear-gradient(135deg, #20BF6B 0%, #01A3A4 100%);
+    }
+
+    .tile-alphabet-base {
+      background: linear-gradient(135deg, #845EC2 0%, #20BF6B 100%);
     }
 
     .tile-addition {
@@ -288,6 +337,36 @@
       color: #2D3436;
     }
 
+    /* Quiet Developer Voice Audition Mini Links Footer */
+    .dev-mini-links {
+      width: 100%;
+      max-width: 580px;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #718096;
+    }
+
+    .dev-mini-link {
+      color: #64748B;
+      text-decoration: none;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-weight: 700;
+    }
+    .dev-mini-link:hover {
+      background: #E2E8F0;
+      color: #1E293B;
+    }
+
     /* Toast Notification for Coming Soon */
     .toast-msg {
       position: fixed;
@@ -316,19 +395,25 @@
 
   <!-- Portal Header -->
   <header class="portal-header">
-    <div class="family-badge">
-      <span class="family-sister">🌸 น้องเจด้า (5 ขวบ)</span>
-      <span class="family-divider">✦</span>
-      <span class="family-sister">🌟 พี่ดาด้า (7 ขวบ)</span>
+    <div class="portal-top-row">
+      <div class="family-badge">
+        <span class="family-sister" data-i18n-th="🌸 น้องเจด้า (5 ขวบ)" data-i18n-en="🌸 Jayda (Age 5)">🌸 น้องเจด้า (5 ขวบ)</span>
+        <span class="family-divider">✦</span>
+        <span class="family-sister" data-i18n-th="🌟 พี่ดาด้า (7 ขวบ)" data-i18n-en="🌟 Dada (Age 7)">🌟 พี่ดาด้า (7 ขวบ)</span>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-flag-btn active" data-set-lang="th" onclick="setUiLang('th')" title="ภาษาไทย">🇹🇭</button>
+        <button type="button" class="lang-flag-btn" data-set-lang="en" onclick="setUiLang('en')" title="English">🇬🇧</button>
+      </div>
     </div>
 
-    <h1 class="portal-title">🎨 บ้านการเรียนรู้หนูน้อย</h1>
-    <div class="portal-subtitle">Dada & Jayda's Learning Studio Hub</div>
+    <h1 class="portal-title" data-i18n-th="🎨 บ้านการเรียนรู้หนูน้อย" data-i18n-en="🎨 Kids Learning Studio Hub">🎨 บ้านการเรียนรู้หนูน้อย</h1>
+    <div class="portal-subtitle">Dada &amp; Jayda's Learning Studio Hub</div>
 
     <div class="star-banner" id="totalStarsBanner" onclick="celebrateStars()">
-      <span>⭐ ดาวสะสมทั้งหมด:</span>
+      <span data-i18n-th="⭐ ดาวสะสมทั้งหมด:" data-i18n-en="⭐ Total Stars:">⭐ ดาวสะสมทั้งหมด:</span>
       <span id="totalStarCount">0</span>
-      <span>ดวง 🎉</span>
+      <span data-i18n-th="ดวง 🎉" data-i18n-en="stars 🎉">ดวง 🎉</span>
     </div>
   </header>
 
@@ -342,10 +427,10 @@
         <div class="tile-art-sub">๑ ๒ ๓</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">ตัวเลขไทย & ลายเส้น ๑–๑๐</div>
-        <div class="tile-desc-th">หัดนับและลากเส้นตัวเลขไทย ๑ ถึง ๑๐</div>
-        <div class="tile-desc-en">Thai Numbers & Vector Tracing (๑–๑๐)</div>
-        <div class="tile-badge">🇹🇭 ภาษาไทยล้วน (Thai Only)</div>
+        <div class="tile-title" data-i18n-th="ตัวเลขไทย &amp; ลายเส้น ๑–๑๐" data-i18n-en="Thai Numbers (๑–๑๐)">ตัวเลขไทย &amp; ลายเส้น ๑–๑๐</div>
+        <div class="tile-desc-th" data-i18n-th="หัดนับและลากเส้นตัวเลขไทย ๑ ถึง ๑๐" data-i18n-en="Count fruit and trace Thai digits 1–10">หัดนับและลากเส้นตัวเลขไทย ๑ ถึง ๑๐</div>
+        <div class="tile-desc-en">Thai Numbers &amp; Vector Tracing (๑–๑๐)</div>
+        <div class="tile-badge" data-i18n-th="🇹🇭 ภาษาไทยล้วน (Thai Only)" data-i18n-en="🇹🇭 Thai Only">🇹🇭 ภาษาไทยล้วน (Thai Only)</div>
       </div>
       <div class="tile-arrow">❯</div>
     </a>
@@ -357,113 +442,105 @@
         <div class="tile-art-sub">๑ = 1</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">ตัวเลขไทย & อังกฤษ ๑–๑๐ / 1–10</div>
-        <div class="tile-desc-th">หัดนับและวาดเลขไทยคู่เลขอังกฤษ 1–10</div>
-        <div class="tile-desc-en">Dual Thai & English Numbers (๑–๑๐ / 1–10)</div>
-        <div class="tile-badge">🇹🇭🇺🇸 2 ภาษา · พร้อมเล่น (Bilingual)</div>
+        <div class="tile-title" data-i18n-th="ตัวเลขไทย &amp; อังกฤษ ๑–๑๐ / 1–10" data-i18n-en="Bilingual Numbers (๑–๑๐ / 1–10)">ตัวเลขไทย &amp; อังกฤษ ๑–๑๐ / 1–10</div>
+        <div class="tile-desc-th" data-i18n-th="หัดนับและวาดเลขไทยคู่เลขอังกฤษ 1–10" data-i18n-en="Count and trace Thai + English numbers">หัดนับและวาดเลขไทยคู่เลขอังกฤษ 1–10</div>
+        <div class="tile-desc-en">Dual Thai &amp; English Numbers (๑–๑๐ / 1–10)</div>
+        <div class="tile-badge" data-i18n-th="🇹🇭🇺🇸 2 ภาษา · พร้อมเล่น (Bilingual)" data-i18n-en="🇹🇭🇺🇸 Bilingual · Ready">🇹🇭🇺🇸 2 ภาษา · พร้อมเล่น (Bilingual)</div>
       </div>
       <div class="tile-arrow">❯</div>
     </a>
 
-    <!-- Tile 3: Thai Alphabet & Name Studio -->
+    <!-- Tile 3: Jayda & Dada Alphabet + Name Studio -->
     <a href="widget_alphabet.html" class="app-tile tile-alphabet" onclick="playClickChime()">
+      <div class="tile-art">
+        <div class="tile-art-icon">👧</div>
+        <div class="tile-art-sub">เจด้า·ดาด้า</div>
+      </div>
+      <div class="tile-info">
+        <div class="tile-title" data-i18n-th="ก–ฮ เจด้า &amp; ดาด้า" data-i18n-en="Jayda &amp; Dada Alphabet">ก–ฮ เจด้า &amp; ดาด้า</div>
+        <div class="tile-desc-th" data-i18n-th="พยัญชนะ ๔๔ ตัว และห้องวาดชื่อเจด้า-ดาด้า" data-i18n-en="44 Thai Consonants + Jayda &amp; Dada Name Studio">พยัญชนะ ๔๔ ตัว และห้องวาดชื่อเจด้า-ดาด้า</div>
+        <div class="tile-desc-en">Jayda &amp; Dada Alphabet + Sideways Name Studio</div>
+        <div class="tile-badge" data-i18n-th="✨ ส่วนตัวพี่น้อง (Jayda &amp; Dada)" data-i18n-en="✨ Family Custom · Ready">✨ ส่วนตัวพี่น้อง (Jayda &amp; Dada)</div>
+      </div>
+      <div class="tile-arrow">❯</div>
+    </a>
+
+    <!-- Tile 4: Generic Alphabet (Base Shareable App) -->
+    <a href="alphabet.html" class="app-tile tile-alphabet-base" onclick="playClickChime()">
       <div class="tile-art">
         <div class="tile-art-icon">🔤</div>
         <div class="tile-art-sub">ก ข ค</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">ก–ฮ & วาดชื่อหนูน้อย</div>
-        <div class="tile-desc-th">พยัญชนะ ๔๔ ตัว และห้องวาดชื่อพี่น้อง</div>
-        <div class="tile-desc-en">Thai Alphabet & Sister Name Studio</div>
-        <div class="tile-badge">✨ พร้อมเล่นแล้ว (Ready)</div>
+        <div class="tile-title" data-i18n-th="ก–ฮ พื้นฐาน (ทั่วไป)" data-i18n-en="Generic Alphabet (Base)">ก–ฮ พื้นฐาน (ทั่วไป)</div>
+        <div class="tile-desc-th" data-i18n-th="พยัญชนะ ๔๔ ตัว ไม่มีชื่อเด็ก (ลิงก์แชร์ได้)" data-i18n-en="44 Thai Consonants — Shareable (No Kid Names)">พยัญชนะ ๔๔ ตัว ไม่มีชื่อเด็ก (ลิงก์แชร์ได้)</div>
+        <div class="tile-desc-en">Generic Thai Alphabet (Shareable Base App)</div>
+        <div class="tile-badge" data-i18n-th="🌐 แบบทั่วไป · แชร์ได้ (Shareable)" data-i18n-en="🌐 Generic · Shareable">🌐 แบบทั่วไป · แชร์ได้ (Shareable)</div>
       </div>
       <div class="tile-arrow">❯</div>
     </a>
 
-    <!-- Tile 3: Math Addition Challenge -->
+    <!-- Tile 5: Math Addition Challenge -->
     <a href="widget_addition.html" class="app-tile tile-addition" onclick="playClickChime()">
       <div class="tile-art">
         <div class="tile-art-icon">➕</div>
         <div class="tile-art-sub">1 + 2</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">เกมบวกเลขแสนสนุก</div>
-        <div class="tile-desc-th">นับผลไม้หรรษา ทายผลบวก ๑-๑๐</div>
+        <div class="tile-title" data-i18n-th="เกมบวกเลขแสนสนุก" data-i18n-en="Math Fruit Addition">เกมบวกเลขแสนสนุก</div>
+        <div class="tile-desc-th" data-i18n-th="นับผลไม้หรรษา ทายผลบวก ๑-๑๐" data-i18n-en="Count fruit and solve addition 1–10">นับผลไม้หรรษา ทายผลบวก ๑-๑๐</div>
         <div class="tile-desc-en">Math Fruit Addition Challenge</div>
-        <div class="tile-badge">✨ พร้อมเล่นแล้ว (Ready)</div>
+        <div class="tile-badge" data-i18n-th="⏸️ พักไว้ชั่วคราว (On Hold)" data-i18n-en="⏸️ On Hold">⏸️ พักไว้ชั่วคราว (On Hold)</div>
       </div>
       <div class="tile-arrow">❯</div>
     </a>
 
-    <!-- Tile 4: Math Subtraction Challenge (Upcoming) -->
+    <!-- Tile 6: Math Subtraction Challenge (Upcoming) -->
     <div class="app-tile tile-subtraction" onclick="triggerComingSoon('เกมลบเลขแสนสนุก', 'Subtraction Challenge')">
       <div class="tile-art">
         <div class="tile-art-icon">➖</div>
         <div class="tile-art-sub">5 − 2</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">เกมลบเลขแสนสนุก</div>
-        <div class="tile-desc-th">ลูกโป่งหรรษา เรียนรู้การลบเลข</div>
+        <div class="tile-title" data-i18n-th="เกมลบเลขแสนสนุก" data-i18n-en="Math Subtraction">เกมลบเลขแสนสนุก</div>
+        <div class="tile-desc-th" data-i18n-th="ลูกโป่งหรรษา เรียนรู้การลบเลข" data-i18n-en="Balloon fun subtraction practice">ลูกโป่งหรรษา เรียนรู้การลบเลข</div>
         <div class="tile-desc-en">Math Subtraction Challenge</div>
-        <div class="tile-badge">⏳ เร็วๆ นี้ (Coming Soon)</div>
+        <div class="tile-badge" data-i18n-th="⏳ เร็วๆ นี้ (Coming Soon)" data-i18n-en="⏳ Coming Soon">⏳ เร็วๆ นี้ (Coming Soon)</div>
       </div>
       <div class="tile-arrow">🔒</div>
     </div>
 
-    <!-- Tile 5: Thai Spelling & Reading (Upcoming) -->
-    <div class="app-tile tile-spelling" onclick="triggerComingSoon('หัดอ่าน & สะกดคำ', 'Spelling Studio')">
+    <!-- Tile 7: Thai Spelling & Reading (Upcoming) -->
+    <div class="app-tile tile-spelling" onclick="triggerComingSoon('หัดอ่าน &amp; สะกดคำ', 'Spelling Studio')">
       <div class="tile-art">
         <div class="tile-art-icon">📖</div>
         <div class="tile-art-sub">สระ-คำ</div>
       </div>
       <div class="tile-info">
-        <div class="tile-title">หัดอ่าน & สะกดคำง่ายๆ</div>
-        <div class="tile-desc-th">ผสมสระไทย คำศัพท์น่ารักสำหรับหนูน้อย</div>
-        <div class="tile-desc-en">Thai Spelling & Word Reading</div>
-        <div class="tile-badge">⏳ เร็วๆ นี้ (Coming Soon)</div>
+        <div class="tile-title" data-i18n-th="หัดอ่าน &amp; สะกดคำง่ายๆ" data-i18n-en="Thai Spelling Studio">หัดอ่าน &amp; สะกดคำง่ายๆ</div>
+        <div class="tile-desc-th" data-i18n-th="ผสมสระไทย คำศัพท์น่ารักสำหรับหนูน้อย" data-i18n-en="Vowels and easy Thai words">ผสมสระไทย คำศัพท์น่ารักสำหรับหนูน้อย</div>
+        <div class="tile-desc-en">Thai Spelling &amp; Word Reading</div>
+        <div class="tile-badge" data-i18n-th="⏳ เร็วๆ นี้ (Coming Soon)" data-i18n-en="⏳ Coming Soon">⏳ เร็วๆ นี้ (Coming Soon)</div>
       </div>
       <div class="tile-arrow">🔒</div>
     </div>
-
-    <!-- Tile 5: Voice Audition Lab -->
-    <a href="voice_audition/" class="app-tile tile-addition" onclick="playClickChime()">
-      <div class="tile-art">
-        <div class="tile-art-icon">🎙️</div>
-        <div class="tile-art-sub">TTS</div>
-      </div>
-      <div class="tile-info">
-        <div class="tile-title">Voice Audition Lab</div>
-        <div class="tile-desc-th">ทดสอบเสียงพูด Gemini 3.8 Flash</div>
-        <div class="tile-desc-en">Compare All Voices (Thai &amp; English)</div>
-        <div class="tile-badge">🔊 พร้อมทดสอบ (Audition)</div>
-      </div>
-      <div class="tile-arrow">❯</div>
-    </a>
-
-    <!-- Tile 6: Alphabet Voice Audition -->
-    <a href="alphabet_audition/" class="app-tile tile-alphabet" onclick="playClickChime()">
-      <div class="tile-art">
-        <div class="tile-art-icon">🔤</div>
-        <div class="tile-art-sub">ก-ฮ</div>
-      </div>
-      <div class="tile-info">
-        <div class="tile-title">Alphabet Voice Audition</div>
-        <div class="tile-desc-th">ทดสอบเสียงพยัญชนะ ก-ฮ (30 เสียง)</div>
-        <div class="tile-desc-en">Compare All 30 Voices (44 Consonants)</div>
-        <div class="tile-badge">🔊 พร้อมทดสอบ (Audition)</div>
-      </div>
-      <div class="tile-arrow">❯</div>
-    </a>
 
   </main>
 
   <!-- Add to Home Screen Hint -->
   <div class="install-hint-card">
     <div class="install-hint-icon">📱</div>
-    <div class="install-hint-text">
+    <div class="install-hint-text" data-i18n-html-th="<b>เคล็ดลับน่ารัก:</b> แตะปุ่ม <b>แชร์ (Share)</b> แล้วเลือก <b>&quot;เพิ่มไปยังหน้าจอโฮม&quot; (Add to Home Screen)</b> ใน Safari หรือ Chrome เพื่อเปิดเล่นได้เต็มจอเหมือนแอปจริงเลยค่ะ!" data-i18n-html-en="<b>Tip:</b> Tap <b>Share</b> (iPhone) or <b>⋮ Menu</b> (Android) and pick <b>&quot;Add to Home Screen&quot;</b> to play fullscreen offline.">
       <b>เคล็ดลับน่ารัก:</b> แตะปุ่ม <b>แชร์ (Share)</b> แล้วเลือก <b>"เพิ่มไปยังหน้าจอโฮม" (Add to Home Screen)</b> ใน Safari หรือ Chrome เพื่อเปิดเล่นได้เต็มจอเหมือนแอปจริงเลยค่ะ!
     </div>
   </div>
+
+  <!-- Quiet Developer Audition Mini Links -->
+  <footer class="dev-mini-links">
+    <span data-i18n-th="เครื่องมือทดสอบเสียง:" data-i18n-en="Dev Voice Labs:">เครื่องมือทดสอบเสียง:</span>
+    <a href="voice_audition/" class="dev-mini-link" onclick="playClickChime()">🎙️ Numbers Voice Audition</a>
+    <a href="alphabet_audition/" class="dev-mini-link" onclick="playClickChime()">🔤 Alphabet Voice Audition</a>
+  </footer>
 
   <!-- Toast Notification -->
   <div id="toastMsg" class="toast-msg">กำลังเตรียมความสนุกให้อยู่นะคะ คนเก่ง! ✨</div>
@@ -530,7 +607,8 @@
 
     function celebrateStars() {
       playClickChime();
-      showToast("🌟 หนูน้อยสะสมดาวเก่งมากเลยค่ะ!");
+      const isEn = typeof getUiLang === "function" && getUiLang() === "en";
+      showToast(isEn ? "🌟 Great job collecting stars!" : "🌟 หนูน้อยสะสมดาวเก่งมากเลยค่ะ!");
     }
 
     let toastTimer = null;
@@ -546,7 +624,12 @@
 
     function triggerComingSoon(thName, enName) {
       playSoftBubble();
-      showToast("หมวด " + thName + " กำลังเตรียมความสนุกอยู่นะคะ คนเก่ง! ✨");
+      const isEn = typeof getUiLang === "function" && getUiLang() === "en";
+      showToast(
+        isEn
+          ? enName + " is coming soon! ✨"
+          : "หมวด " + thName + " กำลังเตรียมความสนุกอยู่นะคะ คนเก่ง! ✨"
+      );
       if (window.speechSynthesis) {
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance("หมวด " + thName + " กำลังเตรียมความสนุกให้อยู่นะคะ คนเก่ง");
@@ -564,5 +647,6 @@
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
   </script>
+  <script src="./ui_lang.js"></script>
 </body>
 </html>

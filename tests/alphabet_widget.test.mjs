@@ -1,5 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "vitest";
-import { loadWidgetVm } from "./helpers/widgetHarness.mjs";
+import { ROOT, loadWidgetVm } from "./helpers/widgetHarness.mjs";
 
 describe("widget_alphabet.html", () => {
   it("contains all 44 Thai consonants with valid centerline strokes inside [0, 460]", () => {
@@ -233,5 +235,66 @@ describe("widget_alphabet.html", () => {
     vmCtx.selectGirl("unknown");
     expect(evalExpr("currentGirlKey")).toBe("jayda");
     expect(evalExpr("currentNameString")).toBe("เจด้า");
+  });
+});
+
+describe("alphabet.html (base)", () => {
+  it("loads all 44 consonants and navigates with Leda audio", () => {
+    const { vmCtx, evalExpr, getEl, playedAudioSrcs } = loadWidgetVm("alphabet.html");
+
+    expect(evalExpr("THAI_CONSONANTS")).toHaveLength(44);
+    expect(evalExpr("ENABLE_NAME_STUDIO")).toBe(false);
+
+    vmCtx.nextConsonant();
+    expect(evalExpr("currentIndex")).toBe(1);
+    expect(getEl("heroChar").innerText).toBe("ข");
+    expect(playedAudioSrcs.at(-1)).toBe("./audio_leda/short_alpha_02.m4a");
+
+    vmCtx.selectConsonant(0);
+    vmCtx.prevConsonant();
+    expect(evalExpr("currentIndex")).toBe(43);
+    expect(getEl("heroChar").innerText).toBe("ฮ");
+    expect(playedAudioSrcs.at(-1)).toBe("./audio_leda/short_alpha_44.m4a");
+  });
+
+  it("completes portrait tracing under base star key without touching family stars", () => {
+    const { vmCtx, evalExpr, storageMap } = loadWidgetVm("alphabet.html", {
+      localStorageInit: { glw_stars_alphabet_base: "4", boo_boo_stars_alpha: "9" }
+    });
+
+    vmCtx.openTraceModal();
+    const freshStrokes = evalExpr("activeStrokes");
+    for (const segs of freshStrokes) {
+      vmCtx.lockInitialTouch(segs[0].mx, segs[0].my);
+      for (const s of segs) {
+        vmCtx.advanceWavefront(s.mx, s.my);
+        vmCtx.checkTraceCompletion();
+      }
+    }
+
+    expect(evalExpr("traceCompleted")).toBe(true);
+    expect(evalExpr("stars")).toBe(5);
+    expect(storageMap.get("glw_stars_alphabet_base")).toBe("5");
+    expect(storageMap.get("boo_boo_stars_alpha")).toBe("9");
+  });
+
+  it("keeps landscape Name Studio disabled even when rotated sideways", () => {
+    const { vmCtx, evalExpr } = loadWidgetVm("alphabet.html", {
+      innerWidth: 844,
+      innerHeight: 390
+    });
+
+    vmCtx.handleOrientationCheck();
+    vmCtx.toggleLandscapeManual();
+    vmCtx.selectGirl("jayda");
+    expect(evalExpr("document.body.classList.contains('is-landscape')")).toBe(false);
+    expect(evalExpr("currentNameString")).toBe("");
+  });
+
+  it("contains zero family-specific references in alphabet.html markup", () => {
+    const html = fs.readFileSync(path.join(ROOT, "alphabet.html"), "utf8");
+    for (const token of ["jayda", "dada", "เจด้า", "ดาด้า", "index.html", "manifest.json"]) {
+      expect(html.toLowerCase()).not.toContain(token.toLowerCase());
+    }
   });
 });

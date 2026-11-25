@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ตัวเลขไทย & อังกฤษ ๑–๑๐ / 1–10 | Bilingual Numbers</title>
+  <title>Bilingual Numbers (1-10) | ตัวเลขไทย &amp; อังกฤษ</title>
   <style>
     :root {
       --bg-color: #FFFDF5;
@@ -50,13 +50,49 @@
     .app-title-badge {
       background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
       color: white;
-      font-size: 1.15rem;
+      font-size: 0.96rem;
       font-weight: 900;
-      padding: 8px 22px;
+      padding: 7px 12px;
       border-radius: 24px;
       box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: #EDF2F7;
+      border: 2px solid #CBD5E1;
+      border-radius: 999px;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .lang-flag-btn {
+      border: none;
+      background: transparent;
+      border-radius: 999px;
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.15s, background-color 0.15s, transform 0.15s;
+    }
+    .lang-flag-btn.active {
+      background: #FFFFFF;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .lang-flag-btn:active {
+      transform: scale(0.92);
     }
 
     /* Main Board Card (Wall-to-wall 480px width) */
@@ -529,18 +565,22 @@
 
   <header>
     <div class="header-bar">
-      <div class="app-title-badge notranslate" translate="no">🎨 ตัวเลขไทย & อังกฤษ ๑–๑๐ / 1–10</div>
-      <div style="display: flex; gap: 6px;">
-        <a href="index.html" class="info-guide-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;" title="กลับหน้ารวมแอป (Home Portal)">🏠</a>
-        <a href="widget_alphabet.html" class="info-guide-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;" title="ไปหน้า ก-ฮ & วาดชื่อ (Alphabet & Name Studio)">🔤</a>
-        <button class="info-guide-btn" onclick="openGuideModal()" title="คู่มือวิธีเล่น & บันทึกลงมือถือ (Parent Guide)">ℹ️</button>
+      <div class="app-title-badge notranslate" translate="no" data-i18n-th="🎨 ตัวเลขไทย &amp; อังกฤษ ๑–๑๐ / 1–10" data-i18n-en="🎨 Bilingual Numbers (๑–๑๐ / 1–10)">🎨 ตัวเลขไทย &amp; อังกฤษ ๑–๑๐ / 1–10</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-flag-btn active" data-set-lang="th" onclick="setUiLang('th')" title="ภาษาไทย">🇹🇭</button>
+        <button type="button" class="lang-flag-btn" data-set-lang="en" onclick="setUiLang('en')" title="English">🇬🇧</button>
+      </div>
+      <div style="display: flex; gap: 5px; flex-shrink: 0;">
+        <a href="index.html" class="info-guide-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;" title="กลับหน้ารวมแอป (Home Portal)" data-title-th="กลับหน้ารวมแอป" data-title-en="Home Studio Hub">🏠</a>
+        <a href="widget_alphabet.html" class="info-guide-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;" title="ไปหน้า ก-ฮ & วาดชื่อ (Alphabet & Name Studio)" data-title-th="ไปหน้า ก-ฮ & วาดชื่อ" data-title-en="Alphabet & Name Studio">🔤</a>
+        <button class="info-guide-btn" onclick="openGuideModal()" title="คู่มือวิธีเล่น & บันทึกลงมือถือ (Parent Guide)" data-title-th="คู่มือวิธีเล่น & บันทึกลงมือถือ" data-title-en="Parent Guide">ℹ️</button>
       </div>
     </div>
   </header>
 
   <main class="board-card">
     <div class="stars-score">
-      <span>⭐ รวมดวงดาว:</span>
+      <span data-i18n-th="⭐ รวมดวงดาว:" data-i18n-en="⭐ Total Stars:">⭐ รวมดวงดาว:</span>
       <span id="starCount">0</span>
     </div>
 
@@ -548,7 +588,7 @@
     <div id="countingSection" class="studio-stage">
       <div class="easels-row">
         <!-- Thai Easel -->
-        <div class="easel-card" onclick="openTraceModal('thai')" title="แตะเพื่อระบายสีเลขไทย">
+        <div class="easel-card" onclick="openTraceModal('thai')" title="แตะเพื่อระบายสีเลขไทย" data-title-th="แตะเพื่อระบายสีเลขไทย" data-title-en="Tap to trace Thai digit">
           <div class="easel-svg-wrap">
             <svg viewBox="0 0 100 100" width="100%" height="100%">
               <line x1="20" y1="95" x2="45" y2="15" stroke="#C07D3E" stroke-width="4.5" stroke-linecap="round"/>
@@ -561,7 +601,7 @@
               <path d="M 16 80 L 22 75 L 18 83 Z" fill="#3498DB"/>
             </svg>
           </div>
-          <span class="easel-hint">🎨 วาดเลขไทย</span>
+          <span class="easel-hint" data-i18n-th="🎨 วาดเลขไทย" data-i18n-en="🎨 Draw Thai">🎨 วาดเลขไทย</span>
         </div>
 
         <!-- English Easel -->
@@ -608,7 +648,7 @@
     <!-- Navigation Controls -->
     <div class="controls-bar" id="countingControls">
       <button class="circle-nav-btn prev-circle" onclick="prevNumber()" title="ก่อนหน้า">⬅️</button>
-      <div class="tap-count-hint">👇 จิ้มลูกผลไม้เพื่อนับ</div>
+      <div class="tap-count-hint" data-i18n-th="👇 จิ้มลูกผลไม้เพื่อนับ" data-i18n-en="👇 Tap Fruit to Count">👇 จิ้มลูกผลไม้เพื่อนับ</div>
       <button class="circle-nav-btn next-circle" onclick="nextNumber()" title="ต่อไป">➡️</button>
     </div>
 
@@ -1103,9 +1143,12 @@
       activeTraceType = type;
       const data = numbers[currentIndex];
       const char = type === "thai" ? data.thai : data.arabic;
-      const langLabel = type === "thai" ? "เลขไทย " : "เลขอารบิก ";
+      const isEn = typeof getUiLang === "function" && getUiLang() === "en";
+      const langLabel = isEn
+        ? (type === "thai" ? "Thai Number " : "Number ")
+        : (type === "thai" ? "เลขไทย " : "เลขอารบิก ");
 
-      document.getElementById("traceHeaderTitle").innerText = "🎨 ลากเส้นตามรอย " + langLabel + char;
+      document.getElementById("traceHeaderTitle").innerText = (isEn ? "🎨 Trace " : "🎨 ลากเส้นตามรอย ") + langLabel + char;
       document.getElementById("traceOverlay").style.display = "flex";
       initTraceModel();
       const numKey = String(currentIndex + 1);
@@ -1263,29 +1306,30 @@
   <div id="guideOverlay" class="guide-overlay" style="display:none;" onclick="closeGuideModal(event)">
     <div class="guide-card" onclick="event.stopPropagation()">
       <div class="guide-header">
-        <div class="guide-title">📖 คู่มือวิธีเล่น (Parent Guide)</div>
+        <div class="guide-title" data-i18n-th="📖 คู่มือวิธีเล่น (Parent Guide)" data-i18n-en="📖 Parent Guide">📖 คู่มือวิธีเล่น (Parent Guide)</div>
         <button class="close-guide-btn" onclick="closeGuideModal()">✕</button>
       </div>
 
       <div class="guide-content">
         <div class="guide-section">
-          <h3>🎮 วิธีเล่น (How to Play)</h3>
-          <p>1. 👆 <strong>จิ้มผลไม้:</strong> แตะลูกผลไม้เพื่อหัดนับเลข 1, 2, 3...</p>
-          <p>2. 🇹🇭 🇺🇸 <strong>แตะการ์ดตัวเลข:</strong> ฟังเสียงอ่านภาษาไทยและภาษาอังกฤษ</p>
-          <p>3. 🎨 <strong>แตะขาตั้งวาดภาพ:</strong> ใช้นิ้วลากตามเส้นสีรุ้งเพื่อระบายสีตัวเลข</p>
+          <h3 data-i18n-th="🎮 วิธีเล่น (How to Play)" data-i18n-en="🎮 How to Play">🎮 วิธีเล่น (How to Play)</h3>
+          <p data-i18n-html-th="1. 👆 <strong>จิ้มผลไม้:</strong> แตะลูกผลไม้เพื่อหัดนับเลข 1, 2, 3..." data-i18n-html-en="1. 👆 <strong>Tap Fruit:</strong> Tap each fruit to count 1, 2, 3...">1. 👆 <strong>จิ้มผลไม้:</strong> แตะลูกผลไม้เพื่อหัดนับเลข 1, 2, 3...</p>
+          <p data-i18n-html-th="2. 🇹🇭 🇺🇸 <strong>แตะการ์ดตัวเลข:</strong> ฟังเสียงอ่านภาษาไทยและภาษาอังกฤษ" data-i18n-html-en="2. 🇹🇭 🇺🇸 <strong>Tap Number Cards:</strong> Hear Thai and English numbers.">2. 🇹🇭 🇺🇸 <strong>แตะการ์ดตัวเลข:</strong> ฟังเสียงอ่านภาษาไทยและภาษาอังกฤษ</p>
+          <p data-i18n-html-th="3. 🎨 <strong>แตะขาตั้งวาดภาพ:</strong> ใช้นิ้วลากตามเส้นสีรุ้งเพื่อระบายสีตัวเลข" data-i18n-html-en="3. 🎨 <strong>Tap Easels:</strong> Trace the rainbow path to draw either digit.">3. 🎨 <strong>แตะขาตั้งวาดภาพ:</strong> ใช้นิ้วลากตามเส้นสีรุ้งเพื่อระบายสีตัวเลข</p>
         </div>
 
         <div class="guide-section">
-          <h3>📲 บันทึกไว้บนหน้าจอมือถือ (Add to Home Screen)</h3>
-          <p>เปิดเล่นได้ตลอดเวลา ไม่ต้องโหลดแอปใน App Store:</p>
-          <p>🍏 <strong>iPhone (Safari):</strong> แตะปุ่มแชร์ ⬆️ ด้านล่าง แล้วเลือก <em>"เพิ่มไปยังหน้าจอโฮม"</em></p>
-          <p>🤖 <strong>Android (Chrome):</strong> แตะจุด 3 จุด ⋮ ด้านบนขวา แล้วเลือก <em>"เพิ่มลงในหน้าจอหลัก"</em></p>
+          <h3 data-i18n-th="📲 บันทึกไว้บนหน้าจอมือถือ (Add to Home Screen)" data-i18n-en="📲 Add to Home Screen">📲 บันทึกไว้บนหน้าจอมือถือ (Add to Home Screen)</h3>
+          <p data-i18n-th="เปิดเล่นได้ตลอดเวลา ไม่ต้องโหลดแอปใน App Store:" data-i18n-en="Save to your home screen for offline fullscreen play:">เปิดเล่นได้ตลอดเวลา ไม่ต้องโหลดแอปใน App Store:</p>
+          <p data-i18n-html-th="🍏 <strong>iPhone (Safari):</strong> แตะปุ่มแชร์ ⬆️ ด้านล่าง แล้วเลือก <em>&quot;เพิ่มไปยังหน้าจอโฮม&quot;</em>" data-i18n-html-en="🍏 <strong>iPhone (Safari):</strong> Tap Share ⬆️ then <em>&quot;Add to Home Screen&quot;</em>.">🍏 <strong>iPhone (Safari):</strong> แตะปุ่มแชร์ ⬆️ ด้านล่าง แล้วเลือก <em>"เพิ่มไปยังหน้าจอโฮม"</em></p>
+          <p data-i18n-html-th="🤖 <strong>Android (Chrome):</strong> แตะจุด 3 จุด ⋮ ด้านบนขวา แล้วเลือก <em>&quot;เพิ่มลงในหน้าจอหลัก&quot;</em>" data-i18n-html-en="🤖 <strong>Android (Chrome):</strong> Tap ⋮ Menu then <em>&quot;Add to Home Screen&quot;</em>.">🤖 <strong>Android (Chrome):</strong> แตะจุด 3 จุด ⋮ ด้านบนขวา แล้วเลือก <em>"เพิ่มลงในหน้าจอหลัก"</em></p>
         </div>
       </div>
 
-      <button class="guide-done-btn" onclick="closeGuideModal()">เข้าใจแล้ว 👍 (Got It!)</button>
+      <button class="guide-done-btn" onclick="closeGuideModal()" data-i18n-th="เข้าใจแล้ว 👍 (Got It!)" data-i18n-en="Got It 👍">เข้าใจแล้ว 👍 (Got It!)</button>
     </div>
   </div>
 
+  <script src="./ui_lang.js"></script>
 </body>
 </html>

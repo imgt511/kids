@@ -6,12 +6,12 @@
     "environment": "macOS (Apple Silicon)"
   },
   "lifecycle": {
-    "last_session": "2026-11-24",
+    "last_session": "2026-11-25",
     "status": "active",
-    "active_goal": "Thai Alphabet & Numbers Learning Hub (Dada & Jayda)"
+    "active_goal": "Thai Alphabet & Numbers Learning Hub (Dada & Jayda) + Shareable Base Alphabet"
   },
   "execution_state": {
-    "current_subtask": "Field-test full-glass Name Studio on phones (Pixel 9 Pro, iPhones, Bison GT)",
+    "current_subtask": "Commit and push base alphabet, flag language switcher, and Studio Hub cleanup to GitHub Pages",
     "completed_milestones": [
       "App 1: Numbers & Vector Tracing (1–10) live on GitHub Pages with Leda voice coaching",
       "App 2: Math Addition Challenge isolated to standalone widget; card-based fruit counting & keypad spec recorded in TODO.md",
@@ -25,7 +25,9 @@
       "Landscape Two-Portrait Name Studio & Jayda Spelling Fix: Replaced SpeechRecognition mic screen with full-screen Jayda (เจด้า) & Dada (ดาด้า) portrait picker, fixed Thai combining-mark layout (floating ้ above ด), cut landscape stroke widths & touch/hop radii in half for 1-to-1 finger tracking, added 3 Flash-verified Jayda Leda clips, bumped PWA cache to glw-leda-v9",
       "Full Glass Name Studio & Floating Controls: Eliminated 42px top bar, placed floating pastel back arrow and sponge eraser over empty top corners, switched to 100dvh with safe-area padding for mobile home bars, added Android auto-fullscreen and PWA manifest.json, bumped cache to glw-leda-v10, and deployed live to GitHub Pages (29f917b)",
       "Automated Unit Test Suites: Created pytest (tests/test_pwa_and_assets.py, tests/test_audition_apps.py) and vitest (tests/*.test.mjs + tests/helpers/widgetHarness.mjs) suites covering core widgets, PWA/assets, all 94 Leda AAC clips, embedded audio, Name Studio layout/wavefront isolation, both live audition PWAs (voice_audition/ & alphabet_audition/), and all 3 service workers (14/14 pytest + 28/28 vitest passing); removed nested duplicate block in alphabet_audition/index.html",
-      "Voice Audition Puck Fix: Re-pulled v30_puck with all 20 clean clips (including en_10 'Ten'), verified 5 boundary clips + ffprobe, bumped voice_audition cache to thai-voice-audition-v4, and enforced 0 missing clips across all 30 voices in tests/test_audition_apps.py"
+      "Voice Audition Puck Fix: Re-pulled v30_puck with all 20 clean clips (including en_10 'Ten'), verified 5 boundary clips + ffprobe, bumped voice_audition cache to thai-voice-audition-v4, and enforced 0 missing clips across all 30 voices in tests/test_audition_apps.py",
+      "Base Alphabet App & Shared Engine: Extracted alphabet_core.css & alphabet_core.js from widget_alphabet.html, built neutral shareable alphabet.html + manifest_alphabet.json + img/alphabet_icon.svg (sideways Name Studio & family links disabled), bumped sw.js to glw-leda-v11, and verified 32/32 vitest + 15/15 pytest passing",
+      "Hub Cleanup & TH/GB Flag Switcher: Deleted duplicate widget_numbers_thai.html, created ui_lang.js Thai/British-English switcher (default Thai, persisted) across all 6 user pages, set English-first <title> tags, moved audition labs to quiet footer on index.html, differentiated Jayda & Dada Alphabet vs Generic Alphabet on Hub, bumped sw.js to glw-leda-v12, and verified 33/33 vitest + 16/16 pytest passing"
     ],
     "pending_milestones": [
       "App 2 Overhaul: Build new progressive 1+1 fruit counting dual-card addition widget with on-screen numerical keypad"
@@ -33,8 +35,11 @@
     "world_variables": {
       "tracked_files": [
         "index.html",
+        "alphabet.html",
+        "alphabet_core.css",
+        "alphabet_core.js",
+        "ui_lang.js",
         "widget_numbers.html",
-        "widget_numbers_thai.html",
         "widget_numbers_bilingual.html",
         "widget_alphabet.html",
         "widget_addition.html",
