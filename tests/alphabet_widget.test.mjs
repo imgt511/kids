@@ -97,6 +97,35 @@ describe("widget_alphabet.html", () => {
     expect(storageMap.get("boo_boo_stars_alpha")).toBe("3");
   });
 
+  it("enforces 34px lock, 1-to-1 tracking, and zero cross-stroke bleed in portrait tracing", () => {
+    const { vmCtx, evalExpr } = loadWidgetVm("alphabet.html");
+    const consonants = evalExpr("THAI_CONSONANTS");
+    const dIdx = consonants.findIndex((c) => c.char === "ด");
+    expect(dIdx).toBeGreaterThan(0);
+
+    vmCtx.selectConsonant(dIdx);
+    vmCtx.openTraceModal();
+    const strokes = evalExpr("activeStrokes");
+    expect(strokes.length).toBeGreaterThanOrEqual(4);
+
+    // Touching >34px away from all strokes does not lock or fill
+    vmCtx.lockInitialTouch(10, 10);
+    expect(evalExpr("currentCursor")).toBeNull();
+    expect(strokes.some((segs) => segs.some((s) => s.filled))).toBe(false);
+
+    // Trace stem0 step-by-step: strictly 1-to-1 with 0 bleed into arch1 or innerLoop
+    const stem0 = strokes[0];
+    const arch1 = strokes[1];
+    const innerLoop = strokes[3];
+    vmCtx.lockInitialTouch(stem0[0].mx, stem0[0].my);
+    for (let i = 0; i < stem0.length; i++) {
+      vmCtx.advanceWavefront(stem0[i].mx, stem0[i].my);
+      expect(stem0.filter((s) => s.filled).length).toBe(i + 1);
+    }
+    expect(arch1.filter((s) => s.filled).length).toBe(0);
+    expect(innerLoop.filter((s) => s.filled).length).toBe(0);
+  });
+
   it("lays out Jayda & Dada Name Studio across viewports with isolated combining marks", () => {
     const { vmCtx, evalExpr, getEl, storageMap, playedAudioSrcs, getFullscreenRequests } =
       loadWidgetVm("widget_alphabet.html");
